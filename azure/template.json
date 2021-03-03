@@ -73,7 +73,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "app-service-certificate",
-            "resourceGroup": "[variables('resourceGroupName')]",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
@@ -157,10 +157,6 @@
                                     "value": "[toUpper(parameters('environmentName'))]"
                                 },
                                 {
-                                    "name": "WEBSITE_LOAD_CERTIFICATES",
-                                    "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
-                                },
-                                {
                                     "name": "Version",
                                     "value": "[parameters('version')]"
                                 },
@@ -201,10 +197,6 @@
         "AppServiceName": {
             "type": "string",
             "value": "[variables('appServiceName')]"
-        },
-        "CertificateThumbprint": {
-            "type": "string",
-            "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
         }
     }
 }
