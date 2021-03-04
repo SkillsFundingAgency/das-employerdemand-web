@@ -6,7 +6,7 @@ trigger:
 
 variables:
 - name: SolutionBaseName
-  value: __SolutionBaseName__
+  value: SFA.DAS.EmployerDemand.Web
 - name: BuildConfiguration
   value: release
 - name: BuildPlatform
@@ -19,7 +19,6 @@ pool:
 
 resources:
   repositories:
-  - repository: self
   - repository: das-platform-building-blocks
     type: github
     name: SkillsFundingAgency/das-platform-building-blocks
