@@ -5,10 +5,9 @@ using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 {
-    public class DemandService
+    public class DemandService : IDemandService
     {
         private readonly IApiClient _apiClient;
-
         public DemandService (IApiClient apiClient)
         {
             _apiClient = apiClient;
