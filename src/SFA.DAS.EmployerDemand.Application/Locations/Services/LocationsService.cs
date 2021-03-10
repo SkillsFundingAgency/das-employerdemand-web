@@ -4,7 +4,7 @@ using SFA.DAS.EmployerDemand.Domain.Locations.Api;
 
 namespace SFA.DAS.EmployerDemand.Application.Locations.Services
 {
-    public class LocationService 
+    public class LocationService : ILocationService
     {
         private readonly IApiClient _client;
 
