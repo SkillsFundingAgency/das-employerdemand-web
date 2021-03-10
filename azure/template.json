@@ -46,6 +46,12 @@
         "keyVaultCertificateName": {
             "type": "string"
         },
+        "sharedApimResourceGroup": {
+            "type": "string"
+        },
+        "sharedApimName": {
+            "type": "string"
+        },
         "sharedKeyVaultName": {
             "type": "string"
         },
@@ -114,10 +120,38 @@
             }
         },
         {
+
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "apim-product-subscription",
+            "resourceGroup": "[parameters('sharedApimResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'apim/apim-subscription.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "apimName": {
+                        "value": "[parameters('sharedApimName')]"
+                    },
+                    "subscriptionName": {
+                        "value": "[variables('AppServiceName')]"
+                    },
+                    "subscriptionScope": {
+                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/FindApprenticeshipTrainingOuterApi')]"
+                    }
+                }
+            }
+        },
+        {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-06-01",
             "name": "app-service",
             "resourceGroup": "[variables('resourceGroupName')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', 'apim-product-subscription')]"
+            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
