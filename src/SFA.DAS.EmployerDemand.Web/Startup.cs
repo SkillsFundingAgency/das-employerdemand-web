@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +15,7 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries;
 using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.AppStart;
 
@@ -61,18 +63,20 @@ namespace SFA.DAS.EmployerDemand.Web
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
 
-            services.AddOptions();
-            services.Configure<EmployerDemandApi>(_configuration.GetSection("EmployerDemandApi"));
-            services.AddSingleton(cfg => cfg.GetService<IOptions<EmployerDemandApi>>().Value);
+            services.AddConfigurationOptions(_configuration);
+            
+            services.AddServiceRegistration();
+            
+            services.AddMediatR(typeof(GetCreateCourseDemandQuery).Assembly);
             
             services.Configure<RouteOptions>(options =>
             {
                 options.LowercaseUrls = true;
             }).AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
+            services.AddLogging();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
