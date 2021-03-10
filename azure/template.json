@@ -136,10 +136,10 @@
                         "value": "[parameters('sharedApimName')]"
                     },
                     "subscriptionName": {
-                        "value": "[variables('AppServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     },
                     "subscriptionScope": {
-                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/EmployerDemandWebOuterApi')]"
+                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/EmployerDemandOuterApi')]"
                     }
                 }
             }
@@ -149,9 +149,6 @@
             "apiVersion": "2020-06-01",
             "name": "app-service",
             "resourceGroup": "[variables('resourceGroupName')]",
-            "dependsOn": [
-                "[resourceId('Microsoft.Resources/deployments', 'apim-product-subscription')]"
-            ],
             "properties": {
                 "mode": "Incremental",
                 "templateLink": {
