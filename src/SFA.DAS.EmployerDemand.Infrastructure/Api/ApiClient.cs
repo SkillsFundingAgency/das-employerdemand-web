@@ -9,7 +9,7 @@ using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Infrastructure.Api
 {
-    public class ApiClient
+    public class ApiClient : IApiClient
     {
         private readonly HttpClient _httpClient;
         private readonly EmployerDemandApi _config;
