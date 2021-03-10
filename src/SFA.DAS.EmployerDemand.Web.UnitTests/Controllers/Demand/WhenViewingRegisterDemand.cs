@@ -20,7 +20,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             int trainingCourseId,
             GetCreateCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
-            RegisterDemandController controller)
+            [Greedy] RegisterDemandController controller)
         {
             //Arrange
             mediator.Setup(x =>
@@ -34,9 +34,9 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             
             //Assert
             Assert.IsNotNull(actual);
-            var actualModel = actual.Model as TrainingCourseViewModel;
+            var actualModel = actual.Model as RegisterCourseDemandViewModel;
             Assert.IsNotNull(actualModel);
-            actualModel.Should().BeEquivalentTo(mediatorResult.TrainingCourse);
+            actualModel.TrainingCourse.Should().BeEquivalentTo(mediatorResult.TrainingCourse);
         }
     }
 }
