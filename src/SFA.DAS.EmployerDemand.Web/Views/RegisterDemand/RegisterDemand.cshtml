@@ -1,0 +1,125 @@
+@model SFA.DAS.EmployerDemand.Web.Models.RegisterCourseDemandViewModel
+@{
+    ViewData["Title"] = "Enter the apprenticeship training and contact details";
+    ViewData["Description"] = $"Share your interest in {Model.TrainingCourse.TitleAndLevel} with training providers.";
+}
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+				<partial name="_pageErrorsOverview" />
+                <h1 class="govuk-heading-xl">
+                    Get help with finding a training provider
+        		</h1>
+        
+        		<p class="govuk-body">We will share your apprenticeship training interest with all training providers. If a training provider can offer you training, we will send you their contact details.</p>
+        
+	        <form method="post">
+		        <input type="hidden" asp-for="TrainingCourse.Id" name="TrainingCourseId"/>
+		        <!-- Training details -->
+		        <fieldset class="govuk-fieldset">
+        
+			        <h2 class="govuk-heading-l govuk-!-margin-top-3">Apprenticeship training details</h2>
+        
+			        <div class="das-highlight govuk-!-margin-bottom-5">
+				        <p class="govuk-body govuk-!-margin-bottom-5">
+					        Apprenticeship training course <br>
+					        <span class="govuk-!-font-weight-bold">@Model.TrainingCourse.TitleAndLevel</span>
+				        </p>
+			        </div>
+        
+			        <!-- Location -->
+			        <div class="govuk-form-group ">
+				        <label class="govuk-label govuk-label--m" for="search-location">
+					        Where is the apprenticeship location?
+				        </label>
+				        <div id="search-location-hint" class="govuk-hint">
+					        Enter a town, city or postcode
+				        </div>
+        					
+				        
+			        </div>
+        
+			        <!-- Apprentices -->
+			        <div class="govuk-form-group ">
+				        <fieldset class="govuk-fieldset">
+					        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+						        <h1 class="govuk-fieldset__heading">
+							        Do you know how many apprentices will take this apprenticeship training?
+						        </h1>
+					        </legend>
+        						
+					        <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+						        <div class="govuk-radios__item">
+							        <input class="govuk-radios__input" id="apprenticesAnswer-1" name="apprenticesAnswer" type="radio" value="yes" aria-controls="conditional-apprenticesAnswer" aria-expanded="false">
+							        <label class="govuk-label govuk-radios__label" for="apprenticesAnswer-1">
+								        Yes
+							        </label>
+						        </div>
+						        <div class="govuk-radios__conditional govuk-radios__conditional--hidden " id="conditional-apprenticesAnswer">
+							        <div class="govuk-form-group">
+								        <label class="govuk-label" asp-for="NumberOfApprentices">
+									        Enter the number of apprentices
+								        </label>
+								        <input  class="govuk-input govuk-input--width-4 " type="number" spellcheck="false" pattern="[0-9]*" asp-for="NumberOfApprentices"/>
+								    </div>
+						        </div>
+						        <div class="govuk-radios__item">
+							        <input class="govuk-radios__input" id="apprenticesAnswer-2" name="apprenticesAnswer" type="radio" value="no">
+							        <label class="govuk-label govuk-radios__label" for="apprenticesAnswer-2">
+								        No
+							        </label>
+						        </div>
+					        </div>
+				        </fieldset>
+			        </div>
+		        </fieldset>
+        
+        
+		        <fieldset class="govuk-fieldset">
+        
+			        <h2 class="govuk-heading-l govuk-!-margin-top-3">Contact details</h2>
+			        <p class="govuk-body">We will not share any contact details with training providers.</p>
+        	        
+			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("OrganisationName") && ViewData.ModelState["OrganisationName"].Errors.Any()? "govuk-form-group--error" : "")">
+				        <label asp-for="OrganisationName" class="govuk-label govuk-label--m">
+					        What is the organisation’s name?
+				        </label>
+				        @if (ViewData.ModelState.ContainsKey("OrganisationName") && ViewData.ModelState["OrganisationName"].Errors.Any())
+                        {
+                            <div class="govuk-!-margin-bottom-3">
+                                <span id="Course" class="govuk-error-message">
+                                    @ViewData.ModelState["OrganisationName"].Errors.First().ErrorMessage
+                                </span>
+                            </div>
+                        }
+				        <input class="govuk-input" asp-for="OrganisationName"/>
+			        </div>
+        
+			        <!-- Email address -->
+			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("ContactEmailAddress") && ViewData.ModelState["ContactEmailAddress"].Errors.Any()? "govuk-form-group--error" : "")">
+				        <label asp-for="ContactEmailAddress" class="govuk-label govuk-label--m">
+					        What email address should we contact?
+				        </label>
+				        @if (ViewData.ModelState.ContainsKey("ContactEmailAddress") && ViewData.ModelState["ContactEmailAddress"].Errors.Any())
+                        {
+                            <div class="govuk-!-margin-bottom-3">
+                                <span id="Course" class="govuk-error-message">
+                                    @ViewData.ModelState["ContactEmailAddress"].Errors.First().ErrorMessage
+                                </span>
+                            </div>
+                        }
+				        <div id="emailAnswer-hint" class="govuk-hint">
+					        We will only use this to send the details of any training providers who can offer the apprenticeship training.
+				        </div>
+				        <input class="govuk-input " asp-for="ContactEmailAddress" type="email" aria-describedby="emailAnswer-hint" autocomplete="email"/>
+			        </div>
+        
+			        <button type="submit" class="govuk-button">
+				        Continue
+			        </button>
+        
+					</fieldset>
+		        </form>
+	        </div>
+    </div>
+</main>

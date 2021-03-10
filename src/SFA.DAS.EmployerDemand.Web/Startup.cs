@@ -72,7 +72,10 @@ namespace SFA.DAS.EmployerDemand.Web
             services.Configure<RouteOptions>(options =>
             {
                 options.LowercaseUrls = true;
-            }).AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            }).AddMvc(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
