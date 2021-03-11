@@ -14,7 +14,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetCreateDemandRequest(trainingCourseId);
             
             //Assert
-            actual.GetUrl.Should().Be($"create-demand/{trainingCourseId}");
+            actual.GetUrl.Should().Be($"demand/create/{trainingCourseId}");
         }
     }
 }

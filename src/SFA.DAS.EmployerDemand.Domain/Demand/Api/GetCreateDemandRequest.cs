@@ -10,6 +10,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api
         {
             _trainingCourseId = trainingCourseId;
         }
-        public string GetUrl => $"create-demand/{_trainingCourseId}";
+        public string GetUrl => $"demand/create/{_trainingCourseId}";
     }
 }

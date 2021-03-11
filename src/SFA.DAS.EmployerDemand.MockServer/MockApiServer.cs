@@ -20,7 +20,7 @@ namespace SFA.DAS.EmployerDemand.MockServer
 
             var server = StandAloneApp.Start(settings);
             
-            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/create-demand"))
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/create"))
                 .UsingGet()).RespondWith(Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
