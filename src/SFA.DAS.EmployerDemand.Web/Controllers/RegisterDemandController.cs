@@ -1,6 +1,9 @@
+using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -31,5 +34,58 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [Route("enter-apprenticeship-details/{id}", Name = RouteNames.PostRegisterDemand)]
+        public async Task<IActionResult> PostRegisterDemand(RegisterDemandRequest request)
+        {
+            if (!ModelState.IsValid)
+            {
+                var model = await BuildRegisterCourseDemandViewModelFromPostRequest(request);
+                return View("RegisterDemand",model);    
+            }
+            
+            try
+            {
+                var createResult = await _mediator.Send(new CreateCourseDemandCommand
+                {
+                    Id = Guid.NewGuid(),
+                    Location = request.Location,
+                    OrganisationName = request.OrganisationName,
+                    ContactEmailAddress = request.ContactEmailAddress,
+                    NumberOfApprentices = request.NumberOfApprentices,
+                    TrainingCourseId = request.TrainingCourseId
+                });
+
+                return RedirectToRoute(RouteNames.ConfirmRegisterDemand, new { createResult.Id });
+            }
+            catch (ValidationException e)
+            {
+                foreach (var member in e.ValidationResult.MemberNames)
+                {
+                    ModelState.AddModelError(member.Split('|')[0], member.Split('|')[1]);
+                }
+                var model = await BuildRegisterCourseDemandViewModelFromPostRequest(request);
+                
+                return View("RegisterDemand", model);
+            }
+            
+        }
+
+        [HttpGet]
+        [Route("confirm-apprenticeship-details/{id}", Name = RouteNames.ConfirmRegisterDemand)]
+        public async Task<IActionResult> ConfirmRegisterDemand(Guid id)
+        {
+            return View();
+        }
+
+        private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
+            RegisterDemandRequest request)
+        {
+            var model = (RegisterCourseDemandViewModel) request;
+
+            var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = request.TrainingCourseId});
+            model.TrainingCourse = result.TrainingCourse;
+            return model;
+        }
     }
 }
