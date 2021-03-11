@@ -7,7 +7,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         
         public string OrganisationName { get; set; }
         public string ContactEmailAddress { get; set; }
-        public uint? NumberOfApprentices { get; set; }
+        public int? NumberOfApprentices { get; set; }
         public string Location { get; set; }
 
         public static implicit operator RegisterCourseDemandViewModel(RegisterDemandRequest request)

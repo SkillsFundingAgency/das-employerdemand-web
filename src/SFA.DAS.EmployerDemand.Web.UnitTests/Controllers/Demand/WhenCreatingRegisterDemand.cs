@@ -49,32 +49,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         }
 
         [Test, MoqAutoData]
-        public async Task Then_Is_ModelState_Error_Then_Command_Is_Not_Called_And_Register_View_Returned(
-            RegisterDemandRequest request,
-            CreateCachedCourseDemandCommandResult mediatorResult,
-            GetCreateCourseDemandQueryResult result,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] RegisterDemandController controller)
-        {
-            //Arrange
-            controller.ModelState.AddModelError("key", "error message");
-            mediator.Setup(x =>
-                    x.Send(It.Is<GetCreateCourseDemandQuery>(c => c.TrainingCourseId.Equals(request.TrainingCourseId))
-                        , It.IsAny<CancellationToken>()))
-                .ReturnsAsync(result);
-            
-            //Act
-            var actual = await controller.PostRegisterDemand(request) as ViewResult;
-            
-            //Assert
-            Assert.IsNotNull(actual);
-            actual.ViewName.Should().Be("RegisterDemand");
-            mediator.Verify(x =>
-                x.Send(It.IsAny<CreateCourseDemandCommand>()
-                    , It.IsAny<CancellationToken>()), Times.Never);
-        }
-
-        [Test, MoqAutoData]
         public async Task Then_If_There_Is_A_Validation_Exception_The_Register_View_Is_Returned(
             RegisterDemandRequest request,
             CreateCachedCourseDemandCommandResult mediatorResult,

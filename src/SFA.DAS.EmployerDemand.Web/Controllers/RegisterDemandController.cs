@@ -38,12 +38,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("enter-apprenticeship-details/{id}", Name = RouteNames.PostRegisterDemand)]
         public async Task<IActionResult> PostRegisterDemand(RegisterDemandRequest request)
         {
-            if (!ModelState.IsValid)
-            {
-                var model = await BuildRegisterCourseDemandViewModelFromPostRequest(request);
-                return View("RegisterDemand",model);    
-            }
-            
             try
             {
                 var createResult = await _mediator.Send(new CreateCourseDemandCommand
