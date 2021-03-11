@@ -2,6 +2,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
 {
     public class RegisterCourseDemandViewModel
     {
+        public bool? NumberOfApprenticesKnown;
         public TrainingCourseViewModel TrainingCourse { get; set; }
         
         public string OrganisationName { get; set; }
@@ -16,7 +17,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 OrganisationName = request.OrganisationName,
                 Location = request.Location,
                 ContactEmailAddress = request.ContactEmailAddress,
-                NumberOfApprentices = request.NumberOfApprentices
+                NumberOfApprentices = request.NumberOfApprentices,
+                NumberOfApprenticesKnown = request.NumberOfApprenticesKnown
             };
         }
     }

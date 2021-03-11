@@ -29,53 +29,68 @@
 			        </div>
         
 			        <!-- Location -->
-			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("Location") && ViewData.ModelState["Location"].Errors.Any()? "govuk-form-group--error" : "")">
+			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any()? "govuk-form-group--error" : "")">
 				        <label class="govuk-label govuk-label--m" for="search-location">
 					        Where is the apprenticeship location?
 				        </label>
 				        <div id="search-location-hint" class="govuk-hint">
 					        Enter a town, city or postcode
 				        </div>
-				        @if (ViewData.ModelState.ContainsKey("Location") && ViewData.ModelState["Location"].Errors.Any())
+				        @if (ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any())
                         {
                             <div class="govuk-!-margin-bottom-3">
                                 <span id="Course" class="govuk-error-message">
-                                    @ViewData.ModelState["Location"].Errors.First().ErrorMessage
+                                    @ViewData.ModelState[nameof(Model.Location)].Errors.First().ErrorMessage
                                 </span>
                             </div>
                         }
-        				<div class="govuk-form-group">
-                            <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="false">
-                        </div>
+				        <div class="govuk-form-group">
+					        <input asp-for="Location" id="search-location" title="Search" value="@Model.Location" type="search" class="govuk-input" data-submit-on-selection="false"/>
+				        </div>
 			        </div>
         
 			        <!-- Apprentices -->
-			        <div class="govuk-form-group ">
+			        @{
+				        var validationError = ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprenticesKnown)) && ViewData.ModelState[nameof(Model.NumberOfApprenticesKnown)].Errors.Any() ||
+				                              ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any();
+			        }
+			        <div class="govuk-form-group @(validationError ? "govuk-form-group--error" : "")">
 				        <fieldset class="govuk-fieldset">
 					        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
 						        <h1 class="govuk-fieldset__heading">
 							        Do you know how many apprentices will take this apprenticeship training?
 						        </h1>
 					        </legend>
-        						
+        					@if (ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprenticesKnown)) && ViewData.ModelState[nameof(Model.NumberOfApprenticesKnown)].Errors.Any())
+                            {
+                                <span class="govuk-error-message">
+                                    @ViewData.ModelState[nameof(Model.NumberOfApprenticesKnown)].Errors.First().ErrorMessage
+                                </span>
+                            }
 					        <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
 						        <div class="govuk-radios__item">
-							        <input class="govuk-radios__input" id="apprenticesAnswer-1" name="apprenticesAnswer" type="radio" value="yes" aria-controls="conditional-apprenticesAnswer" aria-expanded="false">
-							        <label class="govuk-label govuk-radios__label" for="apprenticesAnswer-1">
+							        <input class="govuk-radios__input" id="NumberOfApprenticesKnown" name="NumberOfApprenticesKnown" type="radio" value="true" @(Model.NumberOfApprenticesKnown.HasValue ? "checked='checked'" : "")  aria-controls="conditional-apprenticesAnswer" aria-expanded="false">
+							        <label class="govuk-label govuk-radios__label" for="NumberOfApprenticesKnown">
 								        Yes
 							        </label>
 						        </div>
-						        <div class="govuk-radios__conditional govuk-radios__conditional--hidden " id="conditional-apprenticesAnswer">
-							        <div class="govuk-form-group">
+						        <div class="govuk-radios__conditional @(!Model.NumberOfApprenticesKnown.HasValue ? "govuk-radios__conditional--hidden" : "") " id="conditional-apprenticesAnswer">
+							        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any()? "govuk-form-group--error" : "")">
 								        <label class="govuk-label" asp-for="NumberOfApprentices">
 									        Enter the number of apprentices
 								        </label>
+								        @if (ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any())
+                                        {
+                                            <span class="govuk-error-message">
+                                                @ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.First().ErrorMessage
+                                            </span>
+                                        }
 								        <input  class="govuk-input govuk-input--width-4 " type="number" spellcheck="false" pattern="[0-9]*" asp-for="NumberOfApprentices"/>
 								    </div>
 						        </div>
 						        <div class="govuk-radios__item">
-							        <input class="govuk-radios__input" id="apprenticesAnswer-2" name="apprenticesAnswer" type="radio" value="no">
-							        <label class="govuk-label govuk-radios__label" for="apprenticesAnswer-2">
+							        <input class="govuk-radios__input" id="NumberOfApprenticesKnown-false" name="NumberOfApprenticesKnown" type="radio" value="false">
+							        <label class="govuk-label govuk-radios__label" for="NumberOfApprenticesKnown-false">
 								        No
 							        </label>
 						        </div>
@@ -90,15 +105,15 @@
 			        <h2 class="govuk-heading-l govuk-!-margin-top-3">Contact details</h2>
 			        <p class="govuk-body">We will not share any contact details with training providers.</p>
         	        
-			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("OrganisationName") && ViewData.ModelState["OrganisationName"].Errors.Any()? "govuk-form-group--error" : "")">
+			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.OrganisationName)) && ViewData.ModelState[nameof(Model.OrganisationName)].Errors.Any()? "govuk-form-group--error" : "")">
 				        <label asp-for="OrganisationName" class="govuk-label govuk-label--m">
 					        What is the organisation’s name?
 				        </label>
-				        @if (ViewData.ModelState.ContainsKey("OrganisationName") && ViewData.ModelState["OrganisationName"].Errors.Any())
+				        @if (ViewData.ModelState.ContainsKey(nameof(Model.OrganisationName)) && ViewData.ModelState[nameof(Model.OrganisationName)].Errors.Any())
                         {
                             <div class="govuk-!-margin-bottom-3">
                                 <span id="Course" class="govuk-error-message">
-                                    @ViewData.ModelState["OrganisationName"].Errors.First().ErrorMessage
+                                    @ViewData.ModelState[nameof(Model.OrganisationName)].Errors.First().ErrorMessage
                                 </span>
                             </div>
                         }
@@ -106,15 +121,15 @@
 			        </div>
         
 			        <!-- Email address -->
-			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("ContactEmailAddress") && ViewData.ModelState["ContactEmailAddress"].Errors.Any()? "govuk-form-group--error" : "")">
+			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.ContactEmailAddress)) && ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.Any()? "govuk-form-group--error" : "")">
 				        <label asp-for="ContactEmailAddress" class="govuk-label govuk-label--m">
 					        What email address should we contact?
 				        </label>
-				        @if (ViewData.ModelState.ContainsKey("ContactEmailAddress") && ViewData.ModelState["ContactEmailAddress"].Errors.Any())
+				        @if (ViewData.ModelState.ContainsKey(nameof(Model.ContactEmailAddress)) && ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.Any())
                         {
                             <div class="govuk-!-margin-bottom-3">
                                 <span id="Course" class="govuk-error-message">
-                                    @ViewData.ModelState["ContactEmailAddress"].Errors.First().ErrorMessage
+                                    @ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.First().ErrorMessage
                                 </span>
                             </div>
                         }
@@ -128,8 +143,8 @@
 				        Continue
 			        </button>
         
-					</fieldset>
-		        </form>
-	        </div>
+				</fieldset>
+			</form>
+	    </div>
     </div>
 </main>

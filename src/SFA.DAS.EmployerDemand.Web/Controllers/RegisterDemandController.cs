@@ -53,7 +53,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     OrganisationName = request.OrganisationName,
                     ContactEmailAddress = request.ContactEmailAddress,
                     NumberOfApprentices = request.NumberOfApprentices,
-                    TrainingCourseId = request.TrainingCourseId
+                    TrainingCourseId = request.TrainingCourseId,
+                    NumberOfApprenticesKnown = request.NumberOfApprenticesKnown
                 });
 
                 return RedirectToRoute(RouteNames.ConfirmRegisterDemand, new { createResult.Id });

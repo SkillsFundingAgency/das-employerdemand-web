@@ -82,6 +82,40 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             actual.IsValid().Should().BeFalse();
             actual.ValidationDictionary.Should().ContainKey(nameof(command.ContactEmailAddress));
         }
-        
+
+        [Test, AutoData]
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_Then_The_Number_Of_Apprentices_Is_Not_Greater_Than_One_Then_Invalid(CreateCourseDemandCommand command)
+        {
+            //Arrange
+            command.NumberOfApprenticesKnown = true;
+            command.NumberOfApprentices = 0;
+            var validator = new CreateCourseDemandCommandValidator();
+            
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().BeFalse();
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.NumberOfApprentices));
+            actual.ValidationDictionary[nameof(command.NumberOfApprentices)].Should()
+                .Be("Enter the number of apprentices");
+        }
+        [Test, AutoData]
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_Then_The_Number_Of_Apprentices_Is_Null_Then_Invalid(CreateCourseDemandCommand command)
+        {
+            //Arrange
+            command.NumberOfApprenticesKnown = true;
+            command.NumberOfApprentices = null;
+            var validator = new CreateCourseDemandCommandValidator();
+            
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().BeFalse();
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.NumberOfApprentices));
+            actual.ValidationDictionary[nameof(command.NumberOfApprentices)].Should()
+                .Be("Enter the number of apprentices");
+        }
     }
 }

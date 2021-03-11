@@ -21,6 +21,11 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
             {
                 validationResult.AddError(nameof(item.OrganisationName));
             }
+
+            if (item.NumberOfApprenticesKnown != null && item.NumberOfApprenticesKnown.Value && (!item.NumberOfApprentices.HasValue || item.NumberOfApprentices.Value == 0))
+            {
+                validationResult.AddError(nameof(item.NumberOfApprentices),"Enter the number of apprentices");
+            }
             
             if (string.IsNullOrEmpty(item.ContactEmailAddress))
             {
@@ -40,7 +45,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
                 {
                     validationResult.AddError(nameof(item.ContactEmailAddress));
                 }
-                
             }
 
             return Task.FromResult(validationResult);

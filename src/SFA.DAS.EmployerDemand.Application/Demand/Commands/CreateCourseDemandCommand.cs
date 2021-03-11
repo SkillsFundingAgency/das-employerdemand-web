@@ -12,5 +12,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
         public uint? NumberOfApprentices { get; set; }
         public string Location { get; set; }
         public string ContactEmailAddress { get ; set ; }
+        public bool? NumberOfApprenticesKnown { get ; set ; }
     }
 }
