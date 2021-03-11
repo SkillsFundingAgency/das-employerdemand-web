@@ -59,7 +59,6 @@ namespace SFA.DAS.EmployerDemand.Web
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
@@ -67,9 +66,10 @@ namespace SFA.DAS.EmployerDemand.Web
             services.AddConfigurationOptions(_configuration);
             
             services.AddServiceRegistration();
-            
+
             services.AddMediatR(typeof(GetCreateCourseDemandQuery).Assembly);
-            
+            services.AddMediatRValidation();
+
             services.Configure<RouteOptions>(options =>
             {
                 options.LowercaseUrls = true;
