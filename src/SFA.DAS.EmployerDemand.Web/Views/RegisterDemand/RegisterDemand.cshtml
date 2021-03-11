@@ -1,3 +1,4 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
 @model SFA.DAS.EmployerDemand.Web.Models.RegisterCourseDemandViewModel
 @{
     ViewData["Title"] = "Enter the apprenticeship training and contact details";
@@ -14,7 +15,7 @@
         
         		<p class="govuk-body">We will share your apprenticeship training interest with all training providers. If a training provider can offer you training, we will send you their contact details.</p>
         
-	        <form method="post">
+	        <form method="post" asp-route="@RouteNames.PostRegisterDemand">
 		        <input type="hidden" asp-for="TrainingCourse.Id" name="TrainingCourseId"/>
 		        <!-- Training details -->
 		        <fieldset class="govuk-fieldset">
@@ -45,7 +46,7 @@
                             </div>
                         }
 				        <div class="govuk-form-group">
-					        <input asp-for="Location" id="search-location" title="Search" value="@Model.Location" type="search" class="govuk-input" data-submit-on-selection="false"/>
+					        <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="false" data-default-value="@Model.Location">
 				        </div>
 			        </div>
         
