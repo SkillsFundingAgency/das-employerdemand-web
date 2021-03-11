@@ -92,6 +92,7 @@ namespace SFA.DAS.EmployerDemand.Web
                 {
                     options.Configuration = configuration.RedisConnectionString;
                 });
+                services.AddHealthChecks();
             }
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
