@@ -18,6 +18,7 @@ using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries;
 using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.AppStart;
+using SFA.DAS.EmployerDemand.Web.Infrastructure;
 
 namespace SFA.DAS.EmployerDemand.Web
 {
@@ -77,6 +78,22 @@ namespace SFA.DAS.EmployerDemand.Web
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             
+            if (_configuration.IsDev() || _configuration.IsLocal())
+            {
+                services.AddDistributedMemoryCache();
+            }
+            else
+            {
+                var configuration = _configuration
+                    .GetSection("EmployerDemand")
+                    .Get<Domain.Configuration.EmployerDemand>();
+
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = configuration.RedisConnectionString;
+                });
+            }
+            
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
             services.AddLogging();
@@ -130,5 +147,7 @@ namespace SFA.DAS.EmployerDemand.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+        
+        
     }
 }

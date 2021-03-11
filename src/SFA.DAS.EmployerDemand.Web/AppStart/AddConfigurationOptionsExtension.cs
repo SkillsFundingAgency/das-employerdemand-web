@@ -12,6 +12,8 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
             services.AddOptions();
             services.Configure<EmployerDemandApi>(configuration.GetSection("EmployerDemandApi"));
             services.AddSingleton(cfg => cfg.GetService<IOptions<EmployerDemandApi>>().Value);
+            services.Configure<Domain.Configuration.EmployerDemand>(configuration.GetSection("EmployerDemand"));
+            services.AddSingleton(cfg => cfg.GetService<IOptions<Domain.Configuration.EmployerDemand>>().Value);
         }
     }
 }
