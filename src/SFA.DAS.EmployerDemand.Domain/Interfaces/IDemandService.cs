@@ -6,5 +6,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
     public interface IDemandService
     {
         Task<TrainingCourse> GetCreateCourseDemand(int trainingCourseId);
+        Task CreateCacheCourseDemand(ICourseDemand item);
     }
 }
