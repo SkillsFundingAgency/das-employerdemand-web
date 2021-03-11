@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Domain.Demand.Api;
@@ -8,9 +9,12 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
     public class DemandService : IDemandService
     {
         private readonly IApiClient _apiClient;
-        public DemandService (IApiClient apiClient)
+        private readonly ICacheStorageService _cacheStorageService;
+
+        public DemandService (IApiClient apiClient, ICacheStorageService cacheStorageService)
         {
             _apiClient = apiClient;
+            _cacheStorageService = cacheStorageService;
         }
         public async Task<TrainingCourse> GetCreateCourseDemand(int trainingCourseId)
         {
@@ -18,6 +22,11 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
                 await _apiClient.Get<GetCreateCourseDemandResponse>(new GetCreateDemandRequest(trainingCourseId));
 
             return result?.Course;
+        }
+
+        public async Task CreateCacheCourseDemand(ICourseDemand item)
+        {
+            await _cacheStorageService.SaveToCache(item.Id.ToString(), item, TimeSpan.FromMinutes(30));
         }
     }
 }
