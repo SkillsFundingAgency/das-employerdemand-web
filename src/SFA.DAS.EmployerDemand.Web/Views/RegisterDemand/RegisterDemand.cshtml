@@ -67,7 +67,7 @@
                             }
 					        <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
 						        <div class="govuk-radios__item">
-							        <input class="govuk-radios__input" id="NumberOfApprenticesKnown" name="NumberOfApprenticesKnown" type="radio" value="true" @(Model.NumberOfApprenticesKnown.HasValue ? "checked='checked'" : "")  aria-controls="conditional-apprenticesAnswer" aria-expanded="false">
+							        <input class="govuk-radios__input" id="NumberOfApprenticesKnown" name="NumberOfApprenticesKnown" type="radio" value="true" @(Model.NumberOfApprenticesKnown.HasValue && Model.NumberOfApprenticesKnown.Value ? "checked='checked'" : "")  aria-controls="conditional-apprenticesAnswer" aria-expanded="false">
 							        <label class="govuk-label govuk-radios__label" for="NumberOfApprenticesKnown">
 								        Yes
 							        </label>
@@ -87,7 +87,7 @@
 								    </div>
 						        </div>
 						        <div class="govuk-radios__item">
-							        <input class="govuk-radios__input" id="NumberOfApprenticesKnown-false" name="NumberOfApprenticesKnown" type="radio" value="false">
+							        <input class="govuk-radios__input" id="NumberOfApprenticesKnown-false" name="NumberOfApprenticesKnown" type="radio" value="false" @(Model.NumberOfApprenticesKnown.HasValue && !Model.NumberOfApprenticesKnown.Value ? "checked='checked'" : "")>
 							        <label class="govuk-label govuk-radios__label" for="NumberOfApprenticesKnown-false">
 								        No
 							        </label>
