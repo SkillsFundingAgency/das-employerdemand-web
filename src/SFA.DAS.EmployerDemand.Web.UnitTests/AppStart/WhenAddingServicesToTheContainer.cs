@@ -16,6 +16,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.AppStart
         [TestCase(typeof(IApiClient))]
         [TestCase(typeof(IDemandService))]
         [TestCase(typeof(ILocationService))]
+        [TestCase(typeof(ICacheStorageService))]
         public void Then_The_Dependencies_Are_Correctly_Resolved(Type toResolve)
         {
             var hostEnvironment = new Mock<IWebHostEnvironment>();
