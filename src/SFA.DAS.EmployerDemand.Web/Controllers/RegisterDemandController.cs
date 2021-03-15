@@ -73,7 +73,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         [HttpGet]
         [Route("confirm-apprenticeship-details/{id}", Name = RouteNames.ConfirmRegisterDemand)]
-        public async Task<IActionResult> ConfirmRegisterDemand(Guid id)
+        public IActionResult ConfirmRegisterDemand(Guid id)
         {
             return View();
         }

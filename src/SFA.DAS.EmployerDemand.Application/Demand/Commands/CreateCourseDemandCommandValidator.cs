@@ -57,7 +57,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
                         validationResult.AddError(nameof(item.ContactEmailAddress));
                     }
                 }
-                catch (FormatException e)
+                catch (FormatException)
                 {
                     validationResult.AddError(nameof(item.ContactEmailAddress),"Enter an email address in the correct format, like name@example.com");
                 }
