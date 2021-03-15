@@ -11,7 +11,7 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         }
         public static bool IsLocal(this IConfiguration configuration)
         {
-            return configuration["Environment"].Equals("LOCAL", StringComparison.CurrentCultureIgnoreCase);
+            return configuration["Environment"].StartsWith("LOCAL", StringComparison.CurrentCultureIgnoreCase);
         }
     }
 }
