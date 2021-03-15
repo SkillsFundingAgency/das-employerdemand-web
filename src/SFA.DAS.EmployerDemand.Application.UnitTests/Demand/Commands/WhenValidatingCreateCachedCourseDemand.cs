@@ -126,7 +126,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
         
         [Test, AutoData]
-        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_Then_The_Number_Of_Apprentices_Is_Less_Than_Zero_Then_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Less_Than_Zero_Then_Invalid(CreateCourseDemandCommand command)
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
@@ -141,6 +141,24 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             actual.ValidationDictionary.Should().ContainKey(nameof(command.NumberOfApprentices));
             actual.ValidationDictionary[nameof(command.NumberOfApprentices)].Should()
                 .Be("Number of apprentices must be 1 or more");
+        }
+
+        [Test, AutoData]
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Greater_Than_9999_Then_Invalid(CreateCourseDemandCommand command)
+        {
+            //Arrange
+            command.NumberOfApprenticesKnown = true;
+            command.NumberOfApprentices = 10000;
+            var validator = new CreateCourseDemandCommandValidator();
+            
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().BeFalse();
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.NumberOfApprentices));
+            actual.ValidationDictionary[nameof(command.NumberOfApprentices)].Should()
+                .Be("Number of apprentices must be 9999 or less");
         }
         
         [Test, AutoData]

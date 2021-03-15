@@ -28,13 +28,17 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
             }
             if (item.NumberOfApprenticesKnown != null && item.NumberOfApprenticesKnown.Value)
             {
-                if ((!item.NumberOfApprentices.HasValue || item.NumberOfApprentices.Value == 0))
+                if (!item.NumberOfApprentices.HasValue || item.NumberOfApprentices.Value == 0)
                 {
                     validationResult.AddError(nameof(item.NumberOfApprentices),"Enter the number of apprentices");    
                 }
-                if ((item.NumberOfApprentices.HasValue && item.NumberOfApprentices.Value < 0))
+                if (item.NumberOfApprentices.HasValue && item.NumberOfApprentices.Value < 0)
                 {
                     validationResult.AddError(nameof(item.NumberOfApprentices),"Number of apprentices must be 1 or more");    
+                }
+                if (item.NumberOfApprentices.HasValue && item.NumberOfApprentices.Value > 9999)
+                {
+                    validationResult.AddError(nameof(item.NumberOfApprentices),"Number of apprentices must be 9999 or less");    
                 }
             }
 
