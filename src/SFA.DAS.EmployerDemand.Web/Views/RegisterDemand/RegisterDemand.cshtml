@@ -85,7 +85,7 @@
                                                 <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.First().ErrorMessage
                                             </span>
                                         }
-								        <input  class="govuk-input govuk-input--width-4 @(ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any()? "govuk-input--error" : "")"  type="number" spellcheck="false" pattern="[0-9]*" asp-for="NumberOfApprentices"/>
+								        <input id="NumberOfApprenticesInput"  class="govuk-input govuk-input--width-4 @(ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any()? "govuk-input--error" : "")"  type="number" spellcheck="false" pattern="[0-9]*" asp-for="NumberOfApprentices"/>
 								    </div>
 						        </div>
 						        <div class="govuk-radios__item">

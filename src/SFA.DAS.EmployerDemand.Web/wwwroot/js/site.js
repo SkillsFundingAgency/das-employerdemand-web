@@ -76,3 +76,11 @@ if ($backLinkOrHome) {
     backLinkOrHome();
 }
 
+// NUMBER OF APPRENTICES RADIO
+var radioNoOfApp = $('#NumberOfApprenticesKnown-false');
+if (radioNoOfApp) {
+    radioNoOfApp.on('click', function () {
+        $('#NumberOfApprenticesInput').val('');
+    })
+}
+
