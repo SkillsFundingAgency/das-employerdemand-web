@@ -64,7 +64,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                             && c.Location.Equals(request.Location)
                             && c.OrganisationName.Equals(request.OrganisationName)
                             && c.ContactEmailAddress.Equals(request.ContactEmailAddress)
-                            && c.NumberOfApprentices == null
+                            && c.NumberOfApprentices == string.Empty
                             && c.Id != Guid.Empty
                         ), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
