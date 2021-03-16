@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
@@ -14,6 +15,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         {
             //Arrange
             command.ContactEmailAddress = $"{command.ContactEmailAddress}@test.com";
+            command.NumberOfApprenticesKnown = false;
             var validator = new CreateCourseDemandCommandValidator();
             
             //Act
@@ -112,7 +114,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
-            command.NumberOfApprentices = 0;
+            command.NumberOfApprentices = "0";
             var validator = new CreateCourseDemandCommandValidator();
             
             //Act
@@ -130,7 +132,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
-            command.NumberOfApprentices = -1;
+            command.NumberOfApprentices = "-1";
             var validator = new CreateCourseDemandCommandValidator();
             
             //Act
@@ -148,7 +150,26 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
-            command.NumberOfApprentices = 10000;
+            command.NumberOfApprentices = "10000";
+            var validator = new CreateCourseDemandCommandValidator();
+            
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().BeFalse();
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.NumberOfApprentices));
+            actual.ValidationDictionary[nameof(command.NumberOfApprentices)].Should()
+                .Be("Number of apprentices must be 9999 or less");
+        }
+        
+        
+        [Test, AutoData]
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Not_An_Int_Then_Invalid(CreateCourseDemandCommand command)
+        {
+            //Arrange
+            command.NumberOfApprenticesKnown = true;
+            command.NumberOfApprentices = $"{long.MaxValue}";
             var validator = new CreateCourseDemandCommandValidator();
             
             //Act

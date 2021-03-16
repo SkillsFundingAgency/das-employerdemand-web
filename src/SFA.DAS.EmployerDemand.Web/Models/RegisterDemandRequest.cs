@@ -9,7 +9,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public int TrainingCourseId { get; set; }
         public string Location { get; set; }
         public bool? NumberOfApprenticesKnown { get; set; }
-        public int? NumberOfApprentices { get; set; }
+        public string NumberOfApprentices { get; set; }
         public string OrganisationName { get; set; }
         public string ContactEmailAddress { get; set; }
      

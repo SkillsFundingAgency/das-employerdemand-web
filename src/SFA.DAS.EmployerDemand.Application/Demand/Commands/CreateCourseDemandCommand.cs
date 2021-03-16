@@ -9,7 +9,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
         public Guid Id { get ; set ; }
         public int TrainingCourseId { get; set; }
         public string OrganisationName { get; set; }
-        public int? NumberOfApprentices { get; set; }
+        public string NumberOfApprentices { get; set; }
         public string Location { get; set; }
         public string ContactEmailAddress { get ; set ; }
         public bool? NumberOfApprenticesKnown { get ; set ; }

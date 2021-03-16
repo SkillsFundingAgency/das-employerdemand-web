@@ -42,7 +42,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 if (request.NumberOfApprenticesKnown.HasValue && !request.NumberOfApprenticesKnown.Value)
                 {
-                    request.NumberOfApprentices = default;
+                    request.NumberOfApprentices = string.Empty;
                 }
                 
                 var createResult = await _mediator.Send(new CreateCourseDemandCommand
