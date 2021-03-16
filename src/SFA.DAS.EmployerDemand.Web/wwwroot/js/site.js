@@ -80,7 +80,7 @@ if ($backLinkOrHome) {
 var radioNoOfApp = $('#NumberOfApprenticesKnown-false');
 if (radioNoOfApp) {
     radioNoOfApp.on('click', function () {
-        $('#NumberOfApprenticesInput').val('');
+        $('#NumberOfApprentices').val('');
     })
 }
 
