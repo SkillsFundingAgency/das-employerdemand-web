@@ -46,6 +46,8 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
+      <ProjectReference Include="..\SFA.DAS.EmployerDemand.Application\SFA.DAS.EmployerDemand.Application.csproj" />
       <ProjectReference Include="..\SFA.DAS.EmployerDemand.Domain\SFA.DAS.EmployerDemand.Domain.csproj" />
+      <ProjectReference Include="..\SFA.DAS.EmployerDemand.Infrastructure\SFA.DAS.EmployerDemand.Infrastructure.csproj" />
     </ItemGroup>
 </Project>

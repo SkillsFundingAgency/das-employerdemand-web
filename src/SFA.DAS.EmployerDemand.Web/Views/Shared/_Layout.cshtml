@@ -1,6 +1,12 @@
 ﻿@using Microsoft.AspNetCore.Routing
 @using SFA.DAS.EmployerDemand.Web.Infrastructure
-
+@{
+    Dictionary<string, string> backRouteData = null;
+    if (ViewData.TryGetValue("BackRouteData", out var tempBackRouteData))
+    {
+        backRouteData = tempBackRouteData as Dictionary<string, string>;
+    }
+}
 
 <!DOCTYPE html>
 <html lang="en" class="govuk-template">
@@ -20,7 +26,6 @@
 
     <!--[if !IE 8]><!-->
     <link href="css/main.css" rel="stylesheet" />
-    <link href="/css/app.css" rel="stylesheet" no-cdn />
     <!--<![endif]-->
 
     <meta property="og:image" content="assets/images/govuk-opengraph-image.png">
@@ -117,6 +122,24 @@
 </div>
 
 <div class="govuk-width-container">
+    @if (Context.GetRouteData().Values["Controller"].Equals("Error"))
+    {
+        <a class="govuk-back-link"
+           asp-route="@RouteNames.ServiceStart"
+           asp-all-route-data="@backRouteData">Home</a>
+    }
+    else if(!Context.GetRouteData().Values["Controller"].Equals("Home"))
+    {
+        <div class="das-js-back-link-or-home">
+            <div class="govuk-breadcrumbs">
+                <ol class="govuk-breadcrumbs__list">
+                    <li class="govuk-breadcrumbs__list-item">
+                        <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home</a>
+                    </li>
+                </ol>
+            </div>
+        </div>    
+    }
     @RenderBody()
 
 </div>

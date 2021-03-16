@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,8 +15,10 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries;
 using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.AppStart;
+using SFA.DAS.EmployerDemand.Web.Infrastructure;
 
 namespace SFA.DAS.EmployerDemand.Web
 {
@@ -56,23 +59,45 @@ namespace SFA.DAS.EmployerDemand.Web
         {
             services.Configure<CookiePolicyOptions>(options =>
             {
-                // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.Strict;
             });
 
-            services.AddOptions();
-            services.Configure<EmployerDemandApi>(_configuration.GetSection("EmployerDemandApi"));
-            services.AddSingleton(cfg => cfg.GetService<IOptions<EmployerDemandApi>>().Value);
+            services.AddConfigurationOptions(_configuration);
             
+            services.AddServiceRegistration();
+
+            services.AddMediatR(typeof(GetCreateCourseDemandQuery).Assembly);
+            services.AddMediatRValidation();
+
             services.Configure<RouteOptions>(options =>
             {
                 options.LowercaseUrls = true;
-            }).AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            }).AddMvc(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            
+            if (_configuration.IsDev() || _configuration.IsLocal())
+            {
+                services.AddDistributedMemoryCache();
+            }
+            else
+            {
+                var configuration = _configuration
+                    .GetSection("EmployerDemand")
+                    .Get<Domain.Configuration.EmployerDemand>();
 
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = configuration.RedisConnectionString;
+                });
+                services.AddHealthChecks();
+            }
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
+            services.AddLogging();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -123,5 +148,7 @@ namespace SFA.DAS.EmployerDemand.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
+        
+        
     }
 }

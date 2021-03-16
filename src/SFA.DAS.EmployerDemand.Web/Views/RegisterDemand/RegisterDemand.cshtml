@@ -1,0 +1,148 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@using SFA.DAS.EmployerDemand.Web.Models
+@model SFA.DAS.EmployerDemand.Web.Models.RegisterCourseDemandViewModel
+@{
+    ViewData["Title"] = "Enter the apprenticeship training and contact details";
+    ViewData["Description"] = $"Share your interest in {Model.TrainingCourse.TitleAndLevel} with training providers.";
+	ViewData["CustomErrorKeys"] = new Dictionary<string, string> {{"Location", "search-location"}};
+	ViewData["CustomOrder"] = RegisterDemandRequest.BuildPropertyOrderDictionary();
+}
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+				<partial name="_pageErrorsOverview" />
+                <h1 class="govuk-heading-xl">
+                    Get help with finding a training provider
+        		</h1>
+        
+        		<p class="govuk-body">We will share your apprenticeship training interest with all training providers. If a training provider can offer you training, we will send you their contact details.</p>
+        
+	        <form method="post" asp-route="@RouteNames.PostRegisterDemand" novalidate>
+		        <input type="hidden" asp-for="TrainingCourse.Id" name="TrainingCourseId"/>
+		        <!-- Training details -->
+		        <fieldset class="govuk-fieldset">
+					<legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+						<h2 class="govuk-fieldset__heading">Apprenticeship training details</h2>
+					</legend>
+        
+			        <div class="das-highlight govuk-!-margin-bottom-5">
+				        <p class="govuk-body govuk-!-margin-bottom-0">
+					        Apprenticeship training course <br>
+					        <span class="govuk-!-font-weight-bold">@Model.TrainingCourse.TitleAndLevel</span>
+				        </p>
+			        </div>
+        
+			        <!-- Location -->
+			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any()? "govuk-form-group--error" : "")">
+				        <label class="govuk-label govuk-label--m" for="search-location">
+					        Where is the apprenticeship location?
+				        </label>
+				        <div id="search-location-hint" class="govuk-hint">
+					        Enter a town, city or postcode
+				        </div>
+				        @if (ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any())
+                        {
+							<span class="govuk-error-message">
+								<span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.Location)].Errors.First().ErrorMessage
+							</span>
+                        }
+						<input type="search" id="search-location" name="location" title="Search" class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any()? "govuk-input--error" : "")" data-submit-on-selection="false" data-default-value="@Model.Location"  aria-describedby="search-location-hint">
+			        </div>
+        
+			        <!-- Apprentices -->
+			        @{
+				        var validationError = ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprenticesKnown)) && ViewData.ModelState[nameof(Model.NumberOfApprenticesKnown)].Errors.Any() ||
+				                              ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any();
+			        }
+			        <div class="govuk-form-group @(validationError ? "govuk-form-group--error" : "")">
+				        <fieldset class="govuk-fieldset">
+					        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+						        <h3 class="govuk-fieldset__heading">
+							        Do you know how many apprentices will take this apprenticeship training?
+						        </h3>
+					        </legend>
+        					@if (ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprenticesKnown)) && ViewData.ModelState[nameof(Model.NumberOfApprenticesKnown)].Errors.Any())
+                            {
+                                <span class="govuk-error-message">
+                                    <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.NumberOfApprenticesKnown)].Errors.First().ErrorMessage
+                                </span>
+                            }
+					        <div class="govuk-radios govuk-radios--conditional" data-module="govuk-radios">
+						        <div class="govuk-radios__item">
+							        <input class="govuk-radios__input" id="NumberOfApprenticesKnown" name="NumberOfApprenticesKnown" type="radio" value="true" @(Model.NumberOfApprenticesKnown.HasValue && Model.NumberOfApprenticesKnown.Value ? "checked='checked'" : "")  aria-controls="conditional-apprenticesAnswer" aria-expanded="false">
+							        <label class="govuk-label govuk-radios__label" for="NumberOfApprenticesKnown">
+								        Yes
+							        </label>
+						        </div>
+						        <div class="govuk-radios__conditional @(!Model.NumberOfApprenticesKnown.HasValue ? "govuk-radios__conditional--hidden" : "") " id="conditional-apprenticesAnswer">
+							        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any()? "govuk-form-group--error" : "")">
+								        <label class="govuk-label" asp-for="NumberOfApprentices">
+									        Enter the number of apprentices
+								        </label>
+								        @if (ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any())
+                                        {
+                                            <span class="govuk-error-message">
+                                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.First().ErrorMessage
+                                            </span>
+                                        }
+								        <input class="govuk-input govuk-input--width-4 @(ViewData.ModelState.ContainsKey(nameof(Model.NumberOfApprentices)) && ViewData.ModelState[nameof(Model.NumberOfApprentices)].Errors.Any()? "govuk-input--error" : "")"  type="number" spellcheck="false" pattern="[0-9]*" asp-for="NumberOfApprentices"/>
+								    </div>
+						        </div>
+						        <div class="govuk-radios__item">
+							        <input class="govuk-radios__input" id="NumberOfApprenticesKnown-false" name="NumberOfApprenticesKnown" type="radio" value="false" @(Model.NumberOfApprenticesKnown.HasValue && !Model.NumberOfApprenticesKnown.Value ? "checked='checked'" : "")>
+							        <label class="govuk-label govuk-radios__label" for="NumberOfApprenticesKnown-false">
+								        No
+							        </label>
+						        </div>
+					        </div>
+				        </fieldset>
+			        </div>
+		        </fieldset>
+        
+        
+		        <fieldset class="govuk-fieldset govuk-!-margin-top-3">
+					<legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
+						<h2 class="govuk-fieldset__heading">Contact details</h2>
+					</legend>
+			        <p class="govuk-body govuk-!-margin-top-3">We will not share any contact details with training providers.</p>
+
+					<!-- Organsation name -->
+			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.OrganisationName)) && ViewData.ModelState[nameof(Model.OrganisationName)].Errors.Any()? "govuk-form-group--error" : "")">
+				        <label asp-for="OrganisationName" class="govuk-label govuk-label--m">
+					        What is the organisation’s name?
+				        </label>
+				        @if (ViewData.ModelState.ContainsKey(nameof(Model.OrganisationName)) && ViewData.ModelState[nameof(Model.OrganisationName)].Errors.Any())
+                        {
+							<span class="govuk-error-message">
+								<span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.OrganisationName)].Errors.First().ErrorMessage
+							</span>
+                        }
+				        <input class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.OrganisationName)) && ViewData.ModelState[nameof(Model.OrganisationName)].Errors.Any()? "govuk-input--error" : "")" asp-for="OrganisationName"/>
+			        </div>
+        
+			        <!-- Email address -->
+			        <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.ContactEmailAddress)) && ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.Any()? "govuk-form-group--error" : "")">
+				        <label asp-for="ContactEmailAddress" class="govuk-label govuk-label--m">
+					        What email address should we contact?
+				        </label>
+						<div id="emailAnswer-hint" class="govuk-hint">
+					        We will only use this to send the details of any training providers who can offer the apprenticeship training.
+				        </div>
+				        @if (ViewData.ModelState.ContainsKey(nameof(Model.ContactEmailAddress)) && ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.Any())
+                        {   
+							<span class="govuk-error-message">
+								<span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.First().ErrorMessage
+							</span>
+                        }
+				        <input class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.ContactEmailAddress)) && ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.Any()? "govuk-input--error" : "")" asp-for="ContactEmailAddress" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" aria-describedby="emailAnswer-hint" />
+			        </div>
+				</fieldset>
+
+				<button type="submit" class="govuk-button">
+					Continue
+				</button>
+
+			</form>
+	    </div>
+    </div>
+</main>
