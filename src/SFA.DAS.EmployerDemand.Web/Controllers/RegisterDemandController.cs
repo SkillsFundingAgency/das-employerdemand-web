@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -73,9 +74,13 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         [HttpGet]
         [Route("confirm-apprenticeship-details/{id}", Name = RouteNames.ConfirmRegisterDemand)]
-        public IActionResult ConfirmRegisterDemand(Guid id)
+        public async Task<IActionResult> ConfirmRegisterDemand(Guid id)
         {
-            return View();
+            var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = id});
+
+            var model = (ConfirmCourseDemandViewModel) result;
+           
+            return View(model);
         }
 
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(

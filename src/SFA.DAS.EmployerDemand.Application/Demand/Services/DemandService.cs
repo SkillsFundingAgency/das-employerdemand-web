@@ -30,9 +30,9 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             await _cacheStorageService.SaveToCache(item.Id.ToString(), item, TimeSpan.FromMinutes(30));
         }
 
-        public async Task<ICourseDemand> GetCachedCourseDemand(Guid itemKey)
+        public async Task<CourseDemandRequest> GetCachedCourseDemand(Guid itemKey)
         {
-            var result = await _cacheStorageService.RetrieveFromCache<ICourseDemand>(itemKey.ToString());
+            var result = await _cacheStorageService.RetrieveFromCache<CourseDemandRequest>(itemKey.ToString());
 
             return result;
         }

@@ -1,16 +1,118 @@
+@model SFA.DAS.EmployerDemand.Web.Models.ConfirmCourseDemandViewModel
 @{
     ViewData["Title"] = "Check your answers";
     ViewData["Description"] = $"Check your answers.";
-	
+
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-				
-            <h1 class="govuk-heading-xl">
+
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
                 Check your answers
-        	</h1>
-            <h2 class="govuk-heading-l govuk-!-margin-top-3">Apprenticeship training details</h2>
-	    </div>
+            </h1>
+
+            <h2 class="govuk-heading-m">Apprenticeship training details</h2>
+            <dl class="govuk-summary-list">
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        Apprenticeship training course
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @Model.TrainingCourse.TitleAndLevel
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        Where is the apprenticeship location?
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @Model.LocationName
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link govuk-link--no-visited-state" href="#">
+                            Change
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        Do you know how many apprentices will take this apprenticeship training?
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @(Model.NumberOfApprenticesKnown ? "Yes" : "No")
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link govuk-link--no-visited-state" href="#">
+                            Change
+                        </a>
+                    </dd>
+                </div>
+                @if (Model.NumberOfApprenticesKnown)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key" style="width:50%">
+                            Number of apprentices
+                        </dt>
+                        <dd class="govuk-summary-list__value" style="width:30%;">
+                            @Model.NumberOfApprentices
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a class="govuk-link govuk-link--no-visited-state" href="#">
+                                Change
+                            </a>
+                        </dd>
+                    </div>    
+                }
+
+
+            </dl>
+
+            <h2 class="govuk-heading-m">Contact details</h2>
+            <dl class="govuk-summary-list">
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        What is the organisation’s name?
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @Model.OrganisationName
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link govuk-link--no-visited-state" href="#">
+                            Change
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        What email address should we contact?
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @Model.ContactEmailAddress
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a class="govuk-link govuk-link--no-visited-state" href="#">
+                            Change
+                        </a>
+                    </dd>
+                </div>
+
+            </dl>
+
+            <form method="post">
+                <button type="submit" class="govuk-button">
+                    Confirm
+                </button>
+            </form>
+
+        </div>
     </div>
 </main>
