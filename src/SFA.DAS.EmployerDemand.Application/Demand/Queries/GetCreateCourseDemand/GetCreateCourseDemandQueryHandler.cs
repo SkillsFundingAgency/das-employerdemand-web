@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
-namespace SFA.DAS.EmployerDemand.Application.Demand.Queries
+namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand
 {
     public class GetCreateCourseDemandQueryHandler : IRequestHandler<GetCreateCourseDemandQuery, GetCreateCourseDemandQueryResult>
     {

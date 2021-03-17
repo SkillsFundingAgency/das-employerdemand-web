@@ -1,6 +1,6 @@
 using System;
 
-namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
+namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand
 {
     public class CreateCachedCourseDemandCommandResult
     {

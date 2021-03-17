@@ -6,7 +6,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Application.Demand.Queries;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Controllers;
 using SFA.DAS.EmployerDemand.Web.Models;
 using SFA.DAS.Testing.AutoFixture;

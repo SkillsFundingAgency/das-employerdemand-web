@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using SFA.DAS.EmployerDemand.Application.Demand.Commands;
-using SFA.DAS.EmployerDemand.Application.Demand.Queries;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
 

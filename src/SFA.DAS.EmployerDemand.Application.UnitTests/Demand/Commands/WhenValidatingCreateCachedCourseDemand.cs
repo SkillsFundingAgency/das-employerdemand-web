@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Application.Demand.Commands;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
-namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
+namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand
 {
     public class CreateCachedCourseDemandCommandHandler : IRequestHandler<CreateCourseDemandCommand, CreateCachedCourseDemandCommandResult>
     {

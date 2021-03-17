@@ -6,7 +6,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Application.Demand.Commands;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;

@@ -4,7 +4,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Application.Demand.Queries;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;

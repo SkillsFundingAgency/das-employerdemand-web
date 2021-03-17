@@ -4,7 +4,7 @@ using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 using SFA.DAS.EmployerDemand.Domain.Locations;
 
-namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
+namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand
 {
     public class CreateCourseDemandCommand : IRequest<CreateCachedCourseDemandCommandResult>, ICourseDemand
     {

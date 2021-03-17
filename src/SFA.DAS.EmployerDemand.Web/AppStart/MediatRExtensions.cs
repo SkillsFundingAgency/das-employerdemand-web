@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.EmployerDemand.Application.Demand.Commands;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Web.AppStart
