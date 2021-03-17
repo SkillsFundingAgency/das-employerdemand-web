@@ -16,5 +16,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         string ContactEmailAddress { get; set ; }
         LocationItem LocationItem { get; set; }
         TrainingCourse Course { get; set; }
+        bool? NumberOfApprenticesKnown { get; set ; }
     }
 }
