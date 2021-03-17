@@ -19,7 +19,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
         public async Task<TrainingCourse> GetCreateCourseDemand(int trainingCourseId)
         {
             var result =
-                await _apiClient.Get<GetCreateCourseDemandResponse>(new GetCreateDemandRequest(trainingCourseId));
+                await _apiClient.Get<GetCreateCourseDemandResponse>(new GetCreateDemandRequest(trainingCourseId,""));
 
             return result?.Course;
         }
