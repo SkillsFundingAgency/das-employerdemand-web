@@ -1,4 +1,4 @@
-namespace SFA.DAS.EmployerDemand.Domain.Demand
+namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
 {
     public class TrainingCourse
     {

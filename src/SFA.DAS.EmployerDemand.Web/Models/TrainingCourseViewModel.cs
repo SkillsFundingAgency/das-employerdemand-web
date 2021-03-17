@@ -1,4 +1,5 @@
 using SFA.DAS.EmployerDemand.Domain.Demand;
+using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {

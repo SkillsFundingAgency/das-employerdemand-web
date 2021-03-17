@@ -5,7 +5,8 @@ using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Services;
 using SFA.DAS.EmployerDemand.Domain.Demand;
-using SFA.DAS.EmployerDemand.Domain.Demand.Api;
+using SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests;
+using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 using SFA.DAS.Testing.AutoFixture;
 

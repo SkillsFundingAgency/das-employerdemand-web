@@ -1,6 +1,8 @@
 using System;
 using SFA.DAS.EmployerDemand.Domain.Demand;
+using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 using SFA.DAS.EmployerDemand.Domain.Locations;
+using SFA.DAS.EmployerDemand.Domain.Locations.Api.Responses;
 
 namespace SFA.DAS.EmployerDemand.Domain.Interfaces
 {

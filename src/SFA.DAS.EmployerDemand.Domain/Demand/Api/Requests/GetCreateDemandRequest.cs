@@ -1,7 +1,7 @@
 using System.Web;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
-namespace SFA.DAS.EmployerDemand.Domain.Demand.Api
+namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
 {
     public class GetCreateDemandRequest : IGetApiRequest
     {

@@ -2,7 +2,7 @@ using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Domain.Demand.Api;
+using SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests;
 
 namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
 {

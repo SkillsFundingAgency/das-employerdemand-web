@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace SFA.DAS.EmployerDemand.Domain.Locations
+namespace SFA.DAS.EmployerDemand.Domain.Locations.Api.Responses
 {
     public class Locations
     {
