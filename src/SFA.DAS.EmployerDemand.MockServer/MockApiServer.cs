@@ -50,7 +50,7 @@ namespace SFA.DAS.EmployerDemand.MockServer
         
         private static bool MatchLocationParam(IDictionary<string, WireMockList<string>> arg)
         {
-            return arg.ContainsKey("location") && arg["location"].Count !=0 && arg["location"][0].Equals($"{HttpUtility.UrlEncode("Camden, Camden")}", StringComparison.CurrentCultureIgnoreCase);
+            return arg.ContainsKey("location") && arg["location"].Count !=0 && arg["location"][0].Equals("Camden, Camden");
         }
     }
 }
