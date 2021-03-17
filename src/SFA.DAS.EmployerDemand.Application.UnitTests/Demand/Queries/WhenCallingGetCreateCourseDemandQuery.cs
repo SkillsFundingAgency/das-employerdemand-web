@@ -16,19 +16,19 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
         [Test, MoqAutoData]
         public async Task Then_The_Service_Is_Called_And_Data_Returned(
             GetCreateCourseDemandQuery query,
-            TrainingCourse course,
+            GetCreateCourseDemandResponse response,
             [Frozen] Mock<IDemandService> service,
             GetCreateCourseDemandQueryHandler handler)
         {
             //Arrange
-            service.Setup(x => x.GetCreateCourseDemand(query.TrainingCourseId))
-                .ReturnsAsync(course);
+            service.Setup(x => x.GetCreateCourseDemand(query.TrainingCourseId, ""))
+                .ReturnsAsync(response);
             
             //Act
             var actual = await handler.Handle(query, CancellationToken.None);
             
             //Assert
-            actual.TrainingCourse.Should().BeEquivalentTo(course);
+            actual.TrainingCourse.Should().BeEquivalentTo(response.Course);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
     {
         public string Name { get; set; }
         
-        public static implicit operator LocationViewModel(Domain.Locations.Locations.LocationItem source)
+        public static implicit operator LocationViewModel(Domain.Locations.LocationItem source)
         {
             return new LocationViewModel
             {

@@ -6,5 +6,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand
     {
         [JsonProperty("trainingCourse")]
         public TrainingCourse Course { get; set; }
+        [JsonProperty("location")]
+        public Locations.LocationItem Location { get; set; }
     }
 }

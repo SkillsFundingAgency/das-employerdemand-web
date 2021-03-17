@@ -15,11 +15,11 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries
         }
         public async Task<GetCreateCourseDemandQueryResult> Handle(GetCreateCourseDemandQuery request, CancellationToken cancellationToken)
         {
-            var course = await _demandService.GetCreateCourseDemand(request.TrainingCourseId);
+            var createCourseDemandResponse = await _demandService.GetCreateCourseDemand(request.TrainingCourseId, "");
 
             return new GetCreateCourseDemandQueryResult
             {
-                TrainingCourse = course
+                TrainingCourse = createCourseDemandResponse.Course
             };
         }
     }

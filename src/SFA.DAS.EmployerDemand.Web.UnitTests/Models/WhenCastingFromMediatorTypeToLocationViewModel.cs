@@ -8,7 +8,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
     public class WhenCastingFromMediatorTypeToLocationViewModel
     {
         [Test, AutoData]
-        public void Then_The_Fields_Are_Correctly_Mapped(Domain.Locations.Locations.LocationItem source)
+        public void Then_The_Fields_Are_Correctly_Mapped(Domain.Locations.LocationItem source)
         {
             //Act
             var actual = (LocationViewModel) source;

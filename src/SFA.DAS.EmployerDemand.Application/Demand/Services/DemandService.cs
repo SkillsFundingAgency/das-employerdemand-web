@@ -16,12 +16,12 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             _apiClient = apiClient;
             _cacheStorageService = cacheStorageService;
         }
-        public async Task<TrainingCourse> GetCreateCourseDemand(int trainingCourseId)
+        public async Task<GetCreateCourseDemandResponse> GetCreateCourseDemand(int trainingCourseId, string locationName)
         {
             var result =
-                await _apiClient.Get<GetCreateCourseDemandResponse>(new GetCreateDemandRequest(trainingCourseId,""));
+                await _apiClient.Get<GetCreateCourseDemandResponse>(new GetCreateDemandRequest(trainingCourseId, locationName));
 
-            return result?.Course;
+            return result;
         }
 
         public async Task CreateCacheCourseDemand(ICourseDemand item)
