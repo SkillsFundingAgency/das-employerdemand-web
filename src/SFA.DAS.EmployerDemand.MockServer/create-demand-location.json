@@ -1,0 +1,16 @@
+{
+  "trainingCourse": {
+    "id": 14,
+    "title": "Laboratory technician",
+    "level": 3,
+    "version": 1
+  },
+  "location": {
+    "name":"Camden, Camden",
+    "location": {
+      "geoPoint": [
+        51.289916,
+        -0.773876
+      ]}
+  }
+}

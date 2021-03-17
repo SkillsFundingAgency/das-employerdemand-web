@@ -24,6 +24,17 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
             {
                 throw new ValidationException(validationResult.DataAnnotationResult,null, null);
             }
+
+            var result = await _service.GetCreateCourseDemand(request.TrainingCourseId, request.Location);
+
+            if (result.Location == null)
+            {
+                validationResult.AddError(nameof(request.Location), "Enter a real town, city or postcode");
+                throw new ValidationException(validationResult.DataAnnotationResult,null, null);
+            }
+
+            request.LocationItem = result.Location;
+            request.Course = result.Course;
             
             await _service.CreateCacheCourseDemand(request);
             
