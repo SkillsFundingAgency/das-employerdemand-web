@@ -8,6 +8,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public Guid Id { get; set; }
         public TrainingCourseViewModel TrainingCourse { get; set; }
         public string LocationName { get ; set ; }
+        public string ContactEmailAddress { get ; set ; }
 
         public static implicit operator CompletedCourseDemandViewModel (CourseDemandRequest source)
         {
@@ -21,6 +22,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Id = source.Id,
                 TrainingCourse = source.Course,
                 LocationName = source.LocationItem.Name,
+                ContactEmailAddress = source.ContactEmailAddress
             };
         }
     }

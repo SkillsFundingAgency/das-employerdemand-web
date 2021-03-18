@@ -17,6 +17,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Assert
             actual.TrainingCourse.Should().BeEquivalentTo(source.Course);
             actual.LocationName.Should().Be(source.LocationItem.Name);
+            actual.ContactEmailAddress.Should().Be(source.ContactEmailAddress);
         }
 
         [Test]
