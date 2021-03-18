@@ -22,7 +22,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
         
         [HttpGet]
-        [Route("enter-apprenticeship-details/{id}", Name = RouteNames.RegisterDemand)]
+        [Route("course/{id}/enter-apprenticeship-details/", Name = RouteNames.RegisterDemand)]
         public async Task<IActionResult> RegisterDemand(int id, [FromQuery] Guid? createDemandId)
         {
             var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = id, CreateDemandId = createDemandId});
@@ -33,7 +33,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpPost]
-        [Route("enter-apprenticeship-details/{id}", Name = RouteNames.PostRegisterDemand)]
+        [Route("course/{id}/enter-apprenticeship-details", Name = RouteNames.PostRegisterDemand)]
         public async Task<IActionResult> PostRegisterDemand(RegisterDemandRequest request)
         {
             try
@@ -54,7 +54,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     NumberOfApprenticesKnown = request.NumberOfApprenticesKnown
                 });
 
-                return RedirectToRoute(RouteNames.ConfirmRegisterDemand, new { createResult.Id });
+                return RedirectToRoute(RouteNames.ConfirmRegisterDemand, new
+                {
+                    createDemandId = createResult.Id,
+                    Id = request.TrainingCourseId
+                });
             }
             catch (ValidationException e)
             {
@@ -70,8 +74,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpGet]
-        [Route("confirm-apprenticeship-details/{id}", Name = RouteNames.ConfirmRegisterDemand)]
-        public async Task<IActionResult> ConfirmRegisterDemand(Guid id)
+        [Route("course/{id}/confirm-apprenticeship-details/{createDemandId}", Name = RouteNames.ConfirmRegisterDemand)]
+        public async Task<IActionResult> ConfirmRegisterDemand(int courseId, Guid id)
         {
             var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = id});
 
@@ -79,12 +83,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model == null)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = courseId});
             }
            
             return View(model);
         }
-
+        
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
             RegisterDemandRequest request)
         {

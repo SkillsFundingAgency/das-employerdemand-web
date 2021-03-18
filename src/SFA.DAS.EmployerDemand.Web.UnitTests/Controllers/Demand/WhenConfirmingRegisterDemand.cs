@@ -19,6 +19,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
     {
         [Test, MoqAutoData]
         public async Task Then_Mediator_Is_Called_And_The_ViewModel_Returned(
+            int courseId,
             Guid demandId,
             GetCachedCreateCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
@@ -32,7 +33,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                 .ReturnsAsync(mediatorResult);
             
             //Act
-            var actual = await controller.ConfirmRegisterDemand(demandId) as ViewResult;
+            var actual = await controller.ConfirmRegisterDemand(courseId, demandId) as ViewResult;
             
             //Assert
             Assert.IsNotNull(actual);
@@ -43,6 +44,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
 
         [Test, MoqAutoData]
         public async Task Then_If_The_Cached_Object_Is_Null_Then_Redirect_To_EnterApprenticeshipDetails(
+            int courseId,
             Guid demandId,
             GetCachedCreateCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
@@ -57,12 +59,14 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                 .ReturnsAsync(mediatorResult);
             
             //Act
-            var actual = await controller.ConfirmRegisterDemand(demandId) as RedirectToRouteResult;
+            var actual = await controller.ConfirmRegisterDemand(courseId, demandId) as RedirectToRouteResult;
             
             //Assert
             Assert.IsNotNull(actual);
             
-            actual.RouteName.Should().Be(RouteNames.RegisterDemand);//TODO add check for course id
+            actual.RouteName.Should().Be(RouteNames.RegisterDemand);
+            actual.RouteValues.ContainsKey("Id").Should().BeTrue();
+            actual.RouteValues["Id"].Should().Be(courseId);
         }
     }
 }

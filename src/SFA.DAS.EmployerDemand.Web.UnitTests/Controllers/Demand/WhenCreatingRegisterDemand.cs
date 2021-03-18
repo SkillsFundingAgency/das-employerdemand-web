@@ -47,7 +47,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Assert
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.ConfirmRegisterDemand);
-            actual.RouteValues["id"].Should().Be(mediatorResult.Id);
+            actual.RouteValues["id"].Should().Be(request.TrainingCourseId);
+            actual.RouteValues["createDemandId"].Should().Be(mediatorResult.Id);
         }
         
         [Test, MoqAutoData]

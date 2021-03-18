@@ -108,7 +108,8 @@
 
             </dl>
 
-            <form method="post">
+            <form method="post" asp-route="@RouteNames.PostConfirmRegisterDemand">
+                <input asp-for="Id" type="hidden">
                 <button type="submit" class="govuk-button">
                     Confirm
                 </button>
