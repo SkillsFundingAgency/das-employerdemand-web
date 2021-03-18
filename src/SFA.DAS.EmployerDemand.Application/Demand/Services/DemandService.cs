@@ -36,5 +36,14 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             return result;
         }
+
+        public async Task CreateCourseDemand(Guid id)
+        {
+            var item = await _cacheStorageService.RetrieveFromCache<PostCreateDemandData>(id.ToString());
+
+            var result = await _apiClient.Post<Guid, PostCreateDemandData>(new PostCreateDemandRequest(item));
+
+            await _cacheStorageService.DeleteFromCache(result.ToString());
+        }
     }
 }
