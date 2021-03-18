@@ -2,7 +2,6 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Domain.Locations;
-using SFA.DAS.EmployerDemand.Domain.Locations.Api.Responses;
 using SFA.DAS.EmployerDemand.Web.Models;
 
 namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
