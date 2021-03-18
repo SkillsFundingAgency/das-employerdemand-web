@@ -27,6 +27,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
+            request.CreateDemandId = null;
             request.NumberOfApprenticesKnown = true;
             mediator.Setup(x =>
                     x.Send(It.Is<CreateCourseDemandCommand>(c => 
@@ -37,6 +38,36 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                             && c.NumberOfApprentices.Equals(request.NumberOfApprentices)
                             && c.Id != Guid.Empty
                             )
+                        , It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
+            
+            //Act
+            var actual = await controller.PostRegisterDemand(request) as RedirectToRouteResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.ConfirmRegisterDemand);
+            actual.RouteValues["id"].Should().Be(mediatorResult.Id);
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_Mediator_Is_Called_And_Existing_DemandId_Used_If_Updating_Then_Redirected_To_Confirm(
+            RegisterDemandRequest request,
+            CreateCachedCourseDemandCommandResult mediatorResult,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] RegisterDemandController controller)
+        {
+            //Arrange
+            request.NumberOfApprenticesKnown = true;
+            mediator.Setup(x =>
+                    x.Send(It.Is<CreateCourseDemandCommand>(c => 
+                            c.TrainingCourseId.Equals(request.TrainingCourseId)
+                            && c.Location.Equals(request.Location)
+                            && c.OrganisationName.Equals(request.OrganisationName)
+                            && c.ContactEmailAddress.Equals(request.ContactEmailAddress)
+                            && c.NumberOfApprentices.Equals(request.NumberOfApprentices)
+                            && c.Id == request.CreateDemandId
+                        )
                         , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
             
