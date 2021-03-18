@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand
@@ -15,11 +16,28 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDeman
         }
         public async Task<GetCreateCourseDemandQueryResult> Handle(GetCreateCourseDemandQuery request, CancellationToken cancellationToken)
         {
+
+            if (request.CreateDemandId.HasValue)
+            {
+                var cachedDemand = await _demandService.GetCachedCourseDemand(request.CreateDemandId.Value);
+
+                if (cachedDemand != null)
+                {
+                    return new GetCreateCourseDemandQueryResult
+                    {
+                        CourseDemand = cachedDemand
+                    };
+                }
+            }
+            
             var createCourseDemandResponse = await _demandService.GetCreateCourseDemand(request.TrainingCourseId, "");
 
             return new GetCreateCourseDemandQueryResult
             {
-                TrainingCourse = createCourseDemandResponse.Course
+                CourseDemand = new CourseDemandRequest
+                {
+                    Course = createCourseDemandResponse.Course 
+                } 
             };
         }
     }

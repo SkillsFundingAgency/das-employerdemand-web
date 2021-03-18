@@ -5,6 +5,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDeman
 {
     public class GetCreateCourseDemandQueryResult
     {
-        public TrainingCourse TrainingCourse { get ; set ; }
+        public CourseDemandRequest CourseDemand { get ; set ; }
     }
 }
