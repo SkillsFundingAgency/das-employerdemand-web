@@ -45,7 +45,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 
                 var createResult = await _mediator.Send(new CreateCourseDemandCommand
                 {
-                    Id = request.CreateDemandId ?? Guid.NewGuid(),
+                    Id = !request.CreateDemandId.HasValue || request.CreateDemandId == Guid.Empty ? 
+                        Guid.NewGuid() : request.CreateDemandId.Value,
                     Location = request.Location,
                     OrganisationName = request.OrganisationName,
                     ContactEmailAddress = request.ContactEmailAddress,

@@ -27,7 +27,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            request.CreateDemandId = null;
+            request.CreateDemandId = Guid.Empty;
             request.NumberOfApprenticesKnown = true;
             mediator.Setup(x =>
                     x.Send(It.Is<CreateCourseDemandCommand>(c => 
