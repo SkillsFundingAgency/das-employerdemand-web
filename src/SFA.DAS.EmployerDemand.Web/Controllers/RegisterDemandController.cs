@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
@@ -16,10 +17,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
     public class RegisterDemandController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly Domain.Configuration.EmployerDemand _config;
 
-        public RegisterDemandController (IMediator mediator)
+        public RegisterDemandController (IMediator mediator, IOptions<Domain.Configuration.EmployerDemand> config)
         {
             _mediator = mediator;
+            _config = config.Value;
         }
         
         [HttpGet]
@@ -112,6 +115,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
             }
+
+            model.FindApprenticeshipTrainingCourseUrl = _config.FindApprenticeshipTrainingCourseUrl;
            
             return View(model);
         }

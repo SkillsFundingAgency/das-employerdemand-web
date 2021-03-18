@@ -5,6 +5,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
@@ -18,10 +19,11 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
     public class WhenViewingCompletedCourseDemand
     {
         [Test, MoqAutoData]
-        public async Task Then_Mediator_Is_Called_And_The_ViewModel_Returned(
+        public async Task Then_Mediator_Is_Called_And_The_ViewModel_Returned_And_FAT_Url_Taken_From_Config(
             int courseId,
             Guid demandId,
             GetCachedCreateCourseDemandQueryResult mediatorResult,
+            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
@@ -40,6 +42,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             var actualModel = actual.Model as CompletedCourseDemandViewModel;
             Assert.IsNotNull(actualModel);
             actualModel.TrainingCourse.Should().BeEquivalentTo(mediatorResult.CourseDemand.Course);
+            actualModel.FindApprenticeshipTrainingCourseUrl.Should().Be(config.Object.Value.FindApprenticeshipTrainingCourseUrl);
         }
 
         [Test, MoqAutoData]

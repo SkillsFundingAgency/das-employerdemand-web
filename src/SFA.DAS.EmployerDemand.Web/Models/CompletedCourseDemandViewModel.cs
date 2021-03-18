@@ -9,6 +9,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public TrainingCourseViewModel TrainingCourse { get; set; }
         public string LocationName { get ; set ; }
         public string ContactEmailAddress { get ; set ; }
+        public string FindApprenticeshipTrainingCourseUrl { get ; set ; }
 
         public static implicit operator CompletedCourseDemandViewModel (CourseDemandRequest source)
         {
