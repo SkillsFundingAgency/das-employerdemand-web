@@ -23,5 +23,15 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             actual.OrganisationName.Should().Be(source.OrganisationName);
             actual.ContactEmailAddress.Should().Be(source.ContactEmailAddress);
         }
+
+        [Test, AutoData]
+        public void Then_Null_Is_Returned_If_The_Source_Is_Null()
+        {   
+            //Act
+            var actual = (ConfirmCourseDemandViewModel) (CourseDemandRequest) null;
+            
+            //Assert
+            actual.Should().BeNull();
+        }
     }
 }

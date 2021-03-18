@@ -15,6 +15,11 @@ namespace SFA.DAS.EmployerDemand.Web.Models
 
         public static implicit operator ConfirmCourseDemandViewModel (CourseDemandRequest source)
         {
+            if (source == null)
+            {
+                return null;
+            }
+            
             return new ConfirmCourseDemandViewModel
             {
                 Id = source.Id,
