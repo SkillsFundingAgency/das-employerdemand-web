@@ -1,9 +1,11 @@
+using System;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
     public class ConfirmCourseDemandViewModel
     {
+        public Guid Id { get; set; }
         public TrainingCourseViewModel TrainingCourse { get; set; }
         public string LocationName { get ; set ; }
         public bool NumberOfApprenticesKnown { get ; set ; }
@@ -15,6 +17,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         {
             return new ConfirmCourseDemandViewModel
             {
+                Id = source.Id,
                 TrainingCourse = source.Course,
                 LocationName = source.LocationItem.Name,
                 OrganisationName = source.OrganisationName,

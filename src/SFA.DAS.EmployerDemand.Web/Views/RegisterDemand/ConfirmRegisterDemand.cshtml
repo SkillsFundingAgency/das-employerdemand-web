@@ -1,3 +1,4 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
 @model SFA.DAS.EmployerDemand.Web.Models.ConfirmCourseDemandViewModel
 @{
     ViewData["Title"] = "Check your answers";
@@ -35,7 +36,7 @@
                         @Model.LocationName
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link govuk-link--no-visited-state" href="#">
+                        <a class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
                             Change
                         </a>
                     </dd>
@@ -49,7 +50,7 @@
                         @(Model.NumberOfApprenticesKnown ? "Yes" : "No")
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link govuk-link--no-visited-state" href="#">
+                        <a class="govuk-link govuk-link--no-visited-state"  asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
                             Change
                         </a>
                     </dd>
@@ -64,7 +65,7 @@
                             @Model.NumberOfApprentices
                         </dd>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link govuk-link--no-visited-state" href="#">
+                            <a class="govuk-link govuk-link--no-visited-state"  asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
                                 Change
                             </a>
                         </dd>
@@ -85,7 +86,7 @@
                         @Model.OrganisationName
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link govuk-link--no-visited-state" href="#">
+                        <a class="govuk-link govuk-link--no-visited-state"  asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
                             Change
                         </a>
                     </dd>
@@ -99,7 +100,7 @@
                         @Model.ContactEmailAddress
                     </dd>
                     <dd class="govuk-summary-list__actions">
-                        <a class="govuk-link govuk-link--no-visited-state" href="#">
+                        <a class="govuk-link govuk-link--no-visited-state"  asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
                             Change
                         </a>
                     </dd>

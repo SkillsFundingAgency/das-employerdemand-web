@@ -30,7 +30,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             return new RegisterCourseDemandViewModel
             {
                 OrganisationName = queryResult.OrganisationName,
-                Location = queryResult.LocationItem.Name,
+                Location = queryResult.LocationItem?.Name,
                 ContactEmailAddress = queryResult.ContactEmailAddress,
                 NumberOfApprentices = queryResult.NumberOfApprentices,
                 NumberOfApprenticesKnown = queryResult.NumberOfApprenticesKnown,

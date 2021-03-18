@@ -15,6 +15,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             var actual = (ConfirmCourseDemandViewModel) source;
             
             //Assert
+            actual.Id.Should().Be(source.Id);
             actual.TrainingCourse.Should().BeEquivalentTo(source.Course);
             actual.LocationName.Should().Be(source.LocationItem.Name);
             actual.NumberOfApprenticesKnown.Should().Be(source.NumberOfApprenticesKnown ?? false);

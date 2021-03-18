@@ -2,6 +2,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Domain.Demand;
+using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 using SFA.DAS.EmployerDemand.Web.Models;
 
 namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
@@ -24,6 +25,21 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
                 .Excluding(c=>c.TrainingCourseId)
                 .Excluding(c=>c.Course)
             );
+        }
+
+        [Test, AutoData]
+        public void Then_If_Only_Course_Then_The_Fields_Are_Mapped(TrainingCourse course)
+        {
+            //Arrange
+            var source = new CourseDemandRequest{Course = course};
+            
+            //Act
+            var actual = (RegisterCourseDemandViewModel) source;
+            
+            //Assert
+            actual.Location.Should().BeNullOrEmpty();
+            actual.TrainingCourse.Should().BeEquivalentTo(source.Course);
+            
         }
     }
 }
