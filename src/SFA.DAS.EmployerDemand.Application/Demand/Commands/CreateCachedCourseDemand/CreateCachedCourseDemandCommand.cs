@@ -6,7 +6,7 @@ using SFA.DAS.EmployerDemand.Domain.Locations;
 
 namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand
 {
-    public class CreateCourseDemandCommand : IRequest<CreateCachedCourseDemandCommandResult>, ICourseDemand
+    public class CreateCachedCourseDemandCommand : IRequest<CreateCachedCourseDemandCommandResult>, ICourseDemand
     {
         public Guid Id { get ; set ; }
         public int TrainingCourseId { get; set; }

@@ -18,10 +18,10 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
     {
         [Test, MoqAutoData]
         public async Task Then_The_Command_Is_Handled_And_Service_Called_If_Valid_With_Location_Information(
-            CreateCourseDemandCommand command,
+            CreateCachedCourseDemandCommand command,
             GetCreateCourseDemandResponse response,
             [Frozen] Mock<IDemandService> service,
-            [Frozen] Mock<IValidator<CreateCourseDemandCommand>> validator,
+            [Frozen] Mock<IValidator<CreateCachedCourseDemandCommand>> validator,
             CreateCachedCourseDemandCommandHandler handler)
         {
             //Arrange
@@ -33,7 +33,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             var actual = await handler.Handle(command, CancellationToken.None);
             
             //Assert
-            service.Verify(x=>x.CreateCacheCourseDemand(It.Is<CreateCourseDemandCommand>(c=>
+            service.Verify(x=>x.CreateCacheCourseDemand(It.Is<CreateCachedCourseDemandCommand>(c=>
                     c.LocationItem.Name.Equals(response.Location.Name)
                     && c.LocationItem.LocationPoint.Equals(response.Location.LocationPoint.GeoPoint)
                     && c.OrganisationName.Equals(command.OrganisationName)
@@ -51,10 +51,10 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
 
         [Test, MoqAutoData]
         public void Then_The_Api_Is_Called_With_Course_And_Location_And_If_No_Location_Validation_Error_Returned(
-            CreateCourseDemandCommand command,
+            CreateCachedCourseDemandCommand command,
             GetCreateCourseDemandResponse response,
             [Frozen] Mock<IDemandService> service,
-            [Frozen] Mock<IValidator<CreateCourseDemandCommand>> validator,
+            [Frozen] Mock<IValidator<CreateCachedCourseDemandCommand>> validator,
             CreateCachedCourseDemandCommandHandler handler)
         {
             //Arrange
@@ -67,7 +67,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             var act = new Func<Task>(async () => await handler.Handle(command, CancellationToken.None));
 
             //Assert
-            service.Verify(x=>x.CreateCacheCourseDemand(It.IsAny<CreateCourseDemandCommand>()), Times.Never);
+            service.Verify(x=>x.CreateCacheCourseDemand(It.IsAny<CreateCachedCourseDemandCommand>()), Times.Never);
             act.Should().Throw<ValidationException>()
                 .WithMessage($"*{nameof(command.Location)}|Enter a real town, city or postcode*");
         }
@@ -75,9 +75,9 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         [Test, MoqAutoData]
         public void Then_If_The_Command_Is_Not_Valid_Then_A_ValidationException_Is_Thrown(
             string propertyName,
-            CreateCourseDemandCommand command,
+            CreateCachedCourseDemandCommand command,
             [Frozen] Mock<IDemandService> service,
-            [Frozen] Mock<IValidator<CreateCourseDemandCommand>> validator,
+            [Frozen] Mock<IValidator<CreateCachedCourseDemandCommand>> validator,
             CreateCachedCourseDemandCommandHandler handler)
         {
             //Arrange

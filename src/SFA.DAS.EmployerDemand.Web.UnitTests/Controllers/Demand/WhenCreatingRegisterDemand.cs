@@ -30,7 +30,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             request.CreateDemandId = Guid.Empty;
             request.NumberOfApprenticesKnown = true;
             mediator.Setup(x =>
-                    x.Send(It.Is<CreateCourseDemandCommand>(c => 
+                    x.Send(It.Is<CreateCachedCourseDemandCommand>(c => 
                             c.TrainingCourseId.Equals(request.TrainingCourseId)
                             && c.Location.Equals(request.Location)
                             && c.OrganisationName.Equals(request.OrganisationName)
@@ -61,7 +61,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             request.NumberOfApprenticesKnown = true;
             mediator.Setup(x =>
-                    x.Send(It.Is<CreateCourseDemandCommand>(c => 
+                    x.Send(It.Is<CreateCachedCourseDemandCommand>(c => 
                             c.TrainingCourseId.Equals(request.TrainingCourseId)
                             && c.Location.Equals(request.Location)
                             && c.OrganisationName.Equals(request.OrganisationName)
@@ -91,7 +91,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             request.NumberOfApprenticesKnown = false;
             mediator.Setup(x =>
-                    x.Send(It.Is<CreateCourseDemandCommand>(c => 
+                    x.Send(It.Is<CreateCachedCourseDemandCommand>(c => 
                             c.TrainingCourseId.Equals(request.TrainingCourseId)
                             && c.Location.Equals(request.Location)
                             && c.OrganisationName.Equals(request.OrganisationName)
@@ -120,7 +120,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         {
             //Arrange
             mediator.Setup(x =>
-                    x.Send(It.IsAny<CreateCourseDemandCommand>()
+                    x.Send(It.IsAny<CreateCachedCourseDemandCommand>()
                         , It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new ValidationException());
             mediator.Setup(x =>

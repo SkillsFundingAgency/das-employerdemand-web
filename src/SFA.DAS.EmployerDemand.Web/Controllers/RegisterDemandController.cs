@@ -43,7 +43,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     request.NumberOfApprentices = string.Empty;
                 }
                 
-                var createResult = await _mediator.Send(new CreateCourseDemandCommand
+                var createResult = await _mediator.Send(new CreateCachedCourseDemandCommand
                 {
                     Id = !request.CreateDemandId.HasValue || request.CreateDemandId == Guid.Empty ? 
                         Guid.NewGuid() : request.CreateDemandId.Value,

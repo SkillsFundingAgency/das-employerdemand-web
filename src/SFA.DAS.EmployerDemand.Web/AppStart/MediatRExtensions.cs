@@ -8,7 +8,7 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
     {
         public static void AddMediatRValidation(this IServiceCollection services)
         {
-            services.AddScoped(typeof(IValidator<CreateCourseDemandCommand>), typeof(CreateCourseDemandCommandValidator));
+            services.AddScoped(typeof(IValidator<CreateCachedCourseDemandCommand>), typeof(CreateCourseDemandCommandValidator));
         }
     }
 }

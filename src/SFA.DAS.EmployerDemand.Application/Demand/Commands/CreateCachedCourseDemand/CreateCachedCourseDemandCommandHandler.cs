@@ -6,17 +6,17 @@ using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand
 {
-    public class CreateCachedCourseDemandCommandHandler : IRequestHandler<CreateCourseDemandCommand, CreateCachedCourseDemandCommandResult>
+    public class CreateCachedCourseDemandCommandHandler : IRequestHandler<CreateCachedCourseDemandCommand, CreateCachedCourseDemandCommandResult>
     {
         private readonly IDemandService _service;
-        private readonly IValidator<CreateCourseDemandCommand> _validator;
+        private readonly IValidator<CreateCachedCourseDemandCommand> _validator;
 
-        public CreateCachedCourseDemandCommandHandler (IDemandService service, IValidator<CreateCourseDemandCommand> validator)
+        public CreateCachedCourseDemandCommandHandler (IDemandService service, IValidator<CreateCachedCourseDemandCommand> validator)
         {
             _service = service;
             _validator = validator;
         }
-        public async Task<CreateCachedCourseDemandCommandResult> Handle(CreateCourseDemandCommand request, CancellationToken cancellationToken)
+        public async Task<CreateCachedCourseDemandCommandResult> Handle(CreateCachedCourseDemandCommand request, CancellationToken cancellationToken)
         {
             var validationResult = await _validator.ValidateAsync(request);
 
