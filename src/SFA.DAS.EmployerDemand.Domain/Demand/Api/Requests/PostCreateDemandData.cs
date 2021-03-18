@@ -7,24 +7,29 @@ using SFA.DAS.EmployerDemand.Domain.Locations.Api.Responses;
 
 namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
 {
-    public class PostCreateDemandData : ICourseDemand
+    public class PostCreateDemandData
     {
+        public PostCreateDemandData(ICourseDemand item)
+        {
+            Id = item.Id;
+            OrganisationName = item.OrganisationName;
+            ContactEmailAddress = item.ContactEmailAddress;
+            Course = item.Course;
+            Location = item.LocationItem;
+            NumberOfApprentices = item.NumberOfApprenticesKnown.HasValue && item.NumberOfApprenticesKnown.Value 
+                ? Convert.ToInt32(item.NumberOfApprentices) : 0;
+        }
+
         public Guid Id { get; set; }
-        [JsonIgnore]
-        public int TrainingCourseId { get; set; }
         public string OrganisationName { get; set; }
-        public string NumberOfApprentices { get; set; }
-        [JsonIgnore]
-        public string Location { get; set; }
+        public int NumberOfApprentices { get; set; }
         public string ContactEmailAddress { get; set; }
         [JsonIgnore]
-        public Location LocationItem { get; set; }
+        public Location Location { get; set; }
         [JsonIgnore]
         public Course Course { get; set; }
-        [JsonIgnore]
-        public bool? NumberOfApprenticesKnown { get; set; }
-
-        public LocationItem CourseDemandLocation => BuildCourseLocation();
+        
+        public LocationItem LocationItem => BuildCourseLocation();
 
         public TrainingCourse TrainingCourse => BuildTrainingCourse();
 
@@ -32,10 +37,10 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
         {
             return new LocationItem
             {
-                Name = LocationItem.Name,
+                Name = Location.Name,
                 LocationPoint = new LocationPoint
                 {
-                    GeoPoint = LocationItem.LocationPoint
+                    GeoPoint = Location.LocationPoint
                 }
             };
         }
