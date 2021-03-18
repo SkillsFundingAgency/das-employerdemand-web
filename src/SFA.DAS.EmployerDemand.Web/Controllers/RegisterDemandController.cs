@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
@@ -75,20 +76,37 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpGet]
-        [Route("course/{id}/confirm-apprenticeship-details/{createDemandId}", Name = RouteNames.ConfirmRegisterDemand)]
-        public async Task<IActionResult> ConfirmRegisterDemand(int courseId, Guid id)
+        [Route("course/{id}/confirm-apprenticeship-details", Name = RouteNames.ConfirmRegisterDemand)]
+        public async Task<IActionResult> ConfirmRegisterDemand(int id, [FromQuery] Guid createDemandId)
         {
-            var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = id});
+            var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = createDemandId});
 
             var model = (ConfirmCourseDemandViewModel) result.CourseDemand;
 
             if (model == null)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = courseId});
+                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
             }
            
             return View(model);
         }
+
+        [HttpPost]
+        [Route("course/{id}/confirm-apprenticeship-details", Name = RouteNames.PostConfirmRegisterDemand)]
+        public async Task<IActionResult> PostConfirmRegisterDemand(int id, [FromBody] Guid createDemandId)
+        {
+            await _mediator.Send(new CreateCourseDemandCommand {Id = createDemandId});
+
+            return RedirectToRoute(RouteNames.RegisterDemandCompleted, new {Id = id, CreateDemandId = createDemandId});
+        }
+
+        [HttpGet]
+        [Route("course/{id}/completed", Name = RouteNames.RegisterDemandCompleted)]
+        public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] Guid createDemandId)
+        {
+            throw new NotImplementedException();
+        }
+        
         
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
             RegisterDemandRequest request)

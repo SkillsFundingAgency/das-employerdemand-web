@@ -9,5 +9,6 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         public const string PostRegisterDemand = "register-demand";
         public const string ConfirmRegisterDemand = "confirm-register-demand";
         public const string PostConfirmRegisterDemand = "confirm-register-demand";
+        public const string RegisterDemandCompleted = "register-demand-completed";
     }
 }

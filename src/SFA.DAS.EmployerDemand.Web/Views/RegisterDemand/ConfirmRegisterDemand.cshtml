@@ -109,7 +109,8 @@
             </dl>
 
             <form method="post" asp-route="@RouteNames.PostConfirmRegisterDemand">
-                <input asp-for="Id" type="hidden">
+                <input asp-for="Id" type="hidden" name="createDemandId">
+                <input asp-for="TrainingCourse.Id" type="hidden" name="id">
                 <button type="submit" class="govuk-button">
                     Confirm
                 </button>

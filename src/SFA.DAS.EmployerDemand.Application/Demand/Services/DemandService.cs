@@ -41,9 +41,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
         {
             var item = await _cacheStorageService.RetrieveFromCache<PostCreateDemandData>(id.ToString());
 
-            var result = await _apiClient.Post<Guid, PostCreateDemandData>(new PostCreateDemandRequest(item));
+            await _apiClient.Post<Guid, PostCreateDemandData>(new PostCreateDemandRequest(item));
 
-            await _cacheStorageService.DeleteFromCache(result.ToString());
         }
     }
 }
