@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net;
 using System.Text.RegularExpressions;
 using WireMock.Logging;
 using WireMock.Net.StandAlone;
@@ -36,6 +37,12 @@ namespace SFA.DAS.EmployerDemand.MockServer
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("create-demand-location.json"));
+            
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/create"))
+                .UsingPost())
+                .RespondWith(Response.Create()
+                    .WithStatusCode(HttpStatusCode.Created)
+                );
             
             server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/locations"))
                 .UsingGet()).RespondWith(Response.Create()

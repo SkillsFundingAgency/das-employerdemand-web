@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
@@ -41,6 +42,21 @@ namespace SFA.DAS.EmployerDemand.Infrastructure.Api
             response.EnsureSuccessStatusCode();
             
             return default;
+        }
+
+        public async Task<TResponse> Post<TResponse,TPostData>(IPostApiRequest<TPostData> request)
+        {
+            AddHeaders();
+            
+            var stringContent = request.Data != null ? new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json") : null;
+
+            var response = await _httpClient.PostAsync(request.PostUrl, stringContent)
+                .ConfigureAwait(false);
+
+            response.EnsureSuccessStatusCode();
+            
+            var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<TResponse>(json);    
         }
         
         private void AddHeaders()
