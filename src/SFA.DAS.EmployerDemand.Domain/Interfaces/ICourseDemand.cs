@@ -1,7 +1,5 @@
 using System;
 using SFA.DAS.EmployerDemand.Domain.Demand;
-using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
-using SFA.DAS.EmployerDemand.Domain.Locations;
 using SFA.DAS.EmployerDemand.Domain.Locations.Api.Responses;
 
 namespace SFA.DAS.EmployerDemand.Domain.Interfaces
@@ -15,7 +13,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         string Location { get; set; }
         string ContactEmailAddress { get; set ; }
         LocationItem LocationItem { get; set; }
-        TrainingCourse Course { get; set; }
+        Course Course { get; set; }
         bool? NumberOfApprenticesKnown { get; set ; }
     }
 }

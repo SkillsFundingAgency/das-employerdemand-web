@@ -10,7 +10,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
     public class WhenCastingFromMediatorTypeToTrainingCourseViewModel
     {
         [Test, AutoData]
-        public void Then_The_Fields_Are_Correctly_Mapped(TrainingCourse source)
+        public void Then_The_Fields_Are_Correctly_Mapped(Course source)
         {
             //Act
             var actual = (TrainingCourseViewModel) source;
@@ -24,7 +24,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         public void Then_If_Null_Then_Null_Is_Returned()
         {
             //Act
-            var actual = (TrainingCourseViewModel) (TrainingCourse)null;
+            var actual = (TrainingCourseViewModel) (Course)null;
             
             //Assert
             actual.Should().BeNull();

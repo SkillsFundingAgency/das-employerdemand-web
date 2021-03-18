@@ -17,7 +17,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
         public string Location { get; set; }
         public string ContactEmailAddress { get ; set ; }
         public LocationItem LocationItem { get; set; }
-        public TrainingCourse Course { get; set; }
+        public Course Course { get; set; }
         public bool? NumberOfApprenticesKnown { get ; set ; }
     }
 }
