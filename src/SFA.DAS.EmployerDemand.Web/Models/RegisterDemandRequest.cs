@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -5,6 +6,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
 {
     public class RegisterDemandRequest
     {
+        public Guid? CreateDemandId { get; set; }
         public int TrainingCourseId { get; set; }
         public string Location { get; set; }
         public bool? NumberOfApprenticesKnown { get; set; }

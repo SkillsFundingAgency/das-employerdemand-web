@@ -16,6 +16,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             var actual = (RegisterCourseDemandViewModel) source;
             
             //Assert
+            actual.CreateDemandId.Should().Be(source.Id);
             actual.Location.Should().Be(source.LocationItem.Name);
             actual.TrainingCourse.Should().BeEquivalentTo(source.Course);
             actual.Should().BeEquivalentTo(source, options=>options

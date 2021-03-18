@@ -76,6 +76,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = id});
 
             var model = (ConfirmCourseDemandViewModel) result.CourseDemand;
+
+            if (model == null)
+            {
+                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+            }
            
             return View(model);
         }
@@ -86,7 +91,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var model = (RegisterCourseDemandViewModel) request;
 
             var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = request.TrainingCourseId});
-            //model.TrainingCourse = result.CourseDemand;
+            model.TrainingCourse = result.CourseDemand.Course;
             return model;
         }
     }

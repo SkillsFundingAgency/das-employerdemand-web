@@ -19,6 +19,7 @@
         
 	        <form method="post" asp-route="@RouteNames.PostRegisterDemand" novalidate>
 		        <input type="hidden" asp-for="TrainingCourse.Id" name="TrainingCourseId"/>
+		        <input type="hidden" asp-for="CreateDemandId"/>
 		        <!-- Training details -->
 		        <fieldset class="govuk-fieldset">
 					<legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
