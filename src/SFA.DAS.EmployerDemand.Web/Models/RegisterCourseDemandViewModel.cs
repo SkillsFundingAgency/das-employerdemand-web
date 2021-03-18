@@ -1,3 +1,6 @@
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Domain.Demand;
+
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
     public class RegisterCourseDemandViewModel
@@ -19,6 +22,19 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 ContactEmailAddress = request.ContactEmailAddress,
                 NumberOfApprentices = request.NumberOfApprentices,
                 NumberOfApprenticesKnown = request.NumberOfApprenticesKnown
+            };
+        }
+
+        public static implicit operator RegisterCourseDemandViewModel(CourseDemandRequest queryResult)
+        {
+            return new RegisterCourseDemandViewModel
+            {
+                OrganisationName = queryResult.OrganisationName,
+                Location = queryResult.LocationItem.Name,
+                ContactEmailAddress = queryResult.ContactEmailAddress,
+                NumberOfApprentices = queryResult.NumberOfApprentices,
+                NumberOfApprenticesKnown = queryResult.NumberOfApprenticesKnown,
+                TrainingCourse = queryResult.Course
             };
         }
     }
