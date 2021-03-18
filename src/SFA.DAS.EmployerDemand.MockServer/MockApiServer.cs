@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
@@ -42,8 +43,9 @@ namespace SFA.DAS.EmployerDemand.MockServer
                 .UsingPost())
                 .RespondWith(Response.Create()
                     .WithStatusCode(HttpStatusCode.Created)
+                    .WithBody($"'{Guid.NewGuid().ToString()}'")
                 );
-            
+                
             server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/locations"))
                 .UsingGet()).RespondWith(Response.Create()
                 .WithStatusCode(200)
