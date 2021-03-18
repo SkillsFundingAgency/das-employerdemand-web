@@ -36,7 +36,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             //Assert
             service.Verify(x=>x.CreateCacheCourseDemand(It.Is<CreateCourseDemandCommand>(c=>
                     c.LocationItem.Name.Equals(response.Location.Name)
-                    && c.LocationItem.LocationPoint.Equals(response.Location.LocationPoint)
+                    && c.LocationItem.LocationPoint.Equals(response.Location.LocationPoint.GeoPoint)
                     && c.OrganisationName.Equals(command.OrganisationName)
                     && c.ContactEmailAddress.Equals(command.ContactEmailAddress)
                     && c.NumberOfApprentices.Equals(command.NumberOfApprentices)

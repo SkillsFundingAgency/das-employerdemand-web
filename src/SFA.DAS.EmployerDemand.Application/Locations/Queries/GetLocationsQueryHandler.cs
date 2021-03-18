@@ -1,7 +1,9 @@
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
+using SFA.DAS.EmployerDemand.Domain.Locations;
 
 namespace SFA.DAS.EmployerDemand.Application.Locations.Queries
 {
@@ -19,7 +21,7 @@ namespace SFA.DAS.EmployerDemand.Application.Locations.Queries
 
             return new GetLocationsQueryResult
             {
-                LocationItems = result.LocationItems
+                LocationItems = result.LocationItems.Select(c => (Location)c).ToList()
             };
         }
     }

@@ -1,4 +1,4 @@
-using SFA.DAS.EmployerDemand.Domain.Locations.Api.Responses;
+using SFA.DAS.EmployerDemand.Domain.Locations;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
@@ -6,7 +6,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
     {
         public string Name { get; set; }
         
-        public static implicit operator LocationViewModel(LocationItem source)
+        public static implicit operator LocationViewModel(Location source)
         {
             return new LocationViewModel
             {

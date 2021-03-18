@@ -26,7 +26,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Locations.Queries
 
             var result = await handler.Handle(query, CancellationToken.None);
 
-            result.LocationItems.Should().BeEquivalentTo(locationsFromService.LocationItems);
+            result.LocationItems.Should().BeEquivalentTo(locationsFromService.LocationItems, options=>options.Excluding(c=>c.LocationPoint));
             
         }       
     }
