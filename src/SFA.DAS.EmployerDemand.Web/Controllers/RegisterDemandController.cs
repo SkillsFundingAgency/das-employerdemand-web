@@ -93,7 +93,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         [HttpPost]
         [Route("course/{id}/confirm-apprenticeship-details", Name = RouteNames.PostConfirmRegisterDemand)]
-        public async Task<IActionResult> PostConfirmRegisterDemand(int id, [FromBody] Guid createDemandId)
+        public async Task<IActionResult> PostConfirmRegisterDemand(int id, Guid createDemandId)
         {
             await _mediator.Send(new CreateCourseDemandCommand {Id = createDemandId});
 
@@ -104,7 +104,16 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/completed", Name = RouteNames.RegisterDemandCompleted)]
         public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] Guid createDemandId)
         {
-            throw new NotImplementedException();
+            var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = createDemandId});
+            
+            var model = (CompletedCourseDemandViewModel) result.CourseDemand;
+
+            if (model == null)
+            {
+                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+            }
+           
+            return View(model);
         }
         
         
