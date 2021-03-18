@@ -1,4 +1,4 @@
-using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
@@ -11,16 +11,16 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string OrganisationName { get ; set ; }
         public string ContactEmailAddress { get ; set ; }
 
-        public static implicit operator ConfirmCourseDemandViewModel (GetCachedCreateCourseDemandQueryResult source)
+        public static implicit operator ConfirmCourseDemandViewModel (CourseDemandRequest source)
         {
             return new ConfirmCourseDemandViewModel
             {
-                TrainingCourse = source.CourseDemand.Course,
-                LocationName = source.CourseDemand.LocationItem.Name,
-                OrganisationName = source.CourseDemand.OrganisationName,
-                ContactEmailAddress = source.CourseDemand.ContactEmailAddress,
-                NumberOfApprentices = source.CourseDemand.NumberOfApprentices,
-                NumberOfApprenticesKnown = source.CourseDemand.NumberOfApprenticesKnown ?? false
+                TrainingCourse = source.Course,
+                LocationName = source.LocationItem.Name,
+                OrganisationName = source.OrganisationName,
+                ContactEmailAddress = source.ContactEmailAddress,
+                NumberOfApprentices = source.NumberOfApprentices,
+                NumberOfApprenticesKnown = source.NumberOfApprenticesKnown ?? false
             };
         }
     }

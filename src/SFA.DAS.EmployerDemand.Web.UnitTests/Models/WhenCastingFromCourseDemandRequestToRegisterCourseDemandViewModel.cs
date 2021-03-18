@@ -6,7 +6,7 @@ using SFA.DAS.EmployerDemand.Web.Models;
 
 namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 {
-    public class WhenCastingFromMediatorTypeToRegisterCourseDemandViewModel
+    public class WhenCastingFromCourseDemandRequestToRegisterCourseDemandViewModel
     {
         [Test, AutoData]
         public void Then_The_Fields_Are_Mapped(CourseDemandRequest source)

@@ -23,15 +23,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         
         [HttpGet]
         [Route("enter-apprenticeship-details/{id}", Name = RouteNames.RegisterDemand)]
-        public async Task<IActionResult> RegisterDemand(int id)
+        public async Task<IActionResult> RegisterDemand(int id, [FromQuery] Guid? createDemandId)
         {
-            var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = id});
+            var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = id, CreateDemandId = createDemandId});
 
-            var model = new  RegisterCourseDemandViewModel
-            {
-                TrainingCourse = result.TrainingCourse
-            };
-
+            var model = (RegisterCourseDemandViewModel) result.CourseDemand;
+            
             return View(model);
         }
 
@@ -78,7 +75,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         {
             var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = id});
 
-            var model = (ConfirmCourseDemandViewModel) result;
+            var model = (ConfirmCourseDemandViewModel) result.CourseDemand;
            
             return View(model);
         }
@@ -89,7 +86,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var model = (RegisterCourseDemandViewModel) request;
 
             var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = request.TrainingCourseId});
-            model.TrainingCourse = result.TrainingCourse;
+            //model.TrainingCourse = result.CourseDemand;
             return model;
         }
     }
