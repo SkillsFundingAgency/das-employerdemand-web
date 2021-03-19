@@ -42,7 +42,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             var actualModel = actual.Model as CompletedCourseDemandViewModel;
             Assert.IsNotNull(actualModel);
             actualModel.TrainingCourse.Should().BeEquivalentTo(mediatorResult.CourseDemand.Course);
-            actualModel.FindApprenticeshipTrainingCourseUrl.Should().Be(config.Object.Value.FindApprenticeshipTrainingCourseUrl);
+            actualModel.FindApprenticeshipTrainingCourseUrl.Should().Be(config.Object.Value.FindApprenticeshipTrainingUrl + "/courses");
         }
 
         [Test, MoqAutoData]

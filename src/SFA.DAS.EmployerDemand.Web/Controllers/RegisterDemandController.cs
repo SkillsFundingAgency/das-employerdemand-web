@@ -116,7 +116,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
             }
 
-            model.FindApprenticeshipTrainingCourseUrl = _config.FindApprenticeshipTrainingCourseUrl;
+            model.FindApprenticeshipTrainingCourseUrl = _config.FindApprenticeshipTrainingUrl + "/courses";
            
             return View(model);
         }
