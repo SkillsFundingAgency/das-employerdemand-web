@@ -60,9 +60,6 @@
         },
         "sharedEnvResourceGroup": {
             "type": "string"
-        },
-        "findApprenticeshipTrainingUrl": {
-            "type": "string"
         }
     },
     "variables": {
@@ -204,10 +201,6 @@
                                 {
                                     "name": "Cdn:Url",
                                     "value": "[parameters('cdnUrl')]"
-                                },
-                                {
-                                    "name": "FindApprenticeshipTrainingUrl",
-                                    "value": "[parameters('findApprenticeshipTrainingUrl')]"
                                 }
                             ]
                         }
