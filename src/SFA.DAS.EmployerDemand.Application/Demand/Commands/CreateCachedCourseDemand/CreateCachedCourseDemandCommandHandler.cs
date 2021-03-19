@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand
@@ -20,16 +21,20 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
         {
             var validationResult = await _validator.ValidateAsync(request);
 
+            var result = new GetCreateCourseDemandResponse();
+
+            if (!validationResult.ValidationDictionary.ContainsKey(nameof(request.Location)))
+            {
+                result = await _service.GetCreateCourseDemand(request.TrainingCourseId, request.Location);
+                
+                if (result.Location == null)
+                {
+                    validationResult.AddError(nameof(request.Location), "Enter a real town, city or postcode");
+                }
+            }
+            
             if (!validationResult.IsValid())
             {
-                throw new ValidationException(validationResult.DataAnnotationResult,null, null);
-            }
-
-            var result = await _service.GetCreateCourseDemand(request.TrainingCourseId, request.Location);
-
-            if (result.Location == null)
-            {
-                validationResult.AddError(nameof(request.Location), "Enter a real town, city or postcode");
                 throw new ValidationException(validationResult.DataAnnotationResult,null, null);
             }
 

@@ -50,7 +50,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, MoqAutoData]
-        public void Then_The_Api_Is_Called_With_Course_And_Location_And_If_No_Location_Validation_Error_Returned(
+        public void Then_The_Api_Is_Called_With_Course_And_Location_And_If_No_Location_Found_Validation_Error_Returned(
             CreateCachedCourseDemandCommand command,
             GetCreateCourseDemandResponse response,
             [Frozen] Mock<IDemandService> service,
@@ -60,6 +60,31 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             //Arrange
             response.Location = null;
             validator.Setup(x=>x.ValidateAsync(command)).ReturnsAsync(new ValidationResult( ));
+            service.Setup(x => x.GetCreateCourseDemand(command.TrainingCourseId, command.Location))
+                .ReturnsAsync(response);
+            
+            //Act
+            var act = new Func<Task>(async () => await handler.Handle(command, CancellationToken.None));
+
+            //Assert
+            service.Verify(x=>x.CreateCacheCourseDemand(It.IsAny<CreateCachedCourseDemandCommand>()), Times.Never);
+            act.Should().Throw<ValidationException>()
+                .WithMessage($"*{nameof(command.Location)}|Enter a real town, city or postcode*");
+        }
+
+        [Test, MoqAutoData]
+        public void Then_If_There_Are_Validation_Errors_But_Not_A_Location_Error_Then_The_Service_Is_Still_Called(
+            CreateCachedCourseDemandCommand command,
+            GetCreateCourseDemandResponse response,
+            [Frozen] Mock<IDemandService> service,
+            [Frozen] Mock<IValidator<CreateCachedCourseDemandCommand>> validator,
+            CreateCachedCourseDemandCommandHandler handler)
+        {
+            //Arrange
+            response.Location = null;
+            var validationResult = new ValidationResult();
+            validationResult.AddError(nameof(command.OrganisationName));
+            validator.Setup(x=>x.ValidateAsync(command)).ReturnsAsync(validationResult);
             service.Setup(x => x.GetCreateCourseDemand(command.TrainingCourseId, command.Location))
                 .ReturnsAsync(response);
             
@@ -89,6 +114,26 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             //Assert
             act.Should().Throw<ValidationException>()
                 .WithMessage($"*{propertyName}*");
+        }
+        
+        [Test, MoqAutoData]
+        public void Then_If_The_Command_Is_Not_Valid_And_Has_A_Location_Error_Then_A_ValidationException_Is_Thrown_And_The_Service_Not_Called(
+            string propertyName,
+            CreateCachedCourseDemandCommand command,
+            [Frozen] Mock<IDemandService> service,
+            [Frozen] Mock<IValidator<CreateCachedCourseDemandCommand>> validator,
+            CreateCachedCourseDemandCommandHandler handler)
+        {
+            //Arrange
+            validator.Setup(x=>x.ValidateAsync(command)).ReturnsAsync(new ValidationResult{ValidationDictionary = { {nameof(command.Location),""}}});
+            
+            //Act
+            var act = new Func<Task>(async () => await handler.Handle(command, CancellationToken.None));
+
+            //Assert
+            act.Should().Throw<ValidationException>()
+                .WithMessage($"*{nameof(command.Location)}*");
+            service.Verify(x => x.GetCreateCourseDemand(It.IsAny<int>(), It.IsAny<string>()), Times.Never);
         }
     }
 }
