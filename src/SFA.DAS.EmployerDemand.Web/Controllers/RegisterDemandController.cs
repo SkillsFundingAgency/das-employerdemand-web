@@ -79,7 +79,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpGet]
-        [Route("course/{id}/confirm-apprenticeship-details", Name = RouteNames.ConfirmRegisterDemand)]
+        [Route("course/{id}/check-answers", Name = RouteNames.ConfirmRegisterDemand)]
         public async Task<IActionResult> ConfirmRegisterDemand(int id, [FromQuery] Guid createDemandId)
         {
             var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = createDemandId});
@@ -95,7 +95,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpPost]
-        [Route("course/{id}/confirm-apprenticeship-details", Name = RouteNames.PostConfirmRegisterDemand)]
+        [Route("course/{id}/check-answers", Name = RouteNames.PostConfirmRegisterDemand)]
         public async Task<IActionResult> PostConfirmRegisterDemand(int id, Guid createDemandId)
         {
             await _mediator.Send(new CreateCourseDemandCommand {Id = createDemandId});
@@ -104,7 +104,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpGet]
-        [Route("course/{id}/completed", Name = RouteNames.RegisterDemandCompleted)]
+        [Route("course/{id}/shared-interest", Name = RouteNames.RegisterDemandCompleted)]
         public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] Guid createDemandId)
         {
             var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = createDemandId});

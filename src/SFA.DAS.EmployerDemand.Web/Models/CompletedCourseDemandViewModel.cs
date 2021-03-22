@@ -10,6 +10,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string LocationName { get ; set ; }
         public string ContactEmailAddress { get ; set ; }
         public string FindApprenticeshipTrainingCourseUrl { get ; set ; }
+        public string NumberOfApprentices { get ; set ; }
 
         public static implicit operator CompletedCourseDemandViewModel (CourseDemandRequest source)
         {
@@ -23,7 +24,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Id = source.Id,
                 TrainingCourse = source.Course,
                 LocationName = source.LocationItem.Name,
-                ContactEmailAddress = source.ContactEmailAddress
+                ContactEmailAddress = source.ContactEmailAddress,
+                NumberOfApprentices = source.NumberOfApprenticesKnown.HasValue && source.NumberOfApprenticesKnown.Value ? source.NumberOfApprentices : ""
             };
         }
     }
