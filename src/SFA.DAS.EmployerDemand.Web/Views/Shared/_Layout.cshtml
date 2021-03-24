@@ -13,7 +13,7 @@
 <head>
     <meta charset="utf-8" />
     <title>@(ViewData["Title"] ?? "GOV.UK - The best place to find government services and information")</title>
-    <meta name="description" content="@(ViewData["Description"] ?? "Employer demand.")">
+    <meta name="description" content="@(ViewData["Description"] ?? "Find apprenticeship training for your apprentice.")">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0b0c0c" />
 
@@ -105,7 +105,7 @@
             </a>
         </div>
         <div class="govuk-header__content">
-            <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-header__link govuk-header__link--service-name">Employer Demand</a>
+            <a asp-route="@RouteNames.ServiceStartDefault" class="govuk-header__link govuk-header__link--service-name">Find apprenticeship training for your apprentice</a>
         </div>
     </div>
 </header>
@@ -127,6 +127,10 @@
         <a class="govuk-back-link"
            asp-route="@RouteNames.ServiceStart"
            asp-all-route-data="@backRouteData">Home</a>
+    }
+    else if (Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("RegisterDemandCompleted"))
+    {
+        
     }
     else if(!Context.GetRouteData().Values["Controller"].Equals("Home"))
     {
