@@ -407,6 +407,10 @@
         "employerAppServiceName": {
             "type": "string",
             "value": "[variables('employerAppServiceName')]"
+        },
+        "providerAppServiceName": {
+            "type": "string",
+            "value": "[variables('providerAppServiceName')]"
         }
     }
 }
