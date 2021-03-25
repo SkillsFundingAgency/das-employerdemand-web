@@ -8,7 +8,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string Title { get ; set ; }
         public string TitleAndLevel { get; private set; }
         public int Level { get ; set; }
-        public static implicit operator TrainingCourseViewModel(TrainingCourse course)
+        public static implicit operator TrainingCourseViewModel(Course course)
         {
             if (course == null)
             {

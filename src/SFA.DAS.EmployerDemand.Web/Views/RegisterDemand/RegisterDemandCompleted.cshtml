@@ -1,0 +1,48 @@
+@model SFA.DAS.EmployerDemand.Web.Models.CompletedCourseDemandViewModel
+@{
+    ViewData["Title"] = "We’ve shared your interest with training providers";
+    ViewData["Description"] = $"We’ve shared your interest with training providers.";
+
+}
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+        
+            <div class="govuk-panel govuk-panel--confirmation">
+			    <h1 class="govuk-panel__title">
+				    We’ve shared this interest with training providers
+			    </h1>
+            </div>
+            
+            <p class="govuk-body">We’ve sent a confirmation email to @Model.ContactEmailAddress.</p>
+
+            <p class="govuk-body">
+                Apprenticeship training course <br>
+                <span class="govuk-!-font-weight-bold">@Model.TrainingCourse.TitleAndLevel</span>
+            </p>
+
+            <p class="govuk-body">
+                Apprenticeship location <br>
+                <span class="govuk-!-font-weight-bold">@Model.LocationName</span>
+            </p>
+            
+            @if (!string.IsNullOrEmpty(Model.NumberOfApprentices))
+            {
+                <p class="govuk-body">
+                    Number of apprentices <br>
+                    <span class="govuk-!-font-weight-bold">@Model.NumberOfApprentices</span>
+                </p>    
+            }
+            
+            <h2 class="govuk-heading-m">What happens next</h2>
+
+            <p class="govuk-body">We’ll send the details of any training providers who can offer the apprenticeship training to @Model.ContactEmailAddress.</p>
+                
+            <p class="govuk-body">We’ve not shared the organisation name or email address with training providers.</p>
+
+            <a href="@Model.FindApprenticeshipTrainingCourseUrl" class="govuk-button">Search for another course</a>
+
+            <p class="govuk-body"><a href="#" class="govuk-link">What did you think of this service?</a></p>
+        </div>
+    </div>
+</main>

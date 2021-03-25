@@ -1,7 +1,7 @@
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Domain.Locations.Api;
+using SFA.DAS.EmployerDemand.Domain.Locations.Api.Requests;
 
 namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Locations.Api
 {

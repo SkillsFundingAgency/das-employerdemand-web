@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 using SFA.DAS.EmployerDemand.Domain.Validation;
 
-namespace SFA.DAS.EmployerDemand.Application.Demand.Commands
+namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand
 {
-    public class CreateCourseDemandCommandValidator : IValidator<CreateCourseDemandCommand>
+    public class CreateCourseDemandCommandValidator : IValidator<CreateCachedCourseDemandCommand>
     {
-        public Task<ValidationResult> ValidateAsync(CreateCourseDemandCommand item)
+        public Task<ValidationResult> ValidateAsync(CreateCachedCourseDemandCommand item)
         {
             var validationResult = new ValidationResult();
 

@@ -1,9 +1,8 @@
-using System;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Application.Demand.Commands;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
@@ -11,7 +10,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
     public class WhenValidatingCreateCachedCourseDemand
     {
         [Test, AutoData]
-        public async Task Then_If_All_Fields_Are_Present_The_Command_Is_Valid(CreateCourseDemandCommand command)
+        public async Task Then_If_All_Fields_Are_Present_The_Command_Is_Valid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.ContactEmailAddress = $"{command.ContactEmailAddress}@test.com";
@@ -26,7 +25,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, AutoData]
-        public async Task Then_If_There_Is_No_OrganisationName_It_Is_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_There_Is_No_OrganisationName_It_Is_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.OrganisationName = string.Empty;
@@ -44,7 +43,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
         
         [Test, AutoData]
-        public async Task Then_If_There_Is_No_TrainingCourseId_It_Is_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_There_Is_No_TrainingCourseId_It_Is_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.TrainingCourseId = 0;
@@ -60,7 +59,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
         
         [Test, AutoData]
-        public async Task Then_If_There_Is_No_ContactEmailAddress_It_Is_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_There_Is_No_ContactEmailAddress_It_Is_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.ContactEmailAddress = string.Empty;
@@ -77,7 +76,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
         
         [Test, AutoData]
-        public async Task Then_If_There_Is_Not_A_Valid_ContactEmailAddress_It_Is_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_There_Is_Not_A_Valid_ContactEmailAddress_It_Is_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             var validator = new CreateCourseDemandCommandValidator();
@@ -93,7 +92,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_There_Is_No_Value_For_NumberOfApprenticesKnown_Then_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_There_Is_No_Value_For_NumberOfApprenticesKnown_Then_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.NumberOfApprenticesKnown = null;
@@ -110,7 +109,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, AutoData]
-        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_Then_The_Number_Of_Apprentices_Is_Not_Greater_Than_One_Then_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_Then_The_Number_Of_Apprentices_Is_Not_Greater_Than_One_Then_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
@@ -128,7 +127,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
         
         [Test, AutoData]
-        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Less_Than_Zero_Then_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Less_Than_Zero_Then_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
@@ -146,7 +145,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, AutoData]
-        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Greater_Than_9999_Then_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Greater_Than_9999_Then_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
@@ -165,7 +164,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         
         
         [Test, AutoData]
-        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Not_An_Int_Then_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_And_The_Number_Of_Apprentices_Is_Not_An_Int_Then_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
@@ -183,7 +182,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
         
         [Test, AutoData]
-        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_Then_The_Number_Of_Apprentices_Is_Null_Then_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_The_NumberOfApprenticesIsKnown_Is_True_Then_The_Number_Of_Apprentices_Is_Null_Then_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.NumberOfApprenticesKnown = true;
@@ -201,7 +200,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, AutoData]
-        public async Task Then_If_No_Address_Marked_As_Invalid(CreateCourseDemandCommand command)
+        public async Task Then_If_No_Address_Marked_As_Invalid(CreateCachedCourseDemandCommand command)
         {
             //Arrange
             command.Location = string.Empty;

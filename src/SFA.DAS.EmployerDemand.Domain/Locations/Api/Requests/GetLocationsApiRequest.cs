@@ -1,6 +1,6 @@
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
-namespace SFA.DAS.EmployerDemand.Domain.Locations.Api
+namespace SFA.DAS.EmployerDemand.Domain.Locations.Api.Requests
 {
     public class GetLocationsApiRequest : IGetApiRequest
     {

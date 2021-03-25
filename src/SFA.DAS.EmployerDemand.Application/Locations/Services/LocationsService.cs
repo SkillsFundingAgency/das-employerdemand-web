@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
-using SFA.DAS.EmployerDemand.Domain.Locations.Api;
+using SFA.DAS.EmployerDemand.Domain.Locations.Api.Requests;
 
 namespace SFA.DAS.EmployerDemand.Application.Locations.Services
 {
@@ -12,11 +12,11 @@ namespace SFA.DAS.EmployerDemand.Application.Locations.Services
         {
             _client = client;
         }
-        public async Task<Domain.Locations.Locations> GetLocations(string searchTerm)
+        public async Task<Domain.Locations.Api.Responses.Locations> GetLocations(string searchTerm)
         {
             var request = new GetLocationsApiRequest(searchTerm);
 
-            var result = await _client.Get<Domain.Locations.Locations>(request);
+            var result = await _client.Get<Domain.Locations.Api.Responses.Locations>(request);
 
             return result;
         }

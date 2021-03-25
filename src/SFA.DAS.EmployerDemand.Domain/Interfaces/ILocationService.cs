@@ -4,6 +4,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
 {
     public interface ILocationService
     {
-        Task<Domain.Locations.Locations> GetLocations(string searchTerm);
+        Task<Locations.Api.Responses.Locations> GetLocations(string searchTerm);
     }
 }

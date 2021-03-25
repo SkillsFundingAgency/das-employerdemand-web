@@ -16,7 +16,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Locations.Queries
         [Test, MoqAutoData]
         public async Task Then_Returns_Results_From_Service(
             GetLocationsQuery query,
-            Domain.Locations.Locations locationsFromService,
+            Domain.Locations.Api.Responses.Locations locationsFromService,
             [Frozen] Mock<ILocationService> mockService,
             GetLocationsQueryHandler handler)
         {
@@ -26,7 +26,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Locations.Queries
 
             var result = await handler.Handle(query, CancellationToken.None);
 
-            result.LocationItems.Should().BeEquivalentTo(locationsFromService.LocationItems);
+            result.LocationItems.Should().BeEquivalentTo(locationsFromService.LocationItems, options=>options.Excluding(c=>c.LocationPoint));
             
         }       
     }

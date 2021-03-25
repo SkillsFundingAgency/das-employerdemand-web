@@ -1,16 +1,121 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@model SFA.DAS.EmployerDemand.Web.Models.ConfirmCourseDemandViewModel
 @{
     ViewData["Title"] = "Check your answers";
-    ViewData["Description"] = $"Check your answers.";
-	
+    ViewData["Description"] = $"Check and confirm the apprenticeship training and contact details.";
+
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-				
-            <h1 class="govuk-heading-xl">
+
+            <h1 class="govuk-heading-xl govuk-!-margin-bottom-6">
                 Check your answers
-        	</h1>
-            <h2 class="govuk-heading-l govuk-!-margin-top-3">Apprenticeship training details</h2>
-	    </div>
+            </h1>
+
+            <h2 class="govuk-heading-m">Apprenticeship training details</h2>
+            <dl class="govuk-summary-list">
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        Apprenticeship training course
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @Model.TrainingCourse.TitleAndLevel
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        Where is the apprenticeship location?
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @Model.LocationName
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a id="change-location" class="govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
+                            Change<span class="govuk-visually-hidden"> apprenticeship location</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        Do you know how many apprentices will take this apprenticeship training?
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @(Model.NumberOfApprenticesKnown ? "Yes" : "No")
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a id="change-apprentices-known" class="govuk-link govuk-link--no-visited-state"  asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
+                            Change<span class="govuk-visually-hidden"> if you know how many apprentices will take this apprenticeship training</span>
+                        </a>
+                    </dd>
+                </div>
+                @if (Model.NumberOfApprenticesKnown)
+                {
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key" style="width:50%">
+                            Number of apprentices
+                        </dt>
+                        <dd class="govuk-summary-list__value" style="width:30%;">
+                            @Model.NumberOfApprentices
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a id="change-number-of-apprentices" class="govuk-link govuk-link--no-visited-state"  asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
+                                Change<span class="govuk-visually-hidden"> the number of apprentices</span>
+                            </a>
+                        </dd>
+                    </div>    
+                }
+
+
+            </dl>
+
+            <h2 class="govuk-heading-m">Contact details</h2>
+            <dl class="govuk-summary-list">
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        What is the organisation’s name?
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @Model.OrganisationName
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a id="change-organisation" class="govuk-link govuk-link--no-visited-state"  asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
+                            Change<span class="govuk-visually-hidden"> organisation name</span>
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key" style="width:50%">
+                        What email address should we contact?
+                    </dt>
+                    <dd class="govuk-summary-list__value" style="width:30%;">
+                        @Model.ContactEmailAddress
+                    </dd>
+                    <dd class="govuk-summary-list__actions">
+                        <a id="change-email" class="govuk-link govuk-link--no-visited-state"  asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-createDemandId="@Model.Id">
+                            Change<span class="govuk-visually-hidden"> email address</span>
+                        </a>
+                    </dd>
+                </div>
+
+            </dl>
+
+            <form method="post" asp-route="@RouteNames.PostConfirmRegisterDemand">
+                <input type="hidden" name="createDemandId" value="@Model.Id">
+                <input asp-for="TrainingCourse.Id" type="hidden" name="id">
+                <button id="submit-demand" type="submit" class="govuk-button">
+                    Confirm
+                </button>
+            </form>
+
+        </div>
     </div>
 </main>

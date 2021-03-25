@@ -8,8 +8,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Application.Demand.Commands;
-using SFA.DAS.EmployerDemand.Application.Demand.Queries;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Controllers;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -27,9 +27,10 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
+            request.CreateDemandId = Guid.Empty;
             request.NumberOfApprenticesKnown = true;
             mediator.Setup(x =>
-                    x.Send(It.Is<CreateCourseDemandCommand>(c => 
+                    x.Send(It.Is<CreateCachedCourseDemandCommand>(c => 
                             c.TrainingCourseId.Equals(request.TrainingCourseId)
                             && c.Location.Equals(request.Location)
                             && c.OrganisationName.Equals(request.OrganisationName)
@@ -46,7 +47,39 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Assert
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.ConfirmRegisterDemand);
-            actual.RouteValues["id"].Should().Be(mediatorResult.Id);
+            actual.RouteValues["id"].Should().Be(request.TrainingCourseId);
+            actual.RouteValues["createDemandId"].Should().Be(mediatorResult.Id);
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_Mediator_Is_Called_And_Existing_DemandId_Used_If_Updating_Then_Redirected_To_Confirm(
+            RegisterDemandRequest request,
+            CreateCachedCourseDemandCommandResult mediatorResult,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] RegisterDemandController controller)
+        {
+            //Arrange
+            request.NumberOfApprenticesKnown = true;
+            mediator.Setup(x =>
+                    x.Send(It.Is<CreateCachedCourseDemandCommand>(c => 
+                            c.TrainingCourseId.Equals(request.TrainingCourseId)
+                            && c.Location.Equals(request.Location)
+                            && c.OrganisationName.Equals(request.OrganisationName)
+                            && c.ContactEmailAddress.Equals(request.ContactEmailAddress)
+                            && c.NumberOfApprentices.Equals(request.NumberOfApprentices)
+                            && c.Id == request.CreateDemandId
+                        )
+                        , It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
+            
+            //Act
+            var actual = await controller.PostRegisterDemand(request) as RedirectToRouteResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.ConfirmRegisterDemand);
+            actual.RouteValues["id"].Should().Be(request.TrainingCourseId);
+            actual.RouteValues["createDemandId"].Should().Be(mediatorResult.Id);
         }
 
         [Test, MoqAutoData]
@@ -59,7 +92,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             request.NumberOfApprenticesKnown = false;
             mediator.Setup(x =>
-                    x.Send(It.Is<CreateCourseDemandCommand>(c => 
+                    x.Send(It.Is<CreateCachedCourseDemandCommand>(c => 
                             c.TrainingCourseId.Equals(request.TrainingCourseId)
                             && c.Location.Equals(request.Location)
                             && c.OrganisationName.Equals(request.OrganisationName)
@@ -75,7 +108,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Assert
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.ConfirmRegisterDemand);
-            actual.RouteValues["id"].Should().Be(mediatorResult.Id);
+            actual.RouteValues["id"].Should().Be(request.TrainingCourseId);
+            actual.RouteValues["createDemandId"].Should().Be(mediatorResult.Id);
         }
 
         [Test, MoqAutoData]
@@ -88,7 +122,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         {
             //Arrange
             mediator.Setup(x =>
-                    x.Send(It.IsAny<CreateCourseDemandCommand>()
+                    x.Send(It.IsAny<CreateCachedCourseDemandCommand>()
                         , It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new ValidationException());
             mediator.Setup(x =>
