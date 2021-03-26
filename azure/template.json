@@ -40,13 +40,16 @@
         "sharedFrontEndSubnetResourceId": {
             "type": "string"
         },
-        "sharedManagementResourceGroup": {
+        "providerCustomHostname": {
             "type": "string"
         },
-        "customHostName": {
+        "employerCustomHostname": {
             "type": "string"
         },
-        "keyVaultCertificateName": {
+        "employerCertificateName": {
+            "type": "string"
+        },
+        "providerCertificateName": {
             "type": "string"
         },
         "sharedApimResourceGroup": {
@@ -60,13 +63,17 @@
         },
         "sharedEnvResourceGroup": {
             "type": "string"
+        },
+        "sharedManagementResourceGroup": {
+            "type": "string"
         }
     },
     "variables": {
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
-        "appServiceName": "[concat(variables('resourceNamePrefix'),'-as')]"
+        "employerAppServiceName": "[concat(variables('resourceNamePrefix'),'ui-as')]",
+        "providerAppServiceName": "[concat(variables('resourceNamePrefix'),'-','prvui-as')]"
     },
     "resources": [
         {
@@ -81,7 +88,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "app-service-certificate",
+            "name": "employer-app-service-certificate",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
@@ -91,7 +98,7 @@
                 },
                 "parameters": {
                     "keyVaultCertificateName": {
-                        "value": "[parameters('keyVaultCertificateName')]"
+                        "value": "[parameters('employerCertificateName')]"
                     },
                     "keyVaultName": {
                         "value": "[parameters('sharedKeyVaultName')]"
@@ -105,7 +112,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "application-insights",
+            "name": "employer-application-insights",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
@@ -114,16 +121,15 @@
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[variables('appServiceName')]"
+                        "value": "[variables('employerAppServiceName')]"
                     },
                     "attachedService": {
-                        "value": "[variables('appServiceName')]"
+                        "value": "[variables('employerAppServiceName')]"
                     }
                 }
             }
         },
         {
-
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
             "name": "apim-product-subscription",
@@ -139,7 +145,7 @@
                         "value": "[parameters('sharedApimName')]"
                     },
                     "subscriptionName": {
-                        "value": "[variables('appServiceName')]"
+                        "value": "[variables('employerAppServiceName')]"
                     },
                     "subscriptionScope": {
                         "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/EmployerDemandOuterApi')]"
@@ -150,7 +156,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "app-service",
+            "name": "employer-app-service",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
@@ -160,7 +166,147 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[variables('appServiceName')]"
+                        "value": "[variables('employerAppServiceName')]"
+                    },
+                    "appServicePlanName": {
+                        "value": "[parameters('sharedFrontendAppServicePlanName')]"
+                    },
+                    "appServicePlanResourceGroup": {
+                        "value": "[parameters('sharedEnvResourceGroup')]"
+                    },
+                    "subnetResourceId": {
+                        "value": "[parameters('sharedFrontEndSubnetResourceId')]"
+                    },
+                    "appServiceAppSettings": {
+                        "value": {
+                            "array": [
+                                {
+                                    "name": "EnvironmentName",
+                                    "value": "[parameters('environmentName')]"
+                                },
+                                {
+                                    "name": "ConfigurationStorageConnectionString",
+                                    "value": "[parameters('configurationStorageConnectionString')]"
+                                },
+                                {
+                                    "name": "LoggingRedisConnectionString",
+                                    "value": "[parameters('loggingRedisConnectionString')]"
+                                },
+                                {
+                                    "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+                                    "value": "[reference('employer-application-insights').outputs.InstrumentationKey.value]"
+                                },
+                                {
+                                    "name": "AuthType",
+                                    "value": "employer"
+                                },
+                                {
+                                    "name": "Version",
+                                    "value": "[parameters('version')]"
+                                },
+                                {
+                                    "name": "ConfigNames",
+                                    "value": "[parameters('configNames')]"
+                                },
+                                {
+                                    "name": "Cdn:Url",
+                                    "value": "[parameters('cdnUrl')]"
+                                }
+                            ]
+                        }
+
+                    },
+                    "customHostName": {
+                        "value": "[parameters('employerCustomHostname')]"
+                    },
+                    "certificateThumbprint": {
+                        "value": "[reference('employer-app-service-certificate').outputs.certificateThumbprint.value]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "provider-app-service-certificate",
+            "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-certificate.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "keyVaultCertificateName": {
+                        "value": "[parameters('providerCertificateName')]"
+                    },
+                    "keyVaultName": {
+                        "value": "[parameters('sharedKeyVaultName')]"
+                    },
+                    "keyVaultResourceGroup": {
+                        "value": "[parameters('sharedManagementResourceGroup')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "provider-application-insights",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'application-insights.json')]"
+                },
+                "parameters": {
+                    "appInsightsName": {
+                        "value": "[variables('providerAppServiceName')]"
+                    },
+                    "attachedService": {
+                        "value": "[variables('providerAppServiceName')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "apim-product-subscription",
+            "resourceGroup": "[parameters('sharedApimResourceGroup')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'apim/apim-subscription.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "apimName": {
+                        "value": "[parameters('sharedApimName')]"
+                    },
+                    "subscriptionName": {
+                        "value": "[variables('providerAppServiceName')]"
+                    },
+                    "subscriptionScope": {
+                        "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/EmployerDemandOuterApi')]"
+                    }
+                }
+            }
+        },
+        {
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2020-10-01",
+            "name": "provider-app-service",
+            "resourceGroup": "[variables('resourceGroupName')]",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('deploymentUrlBase'),'app-service-v2.json')]",
+                    "contentVersion": "1.0.0.0"
+                },
+                "parameters": {
+                    "appServiceName": {
+                        "value": "[variables('providerAppServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[parameters('sharedFrontendAppServicePlanName')]"
@@ -187,10 +333,6 @@
                                     "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
                                 },
                                 {
-                                    "name": "ASPNETCORE_ENVIRONMENT",
-                                    "value": "[toUpper(parameters('environmentName'))]"
-                                },
-                                {
                                     "name": "Version",
                                     "value": "[parameters('version')]"
                                 },
@@ -201,27 +343,24 @@
                                 {
                                     "name": "Cdn:Url",
                                     "value": "[parameters('cdnUrl')]"
+                                },
+                                {
+                                    "name": "LoggingRedisConnectionString",
+                                    "value": "[parameters('loggingRedisConnectionString')]"
+                                },
+                                {
+                                    "name": "AuthType",
+                                    "value": "provider"
                                 }
                             ]
                         }
 
                     },
-                    "appServiceConnectionStrings": {
-                        "value": {
-                            "array": [
-                                {
-                                    "name": "Redis",
-                                    "connectionString": "[parameters('loggingRedisConnectionString')]",
-                                    "type": "Custom"
-                                }
-                            ]
-                        }
-                    },
                     "customHostName": {
-                        "value": "[parameters('customHostName')]"
+                        "value": "[parameters('providerCustomHostname')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                        "value": "[reference('provider-app-service-certificate').outputs.certificateThumbprint.value]"
                     }
                 }
             }
@@ -232,9 +371,13 @@
             "type": "string",
             "value": "[variables('resourceGroupName')]"
         },
-        "AppServiceName": {
+        "EmployerAppServiceName": {
             "type": "string",
-            "value": "[variables('appServiceName')]"
+            "value": "[variables('employerAppServiceName')]"
+        },
+        "ProviderAppServiceName": {
+            "type": "string",
+            "value": "[variables('providerAppServiceName')]"
         }
     }
 }
