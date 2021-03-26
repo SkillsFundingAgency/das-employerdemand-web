@@ -58,13 +58,13 @@
         "sharedApimName": {
             "type": "string"
         },
-        "keyVaultName": {
+        "sharedKeyVaultName": {
             "type": "string"
         },
         "sharedEnvResourceGroup": {
             "type": "string"
         },
-        "keyVaultResourceGroup": {
+        "SharedManagementResourceGroup": {
             "type": "string"
         },
         "featureToggleOn": {
@@ -104,10 +104,10 @@
                         "value": "[parameters('employerCertificateName')]"
                     },
                     "keyVaultName": {
-                        "value": "[parameters('keyVaultName')]"
+                        "value": "[parameters('sharedKeyVaultName')]"
                     },
                     "keyVaultResourceGroup": {
-                        "value": "[parameters('keyVaultResourceGroup')]"
+                        "value": "[parameters('SharedManagementResourceGroup')]"
                     }
                 }
             }
@@ -192,10 +192,6 @@
                                     "value": "[parameters('configurationStorageConnectionString')]"
                                 },
                                 {
-                                    "name": "ASPNETCORE_ENVIRONMENT",
-                                    "value": "[toUpper(parameters('environmentName'))]"
-                                },
-                                {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
                                     "value": "[reference('employer-application-insights').outputs.InstrumentationKey.value]"
                                 },
@@ -218,17 +214,6 @@
                             ]
                         }
 
-                    },
-                    "appServiceConnectionStrings": {
-                        "value": {
-                            "array": [
-                                {
-                                    "name": "Redis",
-                                    "connectionString": "[parameters('loggingRedisConnectionString')]",
-                                    "type": "Custom"
-                                }
-                            ]
-                        }
                     },
                     "customHostName": {
                         "value": "[parameters('employerCustomHostname')]"
@@ -255,10 +240,10 @@
                         "value": "[parameters('providerCertificateName')]"
                     },
                     "keyVaultName": {
-                        "value": "[parameters('keyVaultName')]"
+                        "value": "[parameters('sharedKeyVaultName')]"
                     },
                     "keyVaultResourceGroup": {
-                        "value": "[parameters('keyVaultResourceGroup')]"
+                        "value": "[parameters('SharedManagementResourceGroup')]"
                     }
                 }
             }
@@ -347,10 +332,6 @@
                                     "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
                                 },
                                 {
-                                    "name": "ASPNETCORE_ENVIRONMENT",
-                                    "value": "[toUpper(parameters('environmentName'))]"
-                                },
-                                {
                                     "name": "Version",
                                     "value": "[parameters('version')]"
                                 },
@@ -378,17 +359,6 @@
                         }
 
                     },
-                    "appServiceConnectionStrings": {
-                        "value": {
-                            "array": [
-                                {
-                                    "name": "Redis",
-                                    "connectionString": "[parameters('loggingRedisConnectionString')]",
-                                    "type": "Custom"
-                                }
-                            ]
-                        }
-                    },
                     "customHostName": {
                         "value": "[parameters('providerCustomHostname')]"
                     },
@@ -404,11 +374,11 @@
             "type": "string",
             "value": "[variables('resourceGroupName')]"
         },
-        "employerAppServiceName": {
+        "EmployerAppServiceName": {
             "type": "string",
             "value": "[variables('employerAppServiceName')]"
         },
-        "providerAppServiceName": {
+        "ProviderAppServiceName": {
             "type": "string",
             "value": "[variables('providerAppServiceName')]"
         }
