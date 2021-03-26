@@ -66,9 +66,6 @@
         },
         "sharedManagementResourceGroup": {
             "type": "string"
-        },
-        "featureToggleOn": {
-            "type": "string"
         }
     },
     "variables": {
@@ -354,10 +351,6 @@
                                 {
                                     "name": "AuthType",
                                     "value": "provider"
-                                },
-                                {
-                                    "name": "FeatureToggleOn",
-                                    "value": "[parameters('featureToggleOn')]"
                                 }
                             ]
                         }
