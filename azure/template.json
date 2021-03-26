@@ -64,7 +64,7 @@
         "sharedEnvResourceGroup": {
             "type": "string"
         },
-        "SharedManagementResourceGroup": {
+        "sharedManagementResourceGroup": {
             "type": "string"
         },
         "featureToggleOn": {
@@ -107,7 +107,7 @@
                         "value": "[parameters('sharedKeyVaultName')]"
                     },
                     "keyVaultResourceGroup": {
-                        "value": "[parameters('SharedManagementResourceGroup')]"
+                        "value": "[parameters('sharedManagementResourceGroup')]"
                     }
                 }
             }
@@ -243,7 +243,7 @@
                         "value": "[parameters('sharedKeyVaultName')]"
                     },
                     "keyVaultResourceGroup": {
-                        "value": "[parameters('SharedManagementResourceGroup')]"
+                        "value": "[parameters('sharedManagementResourceGroup')]"
                     }
                 }
             }
