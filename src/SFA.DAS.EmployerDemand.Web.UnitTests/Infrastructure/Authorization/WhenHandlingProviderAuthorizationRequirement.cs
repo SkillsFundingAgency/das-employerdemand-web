@@ -13,23 +13,20 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
 {
     public class WhenHandlingProviderAuthorizationRequirement
     {
-        
-
         [Test, MoqAutoData]
         public async Task Then_Fails_If_No_Provider_Ukprn_Claim(
             int ukprn,
-            ProviderUkPrnRequirement orIsProviderRequirement,
-            Endpoint endpointResource,
+            ProviderUkPrnRequirement providerRequirement,
             [Frozen]Mock<IHttpContextAccessor> httpContextAccessor,
-            ProviderAuthorizationHandler provider)
+            ProviderAuthorizationHandler authorizationHandler)
         {
             //Arrange
             var claim = new Claim("NotProviderClaim", ukprn.ToString());
             var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {claim})});
-            var context = new AuthorizationHandlerContext(new []{orIsProviderRequirement},claimsPrinciple, endpointResource);
+            var context = new AuthorizationHandlerContext(new []{providerRequirement},claimsPrinciple, null);
             
             //Act
-            await provider.HandleAsync(context);
+            await authorizationHandler.HandleAsync(context);
 
             //Assert
             Assert.IsFalse(context.HasSucceeded);
@@ -40,10 +37,9 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
         public async Task Then_If_The_Route_Ukprn_Does_Not_Match_Value_In_Claim_Then_Fails(
             int ukprn,
             int routeUkprn,
-            ProviderUkPrnRequirement orIsProviderRequirement,
-            Endpoint endpointResource,
+            ProviderUkPrnRequirement providerRequirement,
             [Frozen]Mock<IHttpContextAccessor> httpContextAccessor,
-            ProviderAuthorizationHandler provider)
+            ProviderAuthorizationHandler authorizationHandler)
         {
             
             var responseMock = new FeatureCollection();
@@ -52,10 +48,10 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
             httpContextAccessor.Setup(_ => _.HttpContext).Returns(httpContext);
             var claim = new Claim(ProviderClaims.ProviderUkprn, ukprn.ToString());
             var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {claim})});
-            var context = new AuthorizationHandlerContext(new []{orIsProviderRequirement},claimsPrinciple, endpointResource);
+            var context = new AuthorizationHandlerContext(new []{providerRequirement},claimsPrinciple, null);
             
             //Act
-            await provider.HandleAsync(context);
+            await authorizationHandler.HandleAsync(context);
 
             //Assert
             Assert.IsFalse(context.HasSucceeded);
@@ -66,10 +62,9 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
         [Test, MoqAutoData]
         public async Task Then_If_The_Route_Ukprn_Does_Match_Value_In_Claim_Then_Succeeds(
             int ukprn,
-            ProviderUkPrnRequirement orIsProviderRequirement,
-            Endpoint endpointResource,
+            ProviderUkPrnRequirement providerRequirement,
             [Frozen]Mock<IHttpContextAccessor> httpContextAccessor,
-            ProviderAuthorizationHandler provider)
+            ProviderAuthorizationHandler authorizationHandler)
         {
             
             var responseMock = new FeatureCollection();
@@ -78,10 +73,10 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
             httpContextAccessor.Setup(_ => _.HttpContext).Returns(httpContext);
             var claim = new Claim(ProviderClaims.ProviderUkprn, ukprn.ToString());
             var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {claim})});
-            var context = new AuthorizationHandlerContext(new []{orIsProviderRequirement},claimsPrinciple, endpointResource);
+            var context = new AuthorizationHandlerContext(new []{providerRequirement},claimsPrinciple, null);
             
             //Act
-            await provider.HandleAsync(context);
+            await authorizationHandler.HandleAsync(context);
 
             //Assert
             Assert.IsTrue(context.HasSucceeded);
