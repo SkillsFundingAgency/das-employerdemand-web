@@ -76,7 +76,7 @@
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName'),'-'))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
         "employerAppServiceName": "[concat(variables('resourceNamePrefix'),'empui-as')]",
-        "providerAppServiceName": "[concat(variables('resourceNamePrefix'),'prvui-as')]" 
+        "providerAppServiceName": "[concat(variables('resourceNamePrefix'),'prvui-as')]"
     },
     "resources": [
         {
@@ -190,6 +190,10 @@
                                 {
                                     "name": "ConfigurationStorageConnectionString",
                                     "value": "[parameters('configurationStorageConnectionString')]"
+                                },
+                                {
+                                    "name": "LoggingRedisConnectionString",
+                                    "value": "[parameters('loggingRedisConnectionString')]"
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
