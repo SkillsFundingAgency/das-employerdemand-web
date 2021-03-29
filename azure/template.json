@@ -132,7 +132,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "apim-product-subscription",
+            "name": "employer-apim-product-subscription",
             "resourceGroup": "[parameters('sharedApimResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
@@ -272,7 +272,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "apim-product-subscription",
+            "name": "provider-apim-product-subscription",
             "resourceGroup": "[parameters('sharedApimResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
