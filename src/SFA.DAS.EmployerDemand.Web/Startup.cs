@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -9,10 +10,14 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.AppStart;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
+using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 
 namespace SFA.DAS.EmployerDemand.Web
 {
@@ -34,13 +39,13 @@ namespace SFA.DAS.EmployerDemand.Web
 #endif
                 .AddEnvironmentVariables();
 
-            if (!configuration["Environment"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+            if (!configuration["EnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
             {
                 config.AddAzureTableStorage(options =>
                     {
                         options.ConfigurationKeys = configuration["ConfigNames"].Split(",");
                         options.StorageConnectionString = configuration["ConfigurationStorageConnectionString"];
-                        options.EnvironmentName = configuration["Environment"];
+                        options.EnvironmentName = configuration["EnvironmentName"];
                         options.PreFixConfigurationKeys = false;
                     }
                 );
@@ -51,19 +56,31 @@ namespace SFA.DAS.EmployerDemand.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
-                options.MinimumSameSitePolicy = SameSiteMode.Strict;
+                options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
             services.AddConfigurationOptions(_configuration);
+            
+            services.AddSingleton<IAuthorizationHandler, ProviderAuthorizationHandler>();
             
             services.AddServiceRegistration();
 
             services.AddMediatR(typeof(GetCreateCourseDemandQuery).Assembly);
             services.AddMediatRValidation();
 
+            services.AddAuthorizationServicePolicies();
+            
+            var providerConfig = _configuration
+                .GetSection(nameof(ProviderIdams))
+                .Get<ProviderIdams>();
+            
+            services.AddAndConfigureProviderAuthentication(providerConfig);
+            services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
+            
             services.Configure<RouteOptions>(options =>
             {
                 options.LowercaseUrls = true;
@@ -79,7 +96,7 @@ namespace SFA.DAS.EmployerDemand.Web
             else
             {
                 var configuration = _configuration
-                    .GetSection("EmployerDemand")
+                    .GetSection(nameof(Domain.Configuration.EmployerDemand))
                     .Get<Domain.Configuration.EmployerDemand>();
 
                 services.AddStackExchangeRedisCache(options =>
@@ -88,6 +105,14 @@ namespace SFA.DAS.EmployerDemand.Web
                 });
                 services.AddHealthChecks();
             }
+            
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+                options.Cookie.IsEssential = true;
+            });
             
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
@@ -135,6 +160,10 @@ namespace SFA.DAS.EmployerDemand.Web
             });
 
             app.UseRouting();
+            
+            app.UseAuthentication();
+            app.UseAuthorization();
+            
             app.UseEndpoints(builder =>
             {
                 builder.MapControllerRoute(

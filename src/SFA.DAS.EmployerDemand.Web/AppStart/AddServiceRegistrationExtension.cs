@@ -11,6 +11,8 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
     {
         public static void AddServiceRegistration(this IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
+            
             services.AddHttpClient<IApiClient, ApiClient>();
             services.AddTransient<IDemandService, DemandService>();
             services.AddTransient<ILocationService, LocationService>();
