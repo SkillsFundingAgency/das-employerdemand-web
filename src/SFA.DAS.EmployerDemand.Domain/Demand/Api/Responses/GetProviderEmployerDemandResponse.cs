@@ -8,6 +8,9 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         [JsonProperty("employerDemand")]
         public IEnumerable<ProviderEmployerDemandItem> ProviderEmployerDemand { get; set; }
         
+        [JsonProperty("trainingCourses")]
+        public IEnumerable<TrainingCourse> TrainingCourses { get; set; }
+        
         [JsonProperty("totalResults")]
         public int TotalResults { get; set; }
         
@@ -17,12 +20,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
 
     public class ProviderEmployerDemandItem
     {
-        [JsonProperty("CourseName")]
-        public string CourseTitle { get; set; }
-        [JsonProperty("CourseLevel")]
-        public int CourseLevel { get; set; }
-        [JsonProperty("sector")]
-        public string Sector { get; set; }
+        [JsonProperty("trainingCourse")]
+        public TrainingCourse TrainingCourse { get; set; }
         [JsonProperty("apprentices")]
         public int Apprentices { get; set; }
         [JsonProperty("employers")]

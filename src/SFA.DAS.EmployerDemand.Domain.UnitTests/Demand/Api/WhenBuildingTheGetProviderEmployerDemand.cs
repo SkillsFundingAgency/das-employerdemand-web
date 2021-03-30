@@ -11,7 +11,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
         public void Then_The_Url_Is_Correctly_Built(int ukprn)
         {
             //Act
-            var actual = new GetProviderEmployerDemand(ukprn);
+            var actual = new GetProviderEmployerDemandRequest(ukprn);
             
             //Assert
             actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId=");
@@ -21,7 +21,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
         public void Then_The_Url_Is_Correctly_Built_With_Course_Filter(int ukprn, int courseId)
         {
             //Act
-            var actual = new GetProviderEmployerDemand(ukprn, courseId);
+            var actual = new GetProviderEmployerDemandRequest(ukprn, courseId);
             
             //Assert
             actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId={courseId}");
