@@ -17,11 +17,34 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
         public async Task Then_Fails_If_No_Provider_Ukprn_Claim(
             int ukprn,
             ProviderUkPrnRequirement providerRequirement,
-            [Frozen]Mock<IHttpContextAccessor> httpContextAccessor,
+            [Frozen] Mock<IHttpContextAccessor> httpContextAccessor,
             ProviderAuthorizationHandler authorizationHandler)
         {
             //Arrange
             var claim = new Claim("NotProviderClaim", ukprn.ToString());
+            var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {claim})});
+            var context = new AuthorizationHandlerContext(new [] {providerRequirement}, claimsPrinciple, null);
+
+            //Act
+            await authorizationHandler.HandleAsync(context);
+
+            //Assert
+            Assert.IsFalse(context.HasSucceeded);
+            Assert.IsTrue(context.HasFailed);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_There_Is_No_Ukrpn_In_Route_But_Has_Claim_Then_Succeeds(
+            int ukprn,
+            ProviderUkPrnRequirement providerRequirement,
+            [Frozen]Mock<IHttpContextAccessor> httpContextAccessor,
+            ProviderAuthorizationHandler authorizationHandler)
+        {
+            //Arrange
+            var responseMock = new FeatureCollection();
+            var httpContext = new DefaultHttpContext(responseMock);
+            httpContextAccessor.Setup(_ => _.HttpContext).Returns(httpContext);
+            var claim = new Claim(ProviderClaims.ProviderUkprn, ukprn.ToString());
             var claimsPrinciple = new ClaimsPrincipal(new[] {new ClaimsIdentity(new[] {claim})});
             var context = new AuthorizationHandlerContext(new []{providerRequirement},claimsPrinciple, null);
             
@@ -29,8 +52,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
             await authorizationHandler.HandleAsync(context);
 
             //Assert
-            Assert.IsFalse(context.HasSucceeded);
-            Assert.IsTrue(context.HasFailed);
+            Assert.IsTrue(context.HasSucceeded);
+            Assert.IsFalse(context.HasFailed);
         }
 
         [Test, MoqAutoData]
@@ -41,7 +64,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
             [Frozen]Mock<IHttpContextAccessor> httpContextAccessor,
             ProviderAuthorizationHandler authorizationHandler)
         {
-            
+            //Arrange
             var responseMock = new FeatureCollection();
             var httpContext = new DefaultHttpContext(responseMock);
             httpContext.Request.RouteValues.Add("ukprn",routeUkprn);
@@ -66,7 +89,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure.Authorization
             [Frozen]Mock<IHttpContextAccessor> httpContextAccessor,
             ProviderAuthorizationHandler authorizationHandler)
         {
-            
+            //Arrange
             var responseMock = new FeatureCollection();
             var httpContext = new DefaultHttpContext(responseMock);
             httpContext.Request.RouteValues.Add("ukprn",ukprn);

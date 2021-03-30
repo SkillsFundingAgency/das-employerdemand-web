@@ -32,11 +32,16 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization
             {
                 return false;
             }
+            
+            if (_httpContextAccessor.HttpContext.Request.RouteValues.ContainsKey("ukprn"))
+            {
+                var ukPrnFromUrl = _httpContextAccessor.HttpContext.Request.RouteValues["ukprn"].ToString();
+                var ukPrn = context.User.FindFirst(c => c.Type.Equals(ProviderClaims.ProviderUkprn)).Value;
 
-            var ukPrnFromUrl = _httpContextAccessor.HttpContext.Request.RouteValues["ukprn"].ToString();
-            var ukPrn = context.User.FindFirst(c => c.Type.Equals(ProviderClaims.ProviderUkprn)).Value;
+                return ukPrn.Equals(ukPrnFromUrl);    
+            }
 
-            return ukPrn.Equals(ukPrnFromUrl);
+            return true;
         }
     }
 }
