@@ -12,7 +12,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public IEnumerable<ProviderCourseDemandViewModel> CourseDemands { get ; set ; }
         public bool ShowFilterOptions => ShouldShowFilterOptions();
         public string SelectedCourse { get ; set ; }
-        
+        public string Location { get ; set ; }
+
 
         public static implicit operator AggregatedProviderCourseDemandViewModel(GetProviderEmployerDemandQueryResult source)
         {
