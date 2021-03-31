@@ -9,5 +9,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public IEnumerable<ProviderCourseDemand> CourseDemands { get; set; }
         public int TotalResults { get; set; }
         public int TotalFiltered { get; set; }
+        public int? SelectedCourseId { get; set; }
     }
 }

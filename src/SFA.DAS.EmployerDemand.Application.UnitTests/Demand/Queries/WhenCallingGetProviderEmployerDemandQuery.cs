@@ -32,6 +32,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             actual.TotalFiltered.Should().Be(response.FilteredResults);
             actual.TotalResults.Should().Be(response.TotalResults);
             actual.CourseDemands.Should().BeEquivalentTo(actual.CourseDemands);
+            actual.SelectedCourseId.Should().Be(query.CourseId);
         }
     }
 }
