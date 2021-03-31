@@ -24,7 +24,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 Courses = result.TrainingCourses.Select(c => (Course) c),
                 CourseDemands = result.ProviderEmployerDemand.Select(c => (ProviderCourseDemand) c),
                 TotalFiltered = result.FilteredResults,
-                TotalResults = result.TotalResults
+                TotalResults = result.TotalResults,
+                SelectedCourseId = request.CourseId
             };
         }
     }
