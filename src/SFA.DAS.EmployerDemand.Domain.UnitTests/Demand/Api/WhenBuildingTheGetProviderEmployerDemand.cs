@@ -1,3 +1,4 @@
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
@@ -14,7 +15,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn);
             
             //Assert
-            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId=");
+            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId=&location=");
         }
         
         [Test, AutoData]
@@ -24,7 +25,19 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn, courseId);
             
             //Assert
-            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId={courseId}");
+            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId={courseId}&location=");
+        }
+        
+        [Test, AutoData]
+        public void Then_The_Url_Is_Correctly_Built_With_Location_Filter(int ukprn, string location)
+        {
+            //Arrange
+            var locationParam = $"{location}, {location}";
+            //Act
+            var actual = new GetProviderEmployerDemandRequest(ukprn,null, locationParam);
+            
+            //Assert
+            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId=&location={HttpUtility.UrlEncode(locationParam)}");
         }
     }
 }
