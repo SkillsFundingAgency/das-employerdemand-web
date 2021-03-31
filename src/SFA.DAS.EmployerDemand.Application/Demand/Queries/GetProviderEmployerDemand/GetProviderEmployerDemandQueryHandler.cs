@@ -22,7 +22,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
             return new GetProviderEmployerDemandQueryResult
             {
                 Courses = result.TrainingCourses.Select(c => (Course) c),
-                CourseDemands = result.ProviderEmployerDemand.Select(c => (CourseDemand) c),
+                CourseDemands = result.ProviderEmployerDemand.Select(c => (ProviderCourseDemand) c),
                 TotalFiltered = result.FilteredResults,
                 TotalResults = result.TotalResults
             };

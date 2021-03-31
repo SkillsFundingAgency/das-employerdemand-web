@@ -12,7 +12,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand
         public void Then_The_Fields_Are_Mapped(ProviderEmployerDemandItem source)
         {
             //Act
-            var actual = (CourseDemand) source;
+            var actual = (ProviderCourseDemand) source;
             
             //Assert
             actual.Course.Should().BeEquivalentTo(source.TrainingCourse);

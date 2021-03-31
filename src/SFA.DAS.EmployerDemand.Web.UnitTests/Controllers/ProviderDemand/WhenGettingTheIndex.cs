@@ -15,10 +15,9 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
     public class WhenGettingTheIndex
     {
         [Test, MoqAutoData]
-        public async Task Then_If_Authenticated_And_Has_Ukprn_Claim_Then_Redirects_To_View(
+        public void Then_If_Authenticated_And_Has_Ukprn_Claim_Then_Redirects_To_View(
             int ukprn,
-            [Greedy] HomeController controller
-            )
+            [Greedy] HomeController controller)
         {
             //Arrange
             var claim = new Claim(ProviderClaims.ProviderUkprn, ukprn.ToString());
