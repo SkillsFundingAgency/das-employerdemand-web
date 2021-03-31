@@ -75,35 +75,35 @@
             </p>
 
             <h2 class="govuk-heading-m">@Model.TotalFiltered result@(Model.TotalFiltered > 1 ? "s":"")</h2>
-            <hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-2">
+            <hr class="govuk-section-break govuk-section-break--visible">
 
-            @foreach (var courseDemand in Model.CourseDemands)
-            {
-                <div class="govuk-grid-row govuk-!-margin-left-0 govuk-!-margin-right-0 govuk-!-margin-top-3">
-                    <div class="govuk-grid-column-two-thirds govuk-!-padding-0">
-                        <h2 class="govuk-heading-m govuk-!-margin-bottom-2">
-                            @courseDemand.Course.TitleAndLevel
-                        </h2>
-                        <ul class="govuk-list">
-                            <li class="govuk-!-font-size-16"><span class="govuk-secondary-colour">Apprenticeship category:</span> @courseDemand.Course.Sector</li>
-                            <li class="govuk-!-font-size-16">
-                                <span class="govuk-secondary-colour">Apprentices:</span>
-                                @courseDemand.NumberOfApprentices
-                            </li>
-                            <li class="govuk-!-font-size-16">
-                                <span class="govuk-secondary-colour">Employers:</span>
-                                @courseDemand.NumberOfEmployers
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="govuk-grid-column-one-third govuk-!-padding-0">
-                        <p class="govuk-body opportunities-label">
-                            <a href="#" class="govuk-link govuk-link--no-visited-state">View employers</a>
-                        </p>
-                    </div>
-                    <hr class="govuk-section-break govuk-section-break--visible" style="clear:both">
-                </div>
-            }
+            <div class="das-search-results">
+                <ol class="das-search-results__list">
+                    @foreach (var courseDemand in Model.CourseDemands)
+                    {
+                        <li class="das-search-results__list-item">
+                            <div class="govuk-grid-row">
+                                <div class="govuk-grid-column-two-thirds">
+                                    <h2 class="govuk-heading-m das-search-results__heading">
+                                        @courseDemand.Course.TitleAndLevel
+                                    </h2>
+                                    <dl class="das-definition-list das-definition-list--meta govuk-!-margin-bottom-2">
+                                        <dt class="das-definition-list__title">Apprenticeship category</dt>
+                                        <dd class="das-definition-list__definition govuk-!-margin-bottom-1">@courseDemand.Course.Sector</dd>
+                                        <dt class="das-definition-list__title">Apprentices</dt>
+                                        <dd class="das-definition-list__definition govuk-!-margin-bottom-1">@courseDemand.NumberOfApprentices</dd>
+                                        <dt class="das-definition-list__title">Employers</dt>
+                                        <dd class="das-definition-list__definition">@courseDemand.NumberOfEmployers</dd>
+                                    </dl>
+                                </div>
+                                <div class="govuk-grid-column-one-third">
+                                    <a href="#" class="govuk-link govuk-link--no-visited-state  govuk-body">View employers</a>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ol>
+            </div>
         </div>
     </div>
     }
