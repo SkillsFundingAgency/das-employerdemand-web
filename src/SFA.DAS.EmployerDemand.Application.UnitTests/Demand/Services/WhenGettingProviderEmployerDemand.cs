@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using Moq;
@@ -18,6 +19,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
         public async Task Then_The_Api_Is_Called_And_Employer_Demand_For_A_Provider_With_Filter(
             int ukprn,
             int? courseId,
+            string location,
             Guid id,
             GetProviderEmployerDemandResponse response,
             [Frozen] Mock<IApiClient> apiClient,
@@ -26,11 +28,11 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             //Arrange
             apiClient.Setup(x =>
                 x.Get<GetProviderEmployerDemandResponse>(It.Is<GetProviderEmployerDemandRequest>(c =>
-                    c.GetUrl.Contains($"/{ukprn}/employer-demand?courseId={courseId}"))))
+                    c.GetUrl.Contains($"/{ukprn}/employer-demand?courseId={courseId}&location={HttpUtility.UrlEncode(location)}"))))
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await service.GetProviderEmployerDemand(ukprn, courseId);
+            var actual = await service.GetProviderEmployerDemand(ukprn, courseId, location);
             
             //Act
             actual.Should().BeEquivalentTo(response);

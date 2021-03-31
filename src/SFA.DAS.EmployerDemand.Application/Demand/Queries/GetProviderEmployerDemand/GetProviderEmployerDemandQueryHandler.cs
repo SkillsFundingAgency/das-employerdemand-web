@@ -17,7 +17,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         }
         public async Task<GetProviderEmployerDemandQueryResult> Handle(GetProviderEmployerDemandQuery request, CancellationToken cancellationToken)
         {
-            var result = await _demandService.GetProviderEmployerDemand(request.Ukprn, request.CourseId);
+            var result = await _demandService.GetProviderEmployerDemand(request.Ukprn, request.CourseId, request.Location);
 
             return new GetProviderEmployerDemandQueryResult
             {
