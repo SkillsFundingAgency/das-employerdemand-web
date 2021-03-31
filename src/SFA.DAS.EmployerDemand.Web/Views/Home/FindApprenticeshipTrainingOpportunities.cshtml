@@ -53,10 +53,8 @@
                             
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                             <div class="govuk-form-group">
-                                <label for="SelectedCourseId" class="govuk-label">
-                                    <span class="govuk-!-font-weight-bold govuk-!-font-size-24">Apprenticeship training course</span>
-                                </label>
-                                <select id="SelectedCourseId" name="SelectedCourseId" class="govuk-select" aria-describedby="choose-course-hint">
+                                <label for="SelectedCourseId" class="govuk-label govuk-label--m">Apprenticeship training course</label>
+                                <select id="SelectedCourseId" name="SelectedCourseId" class="govuk-select das-autocomplete">
                                     <option value="">Select an apprenticeship training course</option>
                                     @foreach (var course in Model.Courses)
                                     {
