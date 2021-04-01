@@ -57,16 +57,15 @@
                         <form asp-route="@RouteNames.ProviderDashboard" method="GET">
                             
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
-                            <div class="govuk-form-group">
-                            	<label class="govuk-label govuk-label--m" for="search-location">
+                            <div class="govuk-form-group govuk-!-margin-bottom-3">
+                            	<label class="govuk-label govuk-label--m govuk-!-margin-bottom-0" for="search-location">
                             		Apprenticeship Location
                             	</label>
-                            	<div id="search-location-hint" class="govuk-hint">
+                            	<span id="search-location-hint" class="govuk-hint">
                             		Enter a town, city or postcode
-                            	</div>
+                            	</span>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="false" data-default-value="@Model.Location"  aria-describedby="search-location-hint">
                             </div>
-                            
                             <div class="govuk-form-group">
                                 <label class="govuk-label" for="radius">
                                     Radius
