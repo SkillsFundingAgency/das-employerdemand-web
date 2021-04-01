@@ -15,7 +15,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn);
             
             //Assert
-            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId=&location=&locationRadius=0");
+            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId=&location=&locationRadius=");
         }
         
         [Test, AutoData]
@@ -25,11 +25,11 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn, courseId);
             
             //Assert
-            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId={courseId}&location=&locationRadius=0");
+            actual.GetUrl.Should().Be($"providers/{ukprn}/employer-demand?courseId={courseId}&location=&locationRadius=");
         }
         
         [Test, AutoData]
-        public void Then_The_Url_Is_Correctly_Built_With_Location_Filter(int ukprn, string location, int locationRadius)
+        public void Then_The_Url_Is_Correctly_Built_With_Location_Filter(int ukprn, string location, string locationRadius)
         {
             //Arrange
             var locationParam = $"{location}, {location}";

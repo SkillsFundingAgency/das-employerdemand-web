@@ -20,7 +20,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             int ukprn,
             int? courseId,
             string location,
-            int radius,
+            string radius,
             GetProviderEmployerDemandQueryResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] HomeController controller)

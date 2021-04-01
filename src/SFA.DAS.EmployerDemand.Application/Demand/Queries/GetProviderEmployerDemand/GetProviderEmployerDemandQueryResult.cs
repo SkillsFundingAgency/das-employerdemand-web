@@ -12,5 +12,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public int TotalFiltered { get; set; }
         public int? SelectedCourseId { get; set; }
         public Location SelectedLocation { get; set; }
+        public string SelectedRadius { get ; set ; }
     }
 }

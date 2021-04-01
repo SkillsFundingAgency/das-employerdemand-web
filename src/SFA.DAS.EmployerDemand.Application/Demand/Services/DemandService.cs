@@ -47,7 +47,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
         }
 
-        public async Task<GetProviderEmployerDemandResponse> GetProviderEmployerDemand( int ukprn, int? courseId, string location, int locationRadius)
+        public async Task<GetProviderEmployerDemandResponse> GetProviderEmployerDemand( int ukprn, int? courseId, string location, string locationRadius)
         {
             var result =
                 await _apiClient.Get<GetProviderEmployerDemandResponse>(

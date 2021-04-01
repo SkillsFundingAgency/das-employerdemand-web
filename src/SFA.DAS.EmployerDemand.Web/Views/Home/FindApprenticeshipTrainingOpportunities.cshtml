@@ -41,10 +41,15 @@
                             <h3 class="das-filter__selected-heading">Selected filters</h3>
                             <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.ProviderDashboard">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
                         </div>
+                        @if (!string.IsNullOrEmpty(Model.Location))
+                        {
+                            <h4 class="das-filter__selected-sub-heading">Location</h4>
+                            <a asp-querystring="@Model.ClearLocationLink" title="Clear this filter '@Model.Location'" class="das-filter__tag das-breakable">&lsquo;@Model.Location&rsquo;<br>(within @(Model.LocationRadius[Model.SelectedRadius]))</a>
+                        }
                         @if (!string.IsNullOrEmpty(Model.SelectedCourse))
                         {
                             <h4 class="das-filter__selected-sub-heading">Courses</h4>
-                            <a asp-route="@RouteNames.ProviderDashboard" title="Clear this filter '@Model.SelectedCourse'" class="das-filter__tag das-breakable">&lsquo;@Model.SelectedCourse&rsquo;</a>
+                            <a asp-querystring="@Model.ClearCourseLink" title="Clear this filter '@Model.SelectedCourse'" class="das-filter__tag das-breakable">&lsquo;@Model.SelectedCourse&rsquo;</a>
                         }
                     </div>
                     }
@@ -60,6 +65,18 @@
                             		Enter a town, city or postcode
                             	</div>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="false" data-default-value="@Model.Location"  aria-describedby="search-location-hint">
+                            </div>
+                            
+                            <div class="govuk-form-group">
+                                <label class="govuk-label" for="radius">
+                                    Radius
+                                </label>
+                                <select class="govuk-select" id="radius" name="radius">
+                                    @foreach (var radius in Model.LocationRadius)
+                                    {
+                                        <!option @(Model.SelectedRadius == radius.Key ? "selected" : "") value="@radius.Key">@radius.Value</!option>
+                                    }
+                                </select>
                             </div>
                             <div class="govuk-form-group">
                                 <label for="SelectedCourseId" class="govuk-label govuk-label--m">Apprenticeship training course</label>

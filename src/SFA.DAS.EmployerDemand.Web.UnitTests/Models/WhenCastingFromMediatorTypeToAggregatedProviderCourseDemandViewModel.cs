@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using Microsoft.AspNetCore.Components.RenderTree;
@@ -14,6 +15,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         public void Then_The_Fields_Are_Correctly_Mapped(GetProviderEmployerDemandQueryResult source)
         {
             //Arrange
+            source.SelectedRadius = null;
             source.SelectedLocation = null;
             source.SelectedCourseId = null;
             
@@ -27,6 +29,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             actual.CourseDemands.Should().BeEquivalentTo(source.CourseDemands);
             actual.SelectedCourse.Should().BeEmpty();
             actual.ShowFilterOptions.Should().BeFalse();
+            actual.SelectedRadius.Should().Be("5");
         }
 
         [Test, AutoData]
@@ -76,7 +79,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         }
 
         [Test, AutoData]
-        public void Then_The_Clear_Location_Link_Is_Built(GetProviderEmployerDemandQueryResult source)
+        public void Then_The_Clear_Location_Link_Is_Built_If_Course_Selected(GetProviderEmployerDemandQueryResult source)
         {
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
@@ -86,8 +89,21 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearLocationLink.Should().Be("");
+            actual.ClearLocationLink.Should().Be($"?selectedCourseId={source.SelectedCourseId}");
+        }
+        
+        [Test, AutoData]
+        public void Then_The_Clear_Location_Link_Is_Built_If_No_Course_Selected(GetProviderEmployerDemandQueryResult source)
+        {
+            //Arrange
+            source.SelectedCourseId = null;
             
+            //Act
+            var actual = (AggregatedProviderCourseDemandViewModel) source;
+
+            //Assert
+            actual.ShowFilterOptions.Should().BeTrue();
+            actual.ClearLocationLink.Should().Be("");
         }
         
         [Test, AutoData]
@@ -101,7 +117,21 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearCourseLink.Should().Be("");
+            actual.ClearCourseLink.Should().Be($"?location={HttpUtility.UrlEncode(actual.Location)}&radius={actual.SelectedRadius}");
+        }
+
+        [Test, AutoData]
+        public void Then_If_The_Selected_Radius_Is_Invalid_It_Defaults_To_First_In_Dictionary(GetProviderEmployerDemandQueryResult source)
+        {
+            //Arrange
+            source.SelectedCourseId = null;
+            source.SelectedRadius = "s";
+            
+            //Act
+            var actual = (AggregatedProviderCourseDemandViewModel) source;
+
+            //Assert
+            actual.SelectedRadius.Should().Be("5");
         }
     }
 }

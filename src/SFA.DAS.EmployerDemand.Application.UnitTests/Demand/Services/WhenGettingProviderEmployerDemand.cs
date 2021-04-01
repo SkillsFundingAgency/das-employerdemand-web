@@ -20,7 +20,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             int ukprn,
             int? courseId,
             string location,
-            int locationRadius,
+            string locationRadius,
             Guid id,
             GetProviderEmployerDemandResponse response,
             [Frozen] Mock<IApiClient> apiClient,

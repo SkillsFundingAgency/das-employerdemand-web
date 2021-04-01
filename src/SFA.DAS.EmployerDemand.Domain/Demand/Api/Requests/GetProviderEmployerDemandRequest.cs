@@ -8,9 +8,9 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
         private readonly int _ukprn;
         private readonly int? _courseId;
         private readonly string _location;
-        private readonly int _locationRadius;
+        private readonly string _locationRadius;
 
-        public GetProviderEmployerDemandRequest(int ukprn, int? courseId = null, string location = "", int locationRadius = 0)
+        public GetProviderEmployerDemandRequest(int ukprn, int? courseId = null, string location = "", string locationRadius = "")
         {
             _ukprn = ukprn;
             _courseId = courseId;
