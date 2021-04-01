@@ -1,5 +1,4 @@
 using Microsoft.Extensions.DependencyInjection;
-using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 
 namespace SFA.DAS.EmployerDemand.Web.AppStart
@@ -8,6 +7,9 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
     {
         
         private const string ProviderDaa = "DAA";
+        private const string ProviderDab = "DAB";
+        private const string ProviderDac = "DAC";
+        private const string ProviderDav = "DAV";
 
         public static void AddAuthorizationServicePolicies(this IServiceCollection services)
         {
@@ -20,7 +22,7 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
                     {
                         policy.RequireAuthenticatedUser();
                         policy.RequireClaim(ProviderClaims.ProviderUkprn);
-                        policy.RequireClaim(ProviderClaims.Service, ProviderDaa);
+                        policy.RequireClaim(ProviderClaims.Service, ProviderDaa, ProviderDab, ProviderDac, ProviderDav);
                         policy.Requirements.Add(new ProviderUkPrnRequirement());
                     });
             });
