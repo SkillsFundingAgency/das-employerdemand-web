@@ -52,12 +52,12 @@ namespace SFA.DAS.EmployerDemand.MockServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("locations.json"));
             
-            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/providers/\\d+/employer-demand"))
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/aggregated/providers/\\d+"))
                 .UsingGet()).RespondWith(Response.Create()
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("provider-employer-demand.json"));
             
-            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/providers/\\d+/employer-demand"))
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/aggregated/providers/\\d+"))
                 .WithParam(MatchLocationParam)
                 .UsingGet()).RespondWith(Response.Create()
                 .WithHeader("Content-Type", "application/json")
