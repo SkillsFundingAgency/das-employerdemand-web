@@ -20,6 +20,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             int ukprn,
             int? courseId,
             string location,
+            int radius,
             GetProviderEmployerDemandQueryResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] HomeController controller)
@@ -27,10 +28,14 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             //Arrange
             mediator.Setup(x =>
                 x.Send(It.Is<GetProviderEmployerDemandQuery>(c =>
-                    c.Ukprn.Equals(ukprn) && c.CourseId.Equals(courseId) && c.Location.Equals(location)), CancellationToken.None)).ReturnsAsync(mediatorResult);
+                    c.Ukprn.Equals(ukprn) 
+                    && c.CourseId.Equals(courseId) 
+                    && c.Location.Equals(location)
+                    && c.LocationRadius.Equals(radius)
+                    ), CancellationToken.None)).ReturnsAsync(mediatorResult);
             
             //Act
-            var actual = await controller.FindApprenticeshipTrainingOpportunities(ukprn, courseId, location) as ViewResult;
+            var actual = await controller.FindApprenticeshipTrainingOpportunities(ukprn, courseId, location, radius) as ViewResult;
 
             //Assert
             Assert.IsNotNull(actual);

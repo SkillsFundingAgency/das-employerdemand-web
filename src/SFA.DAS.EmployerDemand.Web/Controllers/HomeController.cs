@@ -29,13 +29,14 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
         
         [Route("{ukprn}/find-apprenticeship-opportunities", Name = RouteNames.ProviderDashboard)]
-        public async Task<IActionResult> FindApprenticeshipTrainingOpportunities(int ukprn, [FromQuery]int? selectedCourseId, [FromQuery]string location)
+        public async Task<IActionResult> FindApprenticeshipTrainingOpportunities(int ukprn, [FromQuery]int? selectedCourseId, [FromQuery]string location, [FromQuery]int radius)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandQuery
             {
                 Ukprn = ukprn,
                 CourseId = selectedCourseId,
-                Location = location
+                Location = location,
+                LocationRadius = radius
             });
 
             var model = (AggregatedProviderCourseDemandViewModel) result;

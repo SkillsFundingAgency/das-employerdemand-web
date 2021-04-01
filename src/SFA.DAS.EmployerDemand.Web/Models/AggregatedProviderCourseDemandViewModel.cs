@@ -23,13 +23,15 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 TotalFiltered = source.TotalFiltered,
                 TotalResults = source.TotalResults,
                 Courses = source.Courses.Select(c=>(TrainingCourseViewModel)c),
-                CourseDemands = source.CourseDemands.Select(c=>(ProviderCourseDemandViewModel)c)
+                CourseDemands = source.CourseDemands.Select(c=>(ProviderCourseDemandViewModel)c),
+                Location = source.SelectedLocation?.Name
             };
         }
         
         private bool ShouldShowFilterOptions()
         {
-            return !string.IsNullOrEmpty(SelectedCourse);
+            return !string.IsNullOrEmpty(SelectedCourse) || !string.IsNullOrEmpty(Location);
+        }
         }
     }
 }
