@@ -18,5 +18,15 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Locations
             actual.Name.Should().Be(source.Name);
             actual.LocationPoint.Should().BeEquivalentTo(source.LocationPoint.GeoPoint);
         }
+
+        [Test]
+        public void Then_If_Null_Then_Null_Returned()
+        {
+            //Act
+            var actual = (Location) (LocationItem) null;
+            
+            //Assert
+            actual.Should().BeNull();
+        }
     }
 }

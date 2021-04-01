@@ -10,6 +10,11 @@ namespace SFA.DAS.EmployerDemand.Domain.Locations
 
         public static implicit operator Location(LocationItem source)
         {
+            if (source == null)
+            {
+                return null;
+            }
+            
             return new Location
             {
                 Name = source.Name,
