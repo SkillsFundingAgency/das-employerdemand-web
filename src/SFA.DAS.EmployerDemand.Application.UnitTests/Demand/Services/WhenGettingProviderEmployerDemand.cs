@@ -20,6 +20,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             int ukprn,
             int? courseId,
             string location,
+            int locationRadius,
             Guid id,
             GetProviderEmployerDemandResponse response,
             [Frozen] Mock<IApiClient> apiClient,
@@ -28,11 +29,11 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             //Arrange
             apiClient.Setup(x =>
                 x.Get<GetProviderEmployerDemandResponse>(It.Is<GetProviderEmployerDemandRequest>(c =>
-                    c.GetUrl.Contains($"/{ukprn}/employer-demand?courseId={courseId}&location={HttpUtility.UrlEncode(location)}"))))
+                    c.GetUrl.Contains($"/{ukprn}/employer-demand?courseId={courseId}&location={HttpUtility.UrlEncode(location)}&locationRadius={locationRadius}"))))
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await service.GetProviderEmployerDemand(ukprn, courseId, location);
+            var actual = await service.GetProviderEmployerDemand(ukprn, courseId, location, locationRadius);
             
             //Act
             actual.Should().BeEquivalentTo(response);

@@ -7,5 +7,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public int Ukprn { get; set; }
         public int? CourseId { get; set; }
         public string Location { get ; set ; }
+        public int LocationRadius { get ; set ; }
     }
 }

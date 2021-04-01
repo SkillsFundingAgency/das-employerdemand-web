@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using SFA.DAS.EmployerDemand.Domain.Locations.Api.Responses;
 
 namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
 {
@@ -7,15 +8,14 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
     {
         [JsonProperty("employerDemand")]
         public IEnumerable<ProviderEmployerDemandItem> ProviderEmployerDemand { get; set; }
-        
         [JsonProperty("trainingCourses")]
         public IEnumerable<TrainingCourse> TrainingCourses { get; set; }
-        
         [JsonProperty("totalResults")]
         public int TotalResults { get; set; }
-        
         [JsonProperty("filteredResults")]
         public int FilteredResults { get; set; }
+        [JsonProperty("location")]
+        public LocationItem Location { get; set; }
     }
 
     public class ProviderEmployerDemandItem

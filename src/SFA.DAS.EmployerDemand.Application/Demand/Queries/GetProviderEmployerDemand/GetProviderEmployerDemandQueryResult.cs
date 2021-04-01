@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using SFA.DAS.EmployerDemand.Domain.Demand;
+using SFA.DAS.EmployerDemand.Domain.Locations;
 
 namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand
 {
@@ -10,5 +11,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public int TotalResults { get; set; }
         public int TotalFiltered { get; set; }
         public int? SelectedCourseId { get; set; }
+        public Location SelectedLocation { get; set; }
     }
 }

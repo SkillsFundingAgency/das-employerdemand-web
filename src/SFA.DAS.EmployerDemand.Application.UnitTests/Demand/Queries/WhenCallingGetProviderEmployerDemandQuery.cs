@@ -21,7 +21,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             GetProviderEmployerDemandQueryHandler handler)
         {
             //Arrange
-            service.Setup(x => x.GetProviderEmployerDemand(query.Ukprn, query.CourseId, query.Location))
+            service.Setup(x => x.GetProviderEmployerDemand(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
                 .ReturnsAsync(response);
             
             //Act
