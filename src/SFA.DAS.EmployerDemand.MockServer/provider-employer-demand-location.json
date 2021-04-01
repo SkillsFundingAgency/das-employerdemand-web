@@ -1,0 +1,109 @@
+{
+  "employerDemand": [
+    {
+      "trainingCourse": {
+        "id": 2,
+        "title": "Software developer",
+        "level": 4,
+        "sector": "Digital",
+        "IntegratedApprenticeship": false
+      },
+      "apprentices": 10,
+      "employers": 2
+    },
+    {
+      "trainingCourse": {
+        "id": 8,
+        "title": "Financial services administrator",
+        "level": 2,
+        "sector": "Business and administration",
+        "IntegratedApprenticeship": false
+      },
+      "apprentices": 20,
+      "employers": 12
+    },
+    {
+      "trainingCourse": {
+        "id": 9,
+        "title": "Control / technical support engineer (degree)",
+        "level": 6,
+        "sector": "Engineering and manufacturing",
+        "IntegratedApprenticeship": false
+      },
+      "apprentices": 3,
+      "employers": 1
+    }
+  ],
+  "trainingCourses": [
+    {
+      "id": 1,
+      "title": "Network engineer",
+      "level": 4,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 2,
+      "title": "Software developer",
+      "level": 4,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 5,
+      "title": "Installation electrician / maintenance electrician",
+      "level": 3,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 6,
+      "title": "Power network craftsperson",
+      "level": 3,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 8,
+      "title": "Financial services administrator",
+      "level": 3,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 9,
+      "title": "Control / technical support engineer (degree)",
+      "level": 6,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 10,
+      "title": "Electrical / electronic technical support engineer (degree)",
+      "level": 6,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 11,
+      "title": "Manufacturing engineer (degree)",
+      "level": 6,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 12,
+      "title": "Product design and development engineer (degree)",
+      "level": 6,
+      "IntegratedApprenticeship": false
+    },
+    {
+      "id": 14,
+      "title": "Laboratory technician",
+      "level": 3,
+      "IntegratedApprenticeship": true
+    }
+  ],
+  "totalResults": 10,
+  "filteredResults": 10,
+  "location": {
+    "name":"Camden, Camden",
+    "location": {
+      "geoPoint": [
+        51.289916,
+        -0.773876
+      ]}
+  }
+}
