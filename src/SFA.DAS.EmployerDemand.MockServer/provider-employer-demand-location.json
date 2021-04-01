@@ -7,8 +7,8 @@
         "level": 4,
         "sector": "Digital"
       },
-      "apprentices": 10,
-      "employers": 2
+      "apprenticesCount": 10,
+      "employersCount": 2
     },
     {
       "trainingCourse": {
@@ -17,8 +17,8 @@
         "level": 2,
         "sector": "Business and administration"
       },
-      "apprentices": 20,
-      "employers": 12
+      "apprenticesCount": 20,
+      "employersCount": 12
     },
     {
       "trainingCourse": {
@@ -27,8 +27,8 @@
         "level": 6,
         "sector": "Engineering and manufacturing"
       },
-      "apprentices": 3,
-      "employers": 1
+      "apprenticesCount": 3,
+      "employersCount": 1
     }
   ],
   "trainingCourses": [
@@ -83,8 +83,8 @@
       "level": 3
     }
   ],
-  "totalResults": 10,
-  "filteredResults": 10,
+  "total": 10,
+  "totalFiltered": 10,
   "location": {
     "name":"Camden, Camden",
     "location": {

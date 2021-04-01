@@ -29,7 +29,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             //Arrange
             apiClient.Setup(x =>
                 x.Get<GetProviderEmployerDemandResponse>(It.Is<GetProviderEmployerDemandRequest>(c =>
-                    c.GetUrl.Contains($"/{ukprn}/employer-demand?courseId={courseId}&location={HttpUtility.UrlEncode(location)}&locationRadius={locationRadius}"))))
+                    c.GetUrl.Contains($"/{ukprn}?courseId={courseId}&location={HttpUtility.UrlEncode(location)}&locationRadius={locationRadius}"))))
                 .ReturnsAsync(response);
             
             //Act
