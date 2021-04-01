@@ -5,8 +5,7 @@
         "id": 2,
         "title": "Software developer",
         "level": 4,
-        "sector": "Digital",
-        "IntegratedApprenticeship": false
+        "sector": "Digital"
       },
       "apprentices": 10,
       "employers": 2
@@ -16,8 +15,7 @@
         "id": 8,
         "title": "Financial services administrator",
         "level": 2,
-        "sector": "Business and administration",
-        "IntegratedApprenticeship": false
+        "sector": "Business and administration"
       },
       "apprentices": 20,
       "employers": 12
@@ -27,8 +25,7 @@
         "id": 9,
         "title": "Control / technical support engineer (degree)",
         "level": 6,
-        "sector": "Engineering and manufacturing",
-        "IntegratedApprenticeship": false
+        "sector": "Engineering and manufacturing"
       },
       "apprentices": 3,
       "employers": 1
@@ -38,62 +35,52 @@
     {
       "id": 1,
       "title": "Network engineer",
-      "level": 4,
-      "IntegratedApprenticeship": false
+      "level": 4
     },
     {
       "id": 2,
       "title": "Software developer",
-      "level": 4,
-      "IntegratedApprenticeship": false
+      "level": 4
     },
     {
       "id": 5,
       "title": "Installation electrician / maintenance electrician",
-      "level": 3,
-      "IntegratedApprenticeship": false
+      "level": 3
     },
     {
       "id": 6,
       "title": "Power network craftsperson",
-      "level": 3,
-      "IntegratedApprenticeship": false
+      "level": 3
     },
     {
       "id": 8,
       "title": "Financial services administrator",
-      "level": 3,
-      "IntegratedApprenticeship": false
+      "level": 3
     },
     {
       "id": 9,
       "title": "Control / technical support engineer (degree)",
-      "level": 6,
-      "IntegratedApprenticeship": false
+      "level": 6
     },
     {
       "id": 10,
       "title": "Electrical / electronic technical support engineer (degree)",
-      "level": 6,
-      "IntegratedApprenticeship": false
+      "level": 6
     },
     {
       "id": 11,
       "title": "Manufacturing engineer (degree)",
-      "level": 6,
-      "IntegratedApprenticeship": false
+      "level": 6
     },
     {
       "id": 12,
       "title": "Product design and development engineer (degree)",
-      "level": 6,
-      "IntegratedApprenticeship": false
+      "level": 6
     },
     {
       "id": 14,
       "title": "Laboratory technician",
-      "level": 3,
-      "IntegratedApprenticeship": true
+      "level": 3
     }
   ],
   "totalResults": 10,
