@@ -99,7 +99,7 @@
                 <span class="govuk-!-font-weight-bold">Course name</span>
             </p>
 
-            <h2 class="govuk-heading-m">@Model.TotalFiltered result@(Model.TotalFiltered > 1 ? "s":"")</h2>
+            <h2 class="govuk-heading-m">@Model.TotalFiltered result@(Model.TotalFiltered != 1 ? "s":"")</h2>
             <hr class="govuk-section-break govuk-section-break--visible">
 
             <div class="das-search-results">
