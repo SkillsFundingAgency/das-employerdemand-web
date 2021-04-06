@@ -7,7 +7,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
     public class AggregatedProviderCourseDemandDetailsViewModel
     {
         public TrainingCourseViewModel Course { get ; set ; }
-        public IEnumerable<ProviderCourseDemandDetailsViewModel> CourseDemands { get ; set ; }
+        public IEnumerable<ProviderCourseDemandDetailsViewModel> CourseDemandDetailsList { get ; set ; }
         public bool ShowFilterOptions => ShouldShowFilterOptions();
         public string Location { get ; set ; }
 
@@ -20,7 +20,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             return new AggregatedProviderCourseDemandDetailsViewModel
             {
                 Course = source.Course,
-                CourseDemands = source.CourseDemandDetailsList.Select(c=>(ProviderCourseDemandDetailsViewModel)c),
+                CourseDemandDetailsList = source.CourseDemandDetailsList.Select(c=>(ProviderCourseDemandDetailsViewModel)c),
                 Location = source.SelectedLocation?.Name,
                 SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key
             };

@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -40,6 +41,22 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             });
 
             var model = (AggregatedProviderCourseDemandViewModel) result;
+            
+            return View(model);
+        }
+
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}", Name = RouteNames.ProviderDemandDetails)]
+        public async Task<IActionResult> FindApprenticeshipTrainingOpportunitiesForCourse(int ukprn, int courseId, [FromQuery]string location, [FromQuery]string radius)
+        {
+            var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
+            {
+                Ukprn = ukprn,
+                CourseId = courseId,
+                Location = location,
+                LocationRadius = radius
+            });
+
+            var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
             
             return View(model);
         }

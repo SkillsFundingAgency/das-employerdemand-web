@@ -21,7 +21,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.Course.Should().BeEquivalentTo(source.Course);
-            actual.CourseDemands.Should().BeEquivalentTo(source.CourseDemandDetailsList.Select(details => (ProviderCourseDemandDetailsViewModel)details));
+            actual.CourseDemandDetailsList.Should().BeEquivalentTo(source.CourseDemandDetailsList.Select(details => (ProviderCourseDemandDetailsViewModel)details));
             actual.ShowFilterOptions.Should().BeFalse();
             actual.SelectedRadius.Should().Be("5");
         }
@@ -37,7 +37,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.Course.Should().BeEquivalentTo(source.Course);
-            actual.CourseDemands.Should().BeEquivalentTo(source.CourseDemandDetailsList.Select(details => (ProviderCourseDemandDetailsViewModel)details));
+            actual.CourseDemandDetailsList.Should().BeEquivalentTo(source.CourseDemandDetailsList.Select(details => (ProviderCourseDemandDetailsViewModel)details));
             actual.SelectedRadius.Should().Be(source.SelectedRadius);
             actual.ShowFilterOptions.Should().BeTrue();
             actual.Location.Should().Be(source.SelectedLocation.Name);
