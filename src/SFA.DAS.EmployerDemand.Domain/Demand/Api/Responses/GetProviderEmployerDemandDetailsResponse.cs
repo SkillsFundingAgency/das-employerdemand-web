@@ -9,7 +9,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
     {
         [JsonProperty("aggregatedCourseDemands")]
         public IEnumerable<ProviderEmployerDemandDetailsItem> ProviderEmployerDemandDetailsList { get; set; }
-        [JsonProperty("trainingCourses")]
+        [JsonProperty("trainingCourse")]
         public TrainingCourse TrainingCourse { get; set; }
         [JsonProperty("location")]
         public LocationItem Location { get; set; }
