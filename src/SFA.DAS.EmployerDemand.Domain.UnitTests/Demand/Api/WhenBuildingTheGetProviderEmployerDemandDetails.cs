@@ -15,7 +15,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandDetailsRequest(ukprn, courseId);
             
             //Assert
-            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}/courses/{courseId}?location=&locationRadius=");
+            actual.GetUrl.Should().Be($"demand/providers/{ukprn}/courses/{courseId}?location=&locationRadius=");
         }
         
         [Test, AutoData]
@@ -27,7 +27,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandDetailsRequest(ukprn, courseId, locationParam, locationRadius);
             
             //Assert
-            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}/courses/{courseId}?location={HttpUtility.UrlEncode(locationParam)}&locationRadius={locationRadius}");
+            actual.GetUrl.Should().Be($"demand/providers/{ukprn}/courses/{courseId}?location={HttpUtility.UrlEncode(locationParam)}&locationRadius={locationRadius}");
         }
     }
 }

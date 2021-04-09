@@ -18,6 +18,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
             _locationRadius = locationRadius;
         }
 
-        public string GetUrl => $"demand/aggregated/providers/{_ukprn}/courses/{_courseId}?location={HttpUtility.UrlEncode(_location)}&locationRadius={_locationRadius}";
+        public string GetUrl => $"demand/providers/{_ukprn}/courses/{_courseId}?location={HttpUtility.UrlEncode(_location)}&locationRadius={_locationRadius}";
     }
 }
