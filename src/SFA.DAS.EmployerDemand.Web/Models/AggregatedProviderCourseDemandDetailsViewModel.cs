@@ -1,13 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
     public class AggregatedProviderCourseDemandDetailsViewModel
     {
+        private const string AllEnglandKey = "1000";
         public TrainingCourseViewModel Course { get ; set ; }
-        public IEnumerable<ProviderCourseDemandDetailsViewModel> CourseDemandDetailsList { get ; set ; }
+        public IReadOnlyList<ProviderCourseDemandDetailsViewModel> CourseDemandDetailsList { get ; set ; }
         public bool ShowFilterOptions => ShouldShowFilterOptions();
         public string Location { get ; set ; }
 
@@ -22,7 +24,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             return new AggregatedProviderCourseDemandDetailsViewModel
             {
                 Course = source.Course,
-                CourseDemandDetailsList = source.CourseDemandDetailsList.Select(c=>(ProviderCourseDemandDetailsViewModel)c),
+                CourseDemandDetailsList = source.CourseDemandDetailsList.Select(c=>(ProviderCourseDemandDetailsViewModel)c).ToList(),
                 Location = source.SelectedLocation?.Name,
                 SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key
             };
@@ -42,13 +44,30 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 {"25", "25 miles"},
                 {"50", "50 miles"},
                 {"80", "80 miles"},
-                {"1000", "England"},
+                {AllEnglandKey, "England"},
             };
         }
 
-        private static string BuildCountDescription()
+        private string BuildCountDescription()
         {
-            return "todo";
+            var countDescription = new StringBuilder();
+
+            countDescription.Append($"{CourseDemandDetailsList.Count} employer");
+            if (CourseDemandDetailsList.Count != 1)
+            {
+                countDescription.Append("s");
+            }
+            countDescription.Append(" within ");
+            if (SelectedRadius == AllEnglandKey)
+            {
+                countDescription.Append("England.");
+            }
+            else
+            {
+                countDescription.Append($"{SelectedRadius} miles of {Location}.");
+            }
+
+            return countDescription.ToString();
         }
     }
 }
