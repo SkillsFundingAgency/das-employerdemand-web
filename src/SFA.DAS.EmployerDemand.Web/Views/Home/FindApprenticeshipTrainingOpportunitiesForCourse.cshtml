@@ -1,5 +1,5 @@
 @using SFA.DAS.EmployerDemand.Web.Infrastructure
-@model SFA.DAS.EmployerDemand.Web.Models.AggregatedProviderCourseDemandViewModel
+@model SFA.DAS.EmployerDemand.Web.Models.AggregatedProviderCourseDemandDetailsViewModel
 @{
     Layout = "_LayoutProvider";
     ViewData["Title"] = "Find apprenticeship training opportunities";
@@ -10,63 +10,32 @@
         <div class="govuk-grid-column-two-thirds">
     
             <h1 class="govuk-heading-xl">
-                Find employers that need a training provider
+                <span class="govuk-caption-xl">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></span>
+                Which employers are you interested in?
             </h1>
-            @if (Model.TotalResults == 0)
-            {
-                <p class="govuk-body">No employers are sharing their interest in apprenticeship training.</p>
-                <p class="govuk-body govuk-!-margin-bottom-8">When an employer shares their interest, you can view them here.</p>    
-            }
-            else
-            {
-                <p class="govuk-body">Employers are trying to find a training provider for the following apprenticeship training courses.</p>
-                <p class="govuk-body govuk-!-margin-bottom-8">We can share your contact details with employers that you’re interested in.</p>
-            }
         </div>
     </div>
-            
-    @if (Model.TotalResults != 0)
-    {
     <div class="govuk-grid-row">
-        <div class="govuk-grid-column-one-third">
-            <div class="das-show-hide" data-module="das-show-hide">
-                <div class="das-filter das-!-show--from-tablet" id="fat-filter" tabindex="0">
-                    <div class="das-filter__header">
-                        <h2 class="das-filter__heading">Filter</h2>
+        <div class="govuk-grid-column-two-thirds">
+            <div class="das-highlight" id="location-filter" tabindex="0">
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-two-thirds">
+                        <h3 class="govuk-heading-s govuk-!-margin-bottom-2">Filter employers by location</h3>
                     </div>
-                    @if (Model.ShowFilterOptions)
-                    {
-                    <div class="das-filter__selected-filters">
-                        <div class="das-filter__selected-header">
-                            <h3 class="das-filter__selected-heading">Selected filters</h3>
-                            <a class="das-filter__selected-action govuk-link govuk-link--no-visited-state" asp-route="@RouteNames.ProviderDashboard">Clear <span class="govuk-visually-hidden">the selected filters</span></a>
-                        </div>
-                        @if (!string.IsNullOrEmpty(Model.Location))
-                        {
-                            <h4 class="das-filter__selected-sub-heading">Location</h4>
-                            <a asp-querystring="@Model.ClearLocationLink" title="Clear this filter '@Model.Location'" class="das-filter__tag das-breakable">&lsquo;@Model.Location&rsquo;<br>(within @(Model.LocationRadius[Model.SelectedRadius]))</a>
-                        }
-                        @if (!string.IsNullOrEmpty(Model.SelectedCourse))
-                        {
-                            <h4 class="das-filter__selected-sub-heading">Courses</h4>
-                            <a asp-querystring="@Model.ClearCourseLink" title="Clear this filter '@Model.SelectedCourse'" class="das-filter__tag das-breakable">&lsquo;@Model.SelectedCourse&rsquo;</a>
-                        }
-                    </div>
-                    }
-                    <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
-                        <form asp-route="@RouteNames.ProviderDashboard" method="GET">
-                            
-                            <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
-                            <div class="govuk-form-group govuk-!-margin-bottom-3">
-                            	<label class="govuk-label govuk-label--m govuk-!-margin-bottom-0" for="search-location">
-                            		Apprenticeship Location
-                            	</label>
-                            	<span id="search-location-hint" class="govuk-hint">
-                            		Enter a town, city or postcode
-                            	</span>
+                </div>
+                <div class="govuk-grid-row">
+                    <form asp-route="@RouteNames.ProviderDashboard" asp-route-courseid="@Model.Course.Id" method="GET">
+                        <div class="govuk-grid-column-two-thirds">
+                            <div class="govuk-form-group govuk-!-margin-bottom-5">
+                                <label class="govuk-label govuk-label--m govuk-!-margin-bottom-0" for="search-location">
+                                    Enter a town, city or postcode
+                                </label>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="false" data-default-value="@Model.Location"  aria-describedby="search-location-hint">
+                                <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                             </div>
-                            <div class="govuk-form-group">
+                        </div>
+                        <div class="govuk-grid-column-one-quarter">
+                            <div class="govuk-form-group govuk-!-margin-bottom-5">
                                 <label class="govuk-label" for="radius">
                                     Radius
                                 </label>
@@ -77,61 +46,44 @@
                                     }
                                 </select>
                             </div>
-                            <div class="govuk-form-group">
-                                <label for="SelectedCourseId" class="govuk-label govuk-label--m">Apprenticeship training course</label>
-                                <select id="SelectedCourseId" name="SelectedCourseId" class="govuk-select das-autocomplete">
-                                    <option value="">Select an apprenticeship training course</option>
-                                    @foreach (var course in Model.Courses)
-                                    {
-                                        <option value="@course.Id">@course.TitleAndLevel</option>
-                                    }
-                                </select>
-                            </div>
-                            <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
-                <button class="govuk-button das-filter__toggle das-show-hide__button das-!-show--mobile" data-aria-controls="fat-filter@(Model.ShowFilterOptions ? "-options" : "")" data-button-string="filter @(Model.ShowFilterOptions ? " options" : "")" data-focus-id="fat-filter">Show/hide</button>
-            </div>
-        </div>
-        <div class="govuk-grid-column-two-thirds">
-            <p class="govuk-body govuk-!-margin-bottom-6">Sorted by:
-                <span class="govuk-!-font-weight-bold">Course name</span>
-            </p>
-
-            <h2 class="govuk-heading-m">@Model.TotalFiltered result@(Model.TotalFiltered != 1 ? "s":"")</h2>
-            <hr class="govuk-section-break govuk-section-break--visible">
-
-            <div class="das-search-results">
-                <ol class="das-search-results__list">
-                    @foreach (var courseDemand in Model.CourseDemands)
-                    {
-                        <li class="das-search-results__list-item">
-                            <div class="govuk-grid-row">
-                                <div class="govuk-grid-column-two-thirds">
-                                    <h2 class="govuk-heading-m das-search-results__heading">
-                                        @courseDemand.Course.Title <span class="das-no-wrap">(level @courseDemand.Course.Level)</span>
-                                    </h2>
-                                    <dl class="das-definition-list das-definition-list--meta govuk-!-margin-bottom-2">
-                                        <dt class="das-definition-list__title">Apprenticeship category</dt>
-                                        <dd class="das-definition-list__definition govuk-!-margin-bottom-1">@courseDemand.Course.Sector</dd>
-                                        <dt class="das-definition-list__title">Apprentices</dt>
-                                        <dd class="das-definition-list__definition govuk-!-margin-bottom-1">@courseDemand.NumberOfApprentices</dd>
-                                        <dt class="das-definition-list__title">Employers</dt>
-                                        <dd class="das-definition-list__definition">@courseDemand.NumberOfEmployers</dd>
-                                    </dl>
-                                </div>
-                                <div class="govuk-grid-column-one-third das-!-text-align-right--from-tablet">
-                                    <a href="#" class="govuk-link govuk-link--no-visited-state govuk-body">View employers <span class="govuk-visually-hidden">looking for training providers for @courseDemand.Course.Title</span></a>
-                                </div>
-                            </div>
-                        </li>
-                    }
-                </ol>
             </div>
         </div>
     </div>
-    }
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
             
-          
+            <p class="govuk-body">Filters</p>
+            <p class="govuk-body">@Model.CountDescription</p>
+
+            <form>
+                <div class="govuk-form-group">
+                    <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                            <p class="govuk-body">Select all employers that apply.</p>
+                        </legend>
+                        <div class="govuk-checkboxes">
+                            @foreach (var employerDemand in Model.CourseDemandDetailsList)
+                            {
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="@employerDemand.DemandId" name="employerDemand" type="checkbox" value="@employerDemand.DemandId">
+                                    <label class="govuk-label govuk-checkboxes__label" for="@employerDemand.DemandId">
+                                        <span class="govuk-!-font-weight-bold">Employer</span>
+                                        <br/>
+                                        @employerDemand.Location.Name
+                                        <br/>
+                                        @employerDemand.NumberOfApprentices apprentices
+                                    </label>
+                                </div>
+                            }
+                        </div>
+
+                    </fieldset>
+                </div>
+                <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+            </form>
+        </div>
+    </div>
 </main>

@@ -14,6 +14,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string ClearLocationLink => "";
         public string SelectedRadius { get ; set ; }
         public Dictionary<string, string> LocationRadius => BuildLocationRadiusList();
+        public string CountDescription => BuildCountDescription();
+
         public static implicit operator AggregatedProviderCourseDemandDetailsViewModel(GetProviderEmployerDemandDetailsQueryResult source)
         {
             var locationList = BuildLocationRadiusList();
@@ -42,6 +44,11 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 {"80", "80 miles"},
                 {"1000", "England"},
             };
+        }
+
+        private static string BuildCountDescription()
+        {
+            return "todo";
         }
     }
 }
