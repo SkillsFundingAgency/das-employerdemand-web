@@ -27,7 +27,7 @@
                     <form asp-route="@RouteNames.ProviderDashboard" asp-route-courseid="@Model.Course.Id" method="GET">
                         <div class="govuk-grid-column-two-thirds">
                             <div class="govuk-form-group govuk-!-margin-bottom-5">
-                                <label class="govuk-label govuk-label--m govuk-!-margin-bottom-0" for="search-location">
+                                <label class="govuk-label govuk-!-margin-bottom-0" for="search-location">
                                     Enter a town, city or postcode
                                 </label>
                                 <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="false" data-default-value="@Model.Location"  aria-describedby="search-location-hint">

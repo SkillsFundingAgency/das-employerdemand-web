@@ -5,7 +5,7 @@ using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
 using SFA.DAS.EmployerDemand.Web.Models;
 
-namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
+namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDemandDetailsViewModelTests
 {
     public class WhenCastingFromMediatorTypeToAggregatedProviderCourseDemandDetailsViewModel
     {

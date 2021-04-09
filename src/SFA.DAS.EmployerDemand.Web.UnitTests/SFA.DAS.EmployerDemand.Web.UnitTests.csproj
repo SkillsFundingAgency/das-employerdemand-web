@@ -24,8 +24,4 @@
       <ProjectReference Include="..\SFA.DAS.EmployerDemand.Web\SFA.DAS.EmployerDemand.Web.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Models\AggregatedProviderCourseDemandDetailsViewModelTests\" />
-    </ItemGroup>
-
 </Project>
