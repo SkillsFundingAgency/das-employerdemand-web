@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
@@ -13,10 +14,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly Domain.Configuration.EmployerDemand _config;
 
-        public HomeController (IMediator mediator)
+        public HomeController (IMediator mediator, IOptions<Domain.Configuration.EmployerDemand> config)
         {
             _mediator = mediator;
+            _config = config.Value;
         }
         
         [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
@@ -40,7 +43,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             });
 
             var model = (AggregatedProviderCourseDemandViewModel) result;
-            
+            ViewData["ProviderDashboard"] = _config.ProviderPortalUrl;
             return View(model);
         }
     }

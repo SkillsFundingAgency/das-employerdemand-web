@@ -46,7 +46,7 @@
 
 </head>
 
-<body class="govuk-template__body " data-shortlistcount="@(ViewData["ShortlistItemCount"] ?? 0)">
+<body class="govuk-template__body " >
 
 <!-- Google Tag Manager (noscript) -->
 <noscript>
@@ -138,23 +138,33 @@
 </div>
 
 <div class="govuk-width-container">
-    @if (Context.GetRouteData().Values["Controller"].Equals("Error"))
+    @if (Context.GetRouteData().Values["Controller"].Equals("Home") && Context.GetRouteData().Values["Action"].Equals("FindApprenticeshipTrainingOpportunities"))
     {
-        <a class="govuk-back-link"
-           asp-route="@RouteNames.ServiceStart"
-           asp-all-route-data="@backRouteData">Home</a>
+        <div class="govuk-breadcrumbs">
+            <ol class="govuk-breadcrumbs__list">
+                <li class="govuk-breadcrumbs__list-item">
+                    <a id="home-breadcrumb" class="govuk-breadcrumbs__link" href="@ViewData["ProviderDashboard"]">Home</a>
+                </li>
+            </ol>
+        </div>
     }
-    else 
+    else if (Context.GetRouteData().Values["Controller"].Equals("Error"))
     {
-        <div class="das-js-back-link-or-home">
-            <div class="govuk-breadcrumbs">
-                <ol class="govuk-breadcrumbs__list">
-                    <li class="govuk-breadcrumbs__list-item">
-                        <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home</a>
-                    </li>
-                </ol>
-            </div>
-        </div>    
+        <a class="govuk-link govuk-link--no-visited-state"
+            asp-route="@RouteNames.ServiceStart"
+            asp-all-route-data="@backRouteData">Home</a>
+    }
+    else
+    {
+    <div class="das-js-back-link-or-home">
+        <div class="govuk-breadcrumbs">
+            <ol class="govuk-breadcrumbs__list">
+                <li class="govuk-breadcrumbs__list-item">
+                    <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home</a>
+                </li>
+            </ol>
+        </div>
+    </div>
     }
     @RenderBody()
 
