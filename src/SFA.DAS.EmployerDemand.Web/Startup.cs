@@ -117,6 +117,9 @@ namespace SFA.DAS.EmployerDemand.Web
             services.AddApplicationInsightsTelemetry(_configuration["APPINSIGHTS_INSTRUMENTATIONKEY"]);
 
             services.AddLogging();
+#if DEBUG
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+#endif
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

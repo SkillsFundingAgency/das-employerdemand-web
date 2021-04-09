@@ -1,0 +1,96 @@
+{
+  "aggregatedCourseDemands": [
+    {
+      "trainingCourse": {
+        "id": 2,
+        "title": "Software developer",
+        "level": 4,
+        "sector": "Digital"
+      },
+      "apprenticesCount": 10,
+      "employersCount": 2
+    },
+    {
+      "trainingCourse": {
+        "id": 8,
+        "title": "Financial services administrator",
+        "level": 2,
+        "sector": "Business and administration"
+      },
+      "apprenticesCount": 20,
+      "employersCount": 12
+    },
+    {
+      "trainingCourse": {
+        "id": 9,
+        "title": "Control / technical support engineer (degree)",
+        "level": 6,
+        "sector": "Engineering and manufacturing"
+      },
+      "apprenticesCount": 3,
+      "employersCount": 1
+    }
+  ],
+  "trainingCourses": [
+    {
+      "id": 1,
+      "title": "Network engineer",
+      "level": 4
+    },
+    {
+      "id": 2,
+      "title": "Software developer",
+      "level": 4
+    },
+    {
+      "id": 5,
+      "title": "Installation electrician / maintenance electrician",
+      "level": 3
+    },
+    {
+      "id": 6,
+      "title": "Power network craftsperson",
+      "level": 3
+    },
+    {
+      "id": 8,
+      "title": "Financial services administrator",
+      "level": 3
+    },
+    {
+      "id": 9,
+      "title": "Control / technical support engineer (degree)",
+      "level": 6
+    },
+    {
+      "id": 10,
+      "title": "Electrical / electronic technical support engineer (degree)",
+      "level": 6
+    },
+    {
+      "id": 11,
+      "title": "Manufacturing engineer (degree)",
+      "level": 6
+    },
+    {
+      "id": 12,
+      "title": "Product design and development engineer (degree)",
+      "level": 6
+    },
+    {
+      "id": 14,
+      "title": "Laboratory technician",
+      "level": 3
+    }
+  ],
+  "total": 10,
+  "totalFiltered": 10,
+  "location": {
+    "name":"Camden, Camden",
+    "location": {
+      "geoPoint": [
+        51.289916,
+        -0.773876
+      ]}
+  }
+}
