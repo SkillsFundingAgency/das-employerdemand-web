@@ -1,0 +1,77 @@
+{
+  "providerEmployerDemandDetailsList": [
+    {
+      "id": "4fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "apprenticesCount": 10,
+      "location": {
+        "location": {
+          "geoPoint": [
+            51.688534,
+            -1.771217
+          ]
+        },
+        "name": "Lechlade, Kempsford & Fairford South, Gloucestershire"
+      }
+    },
+    {
+      "id": "4fa86f64-5717-4562-b3fc-2c963f66afa6",
+      "apprenticesCount": 6,
+      "location": {
+        "location": {
+          "geoPoint": [
+            51.688534,
+            -1.771217
+          ]
+        },
+        "name": "Lechlade, Kempsford & Fairford South, Gloucestershire"
+      }
+    },
+    {
+      "id": "4ea86f64-5817-4562-b3fc-2c963f66afa6",
+      "apprenticesCount": 10,
+      "location": {
+        "location": {
+          "geoPoint": [
+            51.688534,
+            -1.781217
+          ]
+        },
+        "name": "Lechlade, Kempsford & Fairford South, Gloucestershire"
+      }
+    },
+    {
+      "id": "4fa86f64-5817-4562-b3fc-2c963f66afa6",
+      "apprenticesCount": 0,
+      "location": {
+        "location": {
+          "geoPoint": [
+            51.688534,
+            -1.771217
+          ]
+        },
+        "name": "Lechlade, Kempsford & Fairford South, Gloucestershire"
+      }
+    },
+    {
+      "id": "7a691536-ecb7-4a7d-9639-8768a555e099",
+      "apprenticesCount": 5,
+      "location": {
+        "location": {
+          "geoPoint": [
+            52.911599,
+            -1.480903
+          ]
+        },
+        "name": "Derby, Derbyshire"
+      }
+    }
+  ],
+  "trainingCourse": {
+    "title": "Surveying technician",
+    "level": 3,
+    "id": 51,
+    "sector": "Construction"
+  },
+  "totalFiltered": 5,
+  "total": 5
+}
