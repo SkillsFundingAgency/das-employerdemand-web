@@ -30,6 +30,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             actual.SelectedCourse.Should().BeEmpty();
             actual.ShowFilterOptions.Should().BeFalse();
             actual.SelectedRadius.Should().Be("5");
+            actual.Ukprn.Should().Be(source.Ukprn);
         }
 
         [Test, AutoData]
