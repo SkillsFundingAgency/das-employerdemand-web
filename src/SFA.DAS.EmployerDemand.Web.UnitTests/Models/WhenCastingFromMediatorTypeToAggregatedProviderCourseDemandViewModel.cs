@@ -47,7 +47,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             actual.TotalResults.Should().Be(source.TotalResults);
             actual.TotalFiltered.Should().Be(source.TotalFiltered);
             actual.CourseDemands.Should().BeEquivalentTo(source.CourseDemands);
-            actual.SelectedCourse.Should().Be(source.Courses.Single(c => c.Id.Equals(source.SelectedCourseId)).Title);
+            var selectedCourse = source.Courses.Single(c => c.Id.Equals(source.SelectedCourseId));
+            actual.SelectedCourse.Should().Be($"{selectedCourse.Title} (level {selectedCourse.Level})");
             actual.ShowFilterOptions.Should().BeTrue();
             actual.Location.Should().Be(source.SelectedLocation.Name);
         }

@@ -26,13 +26,14 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public static implicit operator AggregatedProviderCourseDemandViewModel(GetProviderEmployerDemandQueryResult source)
         {
             var locationList = BuildLocationRadiusList();
+            var trainingCourseViewModels = source.Courses.Select(c=>(TrainingCourseViewModel)c).ToList();
             return new AggregatedProviderCourseDemandViewModel
             {
                 SelectedCourseId = source.SelectedCourseId,
-                SelectedCourse = source.SelectedCourseId != null ? source.Courses.SingleOrDefault(c => c.Id.Equals(source.SelectedCourseId))?.Title : "",
+                SelectedCourse = source.SelectedCourseId != null ? trainingCourseViewModels.SingleOrDefault(c => c.Id.Equals(source.SelectedCourseId))?.TitleAndLevel : "",
                 TotalFiltered = source.TotalFiltered,
                 TotalResults = source.TotalResults,
-                Courses = source.Courses.Select(c=>(TrainingCourseViewModel)c),
+                Courses = trainingCourseViewModels,
                 CourseDemands = source.CourseDemands.Select(c=>(ProviderCourseDemandViewModel)c),
                 SelectedLocation = source.SelectedLocation,
                 Location = source.SelectedLocation?.Name,
