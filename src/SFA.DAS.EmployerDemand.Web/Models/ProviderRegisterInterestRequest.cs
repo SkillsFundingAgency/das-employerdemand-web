@@ -11,5 +11,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         [FromRoute]
         public int CourseId { get; set; }
         public List<Guid> EmployerCourseDemands { get; set; }
+        public string Location { get; set; }
+        public string Radius { get; set; }
     }
 }

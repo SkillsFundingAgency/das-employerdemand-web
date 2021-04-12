@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string SelectedRadius { get ; set ; }
         public Dictionary<string, string> LocationRadius => BuildLocationRadiusList();
         public string CountDescription => BuildCountDescription();
+        public IReadOnlyList<Guid> SelectedEmployerDemandIds { get; set; }
 
         public static implicit operator AggregatedProviderCourseDemandDetailsViewModel(GetProviderEmployerDemandDetailsQueryResult source)
         {

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using MediatR;
@@ -48,17 +50,17 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}", Name = RouteNames.ProviderDemandDetails)]
-        public async Task<IActionResult> FindApprenticeshipTrainingOpportunitiesForCourse(int ukprn, int courseId, [FromQuery]string location, [FromQuery]string radius)
+        public async Task<IActionResult> FindApprenticeshipTrainingOpportunitiesForCourse(
+            int ukprn, 
+            int courseId, 
+            [FromQuery]string location, 
+            [FromQuery]string radius)
         {
-            var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
-            {
-                Ukprn = ukprn,
-                CourseId = courseId,
-                Location = location,
-                LocationRadius = radius
-            });
-
-            var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
+            var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
+                ukprn,
+                courseId,
+                location,
+                radius);
             
             return View(model);
         }
@@ -84,9 +86,37 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 {
                     ModelState.AddModelError(member.Split('|')[0], member.Split('|')[1]);
                 }
+
+                var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
+                    request.Ukprn,
+                    request.CourseId,
+                    request.Location,
+                    request.Radius,
+                    request.EmployerCourseDemands);
                 
-                return View("FindApprenticeshipTrainingOpportunitiesForCourse", new AggregatedProviderCourseDemandDetailsViewModel());
+                return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
+        }
+
+        private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
+            int ukprn,
+            int courseId,
+            string location,
+            string radius,
+            IReadOnlyList<Guid> selectedEmployerDemandIds = null)
+        {
+            var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
+            {
+                Ukprn = ukprn,
+                CourseId = courseId,
+                Location = location,
+                LocationRadius = radius
+            });
+
+            var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
+            model.SelectedEmployerDemandIds = selectedEmployerDemandIds;
+
+            return model;
         }
     }
 }
