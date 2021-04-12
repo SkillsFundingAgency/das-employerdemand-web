@@ -75,10 +75,10 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 var result = await _mediator.Send(new CreateCachedProviderInterestCommand
                 {
                     Ukprn = request.Ukprn,
-                    DemandIds = request.EmployerCourseDemands
+                    EmployerDemandIds = request.EmployerDemandIds
                 });
 
-                return RedirectToRoute(RouteNames.ProviderDashboard);
+                return RedirectToRoute(RouteNames.ProviderDashboard, new {request.Ukprn});
             }
             catch (ValidationException e)
             {
@@ -92,7 +92,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     request.CourseId,
                     request.Location,
                     request.Radius,
-                    request.EmployerCourseDemands);
+                    request.EmployerDemandIds);
                 
                 return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
@@ -114,7 +114,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             });
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
-            model.SelectedEmployerDemandIds = selectedEmployerDemandIds;
+            model.SelectedEmployerDemandIds = selectedEmployerDemandIds ?? new List<Guid>();
 
             return model;
         }

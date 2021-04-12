@@ -43,7 +43,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             Assert.IsNotNull(actual);
             var actualModel = actual.Model as AggregatedProviderCourseDemandDetailsViewModel;
             Assert.IsNotNull(actualModel);
-            actualModel.Should().BeEquivalentTo((AggregatedProviderCourseDemandDetailsViewModel)mediatorResult);
+            actualModel.Should().BeEquivalentTo((AggregatedProviderCourseDemandDetailsViewModel)mediatorResult, options => 
+                options.Excluding(model => model.SelectedEmployerDemandIds));
         }
     }
 }

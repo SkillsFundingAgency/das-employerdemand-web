@@ -47,7 +47,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             Assert.IsNotNull(actual);
             actual.ViewName.Should().Be("FindApprenticeshipTrainingOpportunitiesForCourse");
             var model = actual.Model as AggregatedProviderCourseDemandDetailsViewModel;
-            model.SelectedEmployerDemandIds.Should().BeEquivalentTo(request.EmployerCourseDemands);
+            model.SelectedEmployerDemandIds.Should().BeEquivalentTo(request.EmployerDemandIds);
             model.Should().BeEquivalentTo((AggregatedProviderCourseDemandDetailsViewModel)resultForGet, options => options.Excluding(viewModel => viewModel.SelectedEmployerDemandIds));
         }
     }

@@ -61,21 +61,21 @@
             <form asp-route="@RouteNames.PostProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="POST">
                 <input type="hidden" id="hidden_location" name="location" value="@Model.Location"/>
                 <input type="hidden" id="hidden_radius" name="radius" value="@Model.SelectedRadius"/>
-                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("DemandIds") && ViewData.ModelState["DemandIds"].Errors.Any()? "govuk-form-group--error" : "")">
+                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("EmployerDemandIds") && ViewData.ModelState["EmployerDemandIds"].Errors.Any()? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
                         <p class="govuk-body">Select all employers that apply.</p>
-                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("DemandIds"))
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("EmployerDemandIds"))
                         {
                             <span id="demandids-error" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["DemandIds"].Errors.First().ErrorMessage
+                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["EmployerDemandIds"].Errors.First().ErrorMessage
                             </span>
                         }
-                        <div class="govuk-checkboxes">
+                        <div class="govuk-checkboxes" id="EmployerDemandIds">
                             @foreach (var employerDemand in Model.CourseDemandDetailsList)
                             {
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input" id="@employerDemand.DemandId" name="employerDemand" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
-                                    <label class="govuk-label govuk-checkboxes__label" for="@employerDemand.DemandId">
+                                    <input class="govuk-checkboxes__input" id="EmployerDemandIds-@employerDemand.DemandId" name="EmployerDemandIds" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
+                                    <label class="govuk-label govuk-checkboxes__label" for="EmployerDemandIds-@employerDemand.DemandId">
                                         <span class="govuk-!-font-weight-bold">Employer</span>
                                         <br/>
                                         @employerDemand.Location.Name

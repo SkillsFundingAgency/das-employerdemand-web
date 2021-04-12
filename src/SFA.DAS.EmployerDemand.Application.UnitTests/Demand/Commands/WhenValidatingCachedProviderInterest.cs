@@ -27,7 +27,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         public async Task And_Has_No_Demands_Then_Not_Invalid(CreateCachedProviderInterestCommand command)
         {
             //Arrange
-            command.DemandIds = new List<Guid>();
+            command.EmployerDemandIds = new List<Guid>();
             var validator = new CreateProviderInterestCommandValidator();
             
             //Act
@@ -35,8 +35,8 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
 
             //Assert
             actual.IsValid().Should().BeFalse();
-            actual.ValidationDictionary.Should().ContainKey(nameof(command.DemandIds));
-            actual.ValidationDictionary[nameof(command.DemandIds)].Should()
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.EmployerDemandIds));
+            actual.ValidationDictionary[nameof(command.EmployerDemandIds)].Should()
                 .Be("Select the employers you're interested in");
         }
     }
