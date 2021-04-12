@@ -68,7 +68,7 @@
                             @foreach (var employerDemand in Model.CourseDemandDetailsList)
                             {
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input" id="@employerDemand.DemandId" name="employerDemand" type="checkbox" value="@employerDemand.DemandId">
+                                    <input class="govuk-checkboxes__input" id="@employerDemand.DemandId" name="employerDemand" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
                                     <label class="govuk-label govuk-checkboxes__label" for="@employerDemand.DemandId">
                                         <span class="govuk-!-font-weight-bold">Employer</span>
                                         <br/>
