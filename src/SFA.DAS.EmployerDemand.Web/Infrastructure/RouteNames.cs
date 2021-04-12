@@ -13,6 +13,7 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         
         public const string ProviderDashboard = "provider-demand-dashboard";
         public const string ProviderDemandDetails = "provider-demand-details";
+        public const string PostProviderDemandDetails = "post-provider-demand-details";
         public const string ProviderSignOut = "provider-sign-out";
 
     }

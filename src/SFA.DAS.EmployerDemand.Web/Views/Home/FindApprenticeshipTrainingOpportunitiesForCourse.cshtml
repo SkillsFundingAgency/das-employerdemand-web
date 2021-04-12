@@ -8,7 +8,7 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-    
+            <partial name="_pageErrorsOverview" />
             <h1 class="govuk-heading-xl">
                 <span class="govuk-caption-xl">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></span>
                 Which employers are you interested in?
@@ -58,8 +58,10 @@
                 <p class="govuk-body">@Model.CountDescription</p>
             }
 
-            <form>
-                <div class="govuk-form-group">
+            <form asp-route="@RouteNames.PostProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="POST">
+                <input type="hidden" id="hidden_location" name="location" value="@Model.Location"/>
+                <input type="hidden" id="hidden_radius" name="radius" value="@Model.SelectedRadius"/>
+                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any()? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
                         <p class="govuk-body">Select all employers that apply.</p>
                         <div class="govuk-checkboxes">

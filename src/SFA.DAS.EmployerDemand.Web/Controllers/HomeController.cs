@@ -1,7 +1,9 @@
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
@@ -59,6 +61,32 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
             
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}", Name = RouteNames.PostProviderDemandDetails)]
+        public async Task<IActionResult> PostFindApprenticeshipTrainingOpportunitiesForCourse(ProviderRegisterInterestRequest request)
+        {
+            try
+            {
+                var result = await _mediator.Send(new CreateCachedProviderInterestCommand
+                {
+                    Ukprn = request.Ukprn,
+                    DemandIds = request.EmployerCourseDemands
+                });
+
+                return RedirectToRoute(RouteNames.ProviderDashboard);
+            }
+            catch (ValidationException e)
+            {
+                foreach (var member in e.ValidationResult.MemberNames)
+                {
+                    ModelState.AddModelError(member.Split('|')[0], member.Split('|')[1]);
+                }
+                
+                return View("FindApprenticeshipTrainingOpportunitiesForCourse", new AggregatedProviderCourseDemandDetailsViewModel());
+            }
         }
     }
 }
