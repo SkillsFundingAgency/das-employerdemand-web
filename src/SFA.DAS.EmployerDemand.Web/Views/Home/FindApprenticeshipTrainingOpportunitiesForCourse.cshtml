@@ -61,9 +61,15 @@
             <form asp-route="@RouteNames.PostProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="POST">
                 <input type="hidden" id="hidden_location" name="location" value="@Model.Location"/>
                 <input type="hidden" id="hidden_radius" name="radius" value="@Model.SelectedRadius"/>
-                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any()? "govuk-form-group--error" : "")">
+                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("DemandIds") && ViewData.ModelState["DemandIds"].Errors.Any()? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
                         <p class="govuk-body">Select all employers that apply.</p>
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("DemandIds"))
+                        {
+                            <span id="demandids-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["DemandIds"].Errors.First().ErrorMessage
+                            </span>
+                        }
                         <div class="govuk-checkboxes">
                             @foreach (var employerDemand in Model.CourseDemandDetailsList)
                             {
