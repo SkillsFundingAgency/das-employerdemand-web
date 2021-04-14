@@ -57,7 +57,9 @@
                 <p class="govuk-body"><a asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" class="govuk-link govuk-link--no-visited-state">Clear filters</a></p>
                 <p class="govuk-body">@Model.CountDescription</p>
             }
-
+            
+            @if (Model.CourseDemandDetailsList != null && Model.CourseDemandDetailsList.Count > 0)
+            {
             <form asp-route="@RouteNames.PostProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="POST">
                 <input type="hidden" id="hidden_location" name="location" value="@Model.Location"/>
                 <input type="hidden" id="hidden_radius" name="radius" value="@Model.SelectedRadius"/>
@@ -70,17 +72,17 @@
                                 <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["EmployerDemandIds"].Errors.First().ErrorMessage
                             </span>
                         }
-                        <div class="govuk-checkboxes" id="EmployerDemandIds">
+                        <div class="govuk-checkboxes">
                             @foreach (var employerDemand in Model.CourseDemandDetailsList)
                             {
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input" id="EmployerDemandIds-@employerDemand.DemandId" name="EmployerDemandIds" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
+                                    <input class="govuk-checkboxes__input" id="EmployerDemandIds" name="EmployerDemandIds" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
                                     <label class="govuk-label govuk-checkboxes__label" for="EmployerDemandIds-@employerDemand.DemandId">
                                         <span class="govuk-!-font-weight-bold">Employer</span>
                                         <br/>
                                         @employerDemand.Location.Name
                                         <br/>
-                                        @employerDemand.NumberOfApprentices apprentices@(employerDemand.NumberOfApprentices != 1 ? "s":"")
+                                        @employerDemand.NumberOfApprentices apprentice@(employerDemand.NumberOfApprentices != 1 ? "s":"")
                                     </label>
                                 </div>
                             }
@@ -90,6 +92,7 @@
                 </div>
                 <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
             </form>
+            }
         </div>
     </div>
 </main>
