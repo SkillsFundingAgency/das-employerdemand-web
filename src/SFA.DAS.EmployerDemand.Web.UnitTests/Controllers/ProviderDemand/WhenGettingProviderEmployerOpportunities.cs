@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
@@ -18,10 +19,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
     {
         [Test, MoqAutoData]
         public async Task Then_Mediator_Is_Called_With_The_Query(
-            int ukprn,
-            int? courseId,
-            string location,
-            string radius,
+            FindApprenticeshipTrainingOpportunitiesRequest request,
             string portalUrl,
             GetProviderEmployerDemandQueryResult mediatorResult,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
@@ -32,14 +30,15 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             config.Object.Value.ProviderPortalUrl = portalUrl;
             mediator.Setup(x =>
                 x.Send(It.Is<GetProviderEmployerDemandQuery>(c =>
-                    c.Ukprn.Equals(ukprn) 
-                    && c.CourseId.Equals(courseId) 
-                    && c.Location.Equals(location)
-                    && c.LocationRadius.Equals(radius)
+                    c.Ukprn.Equals(request.Ukprn) 
+                    && c.CourseId.Equals(request.SelectedCourseId) 
+                    && c.Location.Equals(request.Location)
+                    && c.LocationRadius.Equals(request.Radius)
+                    && c.Sectors.Equals(request.Sectors)
                     ), CancellationToken.None)).ReturnsAsync(mediatorResult);
             
             //Act
-            var actual = await controller.FindApprenticeshipTrainingOpportunities(ukprn, courseId, location, radius) as ViewResult;
+            var actual = await controller.FindApprenticeshipTrainingOpportunities(request) as ViewResult;
 
             //Assert
             Assert.IsNotNull(actual);
