@@ -16,6 +16,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public int FilteredResults { get; set; }
         [JsonProperty("location")]
         public LocationItem Location { get; set; }
+        [JsonProperty("sectors")]
+        public List<Sector> Sectors { get; set; }
     }
 
     public class ProviderEmployerDemandItem

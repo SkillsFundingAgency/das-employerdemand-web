@@ -27,7 +27,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 TotalResults = result.TotalResults,
                 SelectedCourseId = request.CourseId,
                 SelectedLocation = result.Location,
-                SelectedRadius = request.LocationRadius
+                SelectedRadius = request.LocationRadius,
+                Sectors = result.Sectors.Select(c => (Sector) c)
             };
         }
     }

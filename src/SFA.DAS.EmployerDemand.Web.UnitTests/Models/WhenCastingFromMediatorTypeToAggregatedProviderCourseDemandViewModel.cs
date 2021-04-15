@@ -34,6 +34,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             actual.SelectedCourse.Should().BeEmpty();
             actual.ShowFilterOptions.Should().BeFalse();
             actual.SelectedRadius.Should().Be("5");
+            actual.SelectedSectors.Should().BeEmpty();
         }
 
         [Test, AutoData]
