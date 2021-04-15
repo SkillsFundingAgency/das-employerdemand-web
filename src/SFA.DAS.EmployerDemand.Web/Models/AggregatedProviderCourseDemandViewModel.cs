@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Domain.Demand;
@@ -20,7 +22,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
 
         public string ClearCourseLink => BuildClearCourseLink();
         public string ClearLocationLink => BuildClearLocationLink();
-        public string ClearSectorLink => BuildClearSectorLink();
+        public Dictionary<string,string> ClearSectorLink => BuildClearSectorLink();
         public string SelectedRadius { get ; set ; }
         public Dictionary<string, string> LocationRadius => BuildLocationRadiusList();
         private int? SelectedCourseId { get; set; }
@@ -74,24 +76,54 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             return $"?selectedCourseId={SelectedCourseId}";
         }
 
-        private string BuildClearSectorLink()
+        private Dictionary<string, string> BuildClearSectorLink()
         {
-            if (SelectedCourseId == null)
+            var clearFilterLinks = new Dictionary<string, string>();
+            if (SelectedSectors?.FirstOrDefault() == null)
             {
-                if (SelectedLocation == null)
-                {
-                    return "";
-                }
-                return $"?location={HttpUtility.UrlEncode(SelectedLocation.Name)}&radius={SelectedRadius}";
+                return clearFilterLinks;
             }
 
-            if (SelectedLocation == null)
+            var clearFilterString = "";
+
+            if (SelectedCourseId != null)
             {
-                return $"?selectedCourseId={SelectedCourseId}";
+                clearFilterString += $"?selectedCourseId={SelectedCourseId}";
             }
-            return $"?selectedCourseId={SelectedCourseId}&location={HttpUtility.UrlEncode(SelectedLocation.Name)}&radius={SelectedRadius}";
+
+            if (SelectedLocation != null)
+            {
+                clearFilterString +=
+                    $"?location={HttpUtility.UrlEncode(SelectedLocation.Name)}&radius={SelectedRadius}";
+            }
+
+            var separator = "&";
+            if (string.IsNullOrEmpty(clearFilterString))
+            {
+                separator = "?";
+            }
+
+            foreach (var selectedSector in SelectedSectors)
+            {
+                clearFilterString += $"{separator}sectors" + string.Join("&sectors=",
+                    SelectedSectors
+                        .Where(c => !c.Equals(selectedSector,
+                            StringComparison.CurrentCultureIgnoreCase))
+                        .Select(HttpUtility.HtmlEncode));
+
+                var sector =
+                    Sectors.SingleOrDefault(c =>
+                        c.Route.Equals(selectedSector, StringComparison.CurrentCultureIgnoreCase));
+
+                if (sector != null)
+                {
+                    clearFilterLinks.Add(sector.Route, clearFilterString);
+                }
+            }
+
+            return clearFilterLinks;
         }
-        
+
         private static Dictionary<string, string> BuildLocationRadiusList()
         {
             return new Dictionary<string, string>
