@@ -2,8 +2,13 @@
 @model SFA.DAS.EmployerDemand.Web.Models.AggregatedProviderCourseDemandDetailsViewModel
 @{
     Layout = "_LayoutProvider";
-    ViewData["Title"] = "Find apprenticeship training opportunities";
-    ViewData["Description"] = "View apprenticeship training opportunities and share your contact details with employers.";
+    var title = $"{Model.Course.TitleAndLevel} opportunities";
+    if (!ViewData.ModelState.IsValid)
+    {
+        title = $"Error: {title}";
+    }
+    ViewData["Title"] = title;
+    ViewData["Description"] = $"Check employer interest in {Model.Course.TitleAndLevel}.";
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
