@@ -47,7 +47,7 @@
 								<span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.Location)].Errors.First().ErrorMessage
 							</span>
                         }
-						<input type="search" id="search-location" name="location" title="Search" class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any()? "govuk-input--error" : "")" data-submit-on-selection="false" data-default-value="@Model.Location"  aria-describedby="search-location-hint">
+						<input type="search" id="search-location" name="location" title="Search" class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.Location)) && ViewData.ModelState[nameof(Model.Location)].Errors.Any()? "govuk-input--error" : "")" data-submit-on-selection="false" data-default-value="@Model.LocationName"  aria-describedby="search-location-hint">
 			        </div>
         
 			        <!-- Apprentices -->

@@ -1,13 +1,13 @@
 using System;
+using System.Text.RegularExpressions;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
-    public class ConfirmCourseDemandViewModel
+    public class ConfirmCourseDemandViewModel : CourseDemandViewModelBase
     {
         public Guid Id { get; set; }
         public TrainingCourseViewModel TrainingCourse { get; set; }
-        public string LocationName { get ; set ; }
         public bool NumberOfApprenticesKnown { get ; set ; }
         public string NumberOfApprentices { get ; set ; }
         public string OrganisationName { get ; set ; }
@@ -24,7 +24,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             {
                 Id = source.Id,
                 TrainingCourse = source.Course,
-                LocationName = source.LocationItem.Name,
+                Location = source.LocationItem.Name,
                 OrganisationName = source.OrganisationName,
                 ContactEmailAddress = source.ContactEmailAddress,
                 NumberOfApprentices = source.NumberOfApprentices,

@@ -3,7 +3,7 @@ using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
-    public class RegisterCourseDemandViewModel
+    public class RegisterCourseDemandViewModel : CourseDemandViewModelBase
     {
         public Guid? CreateDemandId { get ; set ; }
         public bool? NumberOfApprenticesKnown;
@@ -12,9 +12,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string OrganisationName { get; set; }
         public string ContactEmailAddress { get; set; }
         public string NumberOfApprentices { get; set; }
-        public string Location { get; set; }
-
-
+        
         public static implicit operator RegisterCourseDemandViewModel(RegisterDemandRequest request)
         {
             return new RegisterCourseDemandViewModel

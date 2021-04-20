@@ -17,7 +17,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             
             //Assert
             actual.CreateDemandId.Should().Be(source.Id);
-            actual.Location.Should().Be(source.LocationItem.Name);
+            actual.LocationName.Should().Be(source.LocationItem.Name);
             actual.TrainingCourse.Should().BeEquivalentTo(source.Course);
             actual.Should().BeEquivalentTo(source, options=>options
                 .Excluding(c=>c.LocationItem)
@@ -41,6 +41,31 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             actual.Location.Should().BeNullOrEmpty();
             actual.TrainingCourse.Should().BeEquivalentTo(source.Course);
             
+        }
+        
+        [Test, AutoData]
+        public void Then_If_It_Is_A_Full_Postcode_Only_Postcode_And_Not_DistrictName_Is_Shown(CourseDemandRequest source, string district)
+        {
+            //Arrange
+            var postcode = "CV1 1QT"; 
+            source.LocationItem.Name = $"{postcode}, {district}";
+            //Act
+            var actual = (RegisterCourseDemandViewModel) source;
+            
+            //Assert
+            actual.LocationName.Should().Be(postcode);
+        }
+
+        [Test, AutoData]
+        public void Then_If_No_Location_Returns_Empty_For_Location_Name(CourseDemandRequest source)
+        {
+            //Arrange
+            source.LocationItem = null;
+            //Act
+            var actual = (RegisterCourseDemandViewModel) source;
+            
+            //Assert
+            actual.LocationName.Should().BeEmpty();
         }
     }
 }
