@@ -155,14 +155,13 @@
             asp-route="@RouteNames.ServiceStart"
             asp-all-route-data="@backRouteData">Home</a>
     }
-    else if (ViewData["BackLinkRouteName"] != null) {
-        <a class="govuk-back-link" asp-route="@ViewData["BackLinkRouteName"]">Back</a>
+    else if (ViewData["ShowJSBackLink"] != null) 
+    {
+        <div class="das-js-back-link"></div>
     }
     else
     {
-    <div class="das-js-back-link-or-home">
-
-    </div>
+        <div class="das-js-back-link-or-home"></div>
     }
     @RenderBody()
 
