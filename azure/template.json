@@ -40,13 +40,16 @@
         "sharedFrontEndSubnetResourceId": {
             "type": "string"
         },
+        "frontEndAccessRestrictions": {
+            "type": "array"
+        },
         "providerCustomHostname": {
             "type": "string"
         },
-        "employerCustomHostname": {
+        "customHostname": {
             "type": "string"
         },
-        "employerCertificateName": {
+        "certificateName": {
             "type": "string"
         },
         "providerCertificateName": {
@@ -72,7 +75,7 @@
         "deploymentUrlBase": "https://raw.githubusercontent.com/SkillsFundingAgency/das-platform-building-blocks/master/templates/",
         "resourceNamePrefix": "[toLower(concat('das-', parameters('resourceEnvironmentName'),'-', parameters('serviceName')))]",
         "resourceGroupName": "[concat(variables('resourceNamePrefix'), '-rg')]",
-        "employerAppServiceName": "[concat(variables('resourceNamePrefix'),'ui-as')]",
+        "appServiceName": "[concat(variables('resourceNamePrefix'),'ui-as')]",
         "providerAppServiceName": "[concat(variables('resourceNamePrefix'),'-','prvui-as')]"
     },
     "resources": [
@@ -88,7 +91,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "employer-app-service-certificate",
+            "name": "app-service-certificate",
             "resourceGroup": "[parameters('sharedEnvResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
@@ -98,7 +101,7 @@
                 },
                 "parameters": {
                     "keyVaultCertificateName": {
-                        "value": "[parameters('employerCertificateName')]"
+                        "value": "[parameters('certificateName')]"
                     },
                     "keyVaultName": {
                         "value": "[parameters('sharedKeyVaultName')]"
@@ -112,7 +115,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "employer-application-insights",
+            "name": "application-insights",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
@@ -121,10 +124,10 @@
                 },
                 "parameters": {
                     "appInsightsName": {
-                        "value": "[variables('employerAppServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     },
                     "attachedService": {
-                        "value": "[variables('employerAppServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     }
                 }
             }
@@ -132,7 +135,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "employer-apim-product-subscription",
+            "name": "apim-product-subscription",
             "resourceGroup": "[parameters('sharedApimResourceGroup')]",
             "properties": {
                 "mode": "Incremental",
@@ -145,7 +148,7 @@
                         "value": "[parameters('sharedApimName')]"
                     },
                     "subscriptionName": {
-                        "value": "[variables('employerAppServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     },
                     "subscriptionScope": {
                         "value": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('sharedApimResourceGroup'), '/providers/Microsoft.ApiManagement/service/', parameters('sharedApimName'), '/products/EmployerDemandOuterApi')]"
@@ -156,7 +159,7 @@
         {
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2020-10-01",
-            "name": "employer-app-service",
+            "name": "app-service",
             "resourceGroup": "[variables('resourceGroupName')]",
             "properties": {
                 "mode": "Incremental",
@@ -166,7 +169,7 @@
                 },
                 "parameters": {
                     "appServiceName": {
-                        "value": "[variables('employerAppServiceName')]"
+                        "value": "[variables('appServiceName')]"
                     },
                     "appServicePlanName": {
                         "value": "[parameters('sharedFrontendAppServicePlanName')]"
@@ -194,7 +197,7 @@
                                 },
                                 {
                                     "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
-                                    "value": "[reference('employer-application-insights').outputs.InstrumentationKey.value]"
+                                    "value": "[reference('application-insights').outputs.InstrumentationKey.value]"
                                 },
                                 {
                                     "name": "AuthType",
@@ -217,10 +220,13 @@
 
                     },
                     "customHostName": {
-                        "value": "[parameters('employerCustomHostname')]"
+                        "value": "[parameters('customHostname')]"
                     },
                     "certificateThumbprint": {
-                        "value": "[reference('employer-app-service-certificate').outputs.certificateThumbprint.value]"
+                        "value": "[reference('app-service-certificate').outputs.certificateThumbprint.value]"
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
             }
@@ -361,6 +367,9 @@
                     },
                     "certificateThumbprint": {
                         "value": "[reference('provider-app-service-certificate').outputs.certificateThumbprint.value]"
+                    },
+                    "ipSecurityRestrictions": {
+                        "value": "[parameters('frontEndAccessRestrictions')]"
                     }
                 }
             }
@@ -371,9 +380,9 @@
             "type": "string",
             "value": "[variables('resourceGroupName')]"
         },
-        "EmployerAppServiceName": {
+        "AppServiceName": {
             "type": "string",
-            "value": "[variables('employerAppServiceName')]"
+            "value": "[variables('appServiceName')]"
         },
         "ProviderAppServiceName": {
             "type": "string",
