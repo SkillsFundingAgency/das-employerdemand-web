@@ -24,7 +24,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 Course = result.TrainingCourse,
                 CourseDemandDetailsList = result.ProviderEmployerDemandDetailsList.Select(c => (ProviderCourseDemandDetails) c),
                 SelectedLocation = result.Location,
-                SelectedRadius = request.LocationRadius
+                SelectedRadius = request.LocationRadius,
+                ProviderContactDetails = result.ProviderContactDetails
             };
         }
     }

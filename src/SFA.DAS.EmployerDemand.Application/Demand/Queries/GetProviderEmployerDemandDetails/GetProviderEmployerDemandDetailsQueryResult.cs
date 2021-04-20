@@ -10,5 +10,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public IEnumerable<ProviderCourseDemandDetails> CourseDemandDetailsList { get; set; }
         public Location SelectedLocation { get; set; }
         public string SelectedRadius { get ; set ; }
+        public ProviderContactDetails ProviderContactDetails { get ; set ; }
     }
 }
