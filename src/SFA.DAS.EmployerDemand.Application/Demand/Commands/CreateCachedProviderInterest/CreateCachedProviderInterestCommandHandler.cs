@@ -6,7 +6,8 @@ using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest
 {
-    public class CreateCachedProviderInterestCommandHandler : IRequestHandler<CreateCachedProviderInterestCommand, CreateCachedProviderInterestResult> {
+    public class CreateCachedProviderInterestCommandHandler : IRequestHandler<CreateCachedProviderInterestCommand, CreateCachedProviderInterestResult> 
+    {
         private readonly IValidator<CreateCachedProviderInterestCommand> _validator;
 
         public CreateCachedProviderInterestCommandHandler(IValidator<CreateCachedProviderInterestCommand> validator)

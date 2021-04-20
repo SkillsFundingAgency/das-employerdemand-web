@@ -101,6 +101,27 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}", Name = RouteNames.ConfirmProviderDetails)]
+        public async Task<IActionResult> ConfirmProviderDetails()
+        {
+            return View();
+        }
+        
+        [HttpGet]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/edit/{id}", Name = RouteNames.EditProviderDetails)]
+        public async Task<IActionResult> EditProviderDetails()
+        {
+            return View();
+        }
+        
+        [HttpPost]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/edit/{id}", Name = RouteNames.PostEditProviderDetails)]
+        public async Task<IActionResult> PostEditProviderDetails()
+        {
+            return RedirectToRoute(RouteNames.ConfirmProviderDetails);
+        }
+
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
             int ukprn,
             int courseId,
