@@ -17,7 +17,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         }
         public async Task<GetProviderEmployerDemandQueryResult> Handle(GetProviderEmployerDemandQuery request, CancellationToken cancellationToken)
         {
-            var result = await _demandService.GetProviderEmployerDemand(request.Ukprn, request.CourseId, request.Location, request.LocationRadius);
+            var result = await _demandService.GetProviderEmployerDemand(request.Ukprn, request.CourseId, request.Location, request.LocationRadius, request.Sectors);
 
             return new GetProviderEmployerDemandQueryResult
             {
@@ -28,7 +28,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 SelectedCourseId = request.CourseId,
                 SelectedLocation = result.Location,
                 SelectedRadius = request.LocationRadius,
-                Sectors = result.Sectors.Select(c => (Sector) c)
+                SelectedSectors = result.Sectors.Select(c => c)
             };
         }
     }

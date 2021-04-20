@@ -9,5 +9,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public int? CourseId { get; set; }
         public string Location { get ; set ; }
         public string LocationRadius { get ; set ; }
+        public List<string> Sectors { get; set; }
     }
 }

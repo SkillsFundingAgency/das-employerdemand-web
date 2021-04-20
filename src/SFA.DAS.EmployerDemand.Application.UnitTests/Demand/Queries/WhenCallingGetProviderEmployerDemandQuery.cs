@@ -21,7 +21,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             GetProviderEmployerDemandQueryHandler handler)
         {
             //Arrange
-            service.Setup(x => x.GetProviderEmployerDemand(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
+            service.Setup(x => x.GetProviderEmployerDemand(query.Ukprn, query.CourseId, query.Location, query.LocationRadius, query.Sectors))
                 .ReturnsAsync(response);
             
             //Act
@@ -33,7 +33,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             actual.TotalResults.Should().Be(response.TotalResults);
             actual.CourseDemands.Should().BeEquivalentTo(actual.CourseDemands);
             actual.SelectedCourseId.Should().Be(query.CourseId);
-            actual.Sectors.Should().BeEquivalentTo(response.Sectors);
+            actual.SelectedSectors.Should().BeEquivalentTo(response.Sectors);
         }
     }
 }
