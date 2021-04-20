@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests;
@@ -48,11 +47,11 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
         }
 
-        public async Task<GetProviderEmployerDemandResponse> GetProviderEmployerDemand( int ukprn, int? courseId, string location, string locationRadius, List<string> sectors)
+        public async Task<GetProviderEmployerDemandResponse> GetProviderEmployerDemand( int ukprn, int? courseId, string location, string locationRadius)
         {
             var result =
                 await _apiClient.Get<GetProviderEmployerDemandResponse>(
-                    new GetProviderEmployerDemandRequest(ukprn, courseId, location, locationRadius, sectors));
+                    new GetProviderEmployerDemandRequest(ukprn, courseId, location, locationRadius));
 
             return result;
         }

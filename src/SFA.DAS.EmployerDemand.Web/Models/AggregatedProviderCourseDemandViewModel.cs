@@ -18,16 +18,34 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public bool ShowFilterOptions => ShouldShowFilterOptions();
         public string SelectedCourse { get ; set ; }
         public string Location { get ; set ; }
-        public List<SectorViewModel> Sectors { get; set; }
+        public List<Sector> Sectors { get; set; }
 
         public string ClearCourseLink => BuildClearCourseLink();
         public string ClearLocationLink => BuildClearLocationLink();
         public Dictionary<string,string> ClearSectorLink => BuildClearSectorLink();
         public string SelectedRadius { get ; set ; }
         public Dictionary<string, string> LocationRadius => BuildLocationRadiusList();
-        public int? SelectedCourseId { get; set; }
-        public Location SelectedLocation { get; set; }
+        private int? SelectedCourseId { get; set; }
+        private Location SelectedLocation { get; set; }
         public List<string> SelectedSectors { get; set; }
+        public static implicit operator AggregatedProviderCourseDemandViewModel(GetProviderEmployerDemandQueryResult source)
+        {
+            var locationList = BuildLocationRadiusList();
+            var trainingCourseViewModels = source.Courses.Select(c=>(TrainingCourseViewModel)c).ToList();
+            return new AggregatedProviderCourseDemandViewModel
+            {
+                SelectedCourseId = source.SelectedCourseId,
+                SelectedCourse = source.SelectedCourseId != null ? trainingCourseViewModels.SingleOrDefault(c => c.Id.Equals(source.SelectedCourseId))?.TitleAndLevel : "",
+                TotalFiltered = source.TotalFiltered,
+                TotalResults = source.TotalResults,
+                Courses = trainingCourseViewModels,
+                CourseDemands = source.CourseDemands.Select(c=>(ProviderCourseDemandViewModel)c),
+                SelectedLocation = source.SelectedLocation,
+                Location = source.SelectedLocation?.Name,
+                SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
+                SelectedSectors = source.Sectors.Any() ? source.Sectors.Select(c => c.Route).ToList() : new List<string>()
+            };
+        }
         
         private bool ShouldShowFilterOptions()
         {
@@ -106,7 +124,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             return clearFilterLinks;
         }
 
-        public static Dictionary<string, string> BuildLocationRadiusList()
+        private static Dictionary<string, string> BuildLocationRadiusList()
         {
             return new Dictionary<string, string>
             {

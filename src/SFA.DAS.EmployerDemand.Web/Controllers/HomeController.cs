@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -41,26 +39,10 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 Ukprn = request.Ukprn,
                 CourseId = request.SelectedCourseId,
                 Location = request.Location,
-                LocationRadius = request.Radius,
-                Sectors = request.Sectors
+                LocationRadius = request.Radius
             });
 
-            var locationList = AggregatedProviderCourseDemandViewModel.BuildLocationRadiusList();
-            var model = new AggregatedProviderCourseDemandViewModel
-            {
-                SelectedCourseId = result.SelectedCourseId,
-                SelectedCourse = result.SelectedCourseId != null ? result.Courses.Select(c => (TrainingCourseViewModel)c).ToList().SingleOrDefault(c => c.Id.Equals(result.SelectedCourseId))?.TitleAndLevel : "",
-                TotalFiltered = result.TotalFiltered,
-                TotalResults = result.TotalResults,
-                Courses = result.Courses.Select(c => (TrainingCourseViewModel)c).ToList(),
-                CourseDemands = result.CourseDemands.Select(c => (ProviderCourseDemandViewModel)c),
-                SelectedLocation = result.SelectedLocation,
-                Location = result.SelectedLocation?.Name,
-                SelectedRadius = result.SelectedRadius != null && locationList.ContainsKey(result.SelectedRadius) ? result.SelectedRadius : locationList.First().Key,
-                SelectedSectors = result.SelectedSectors.Any() ? result.SelectedSectors.Select(c => c.Route).ToList() : new List<string>(),
-                Sectors = result.SelectedSectors.Select(sector => new SectorViewModel(sector, request.Sectors)).ToList(),
-            };
-            
+            var model = (AggregatedProviderCourseDemandViewModel) result;
             ViewData["ProviderDashboard"] = _config.ProviderPortalUrl;
             return View(model);
         }

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using AutoFixture.NUnit3;
@@ -22,7 +21,6 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             int? courseId,
             string location,
             string locationRadius,
-            List<string> sectors,
             Guid id,
             GetProviderEmployerDemandResponse response,
             [Frozen] Mock<IApiClient> apiClient,
@@ -35,7 +33,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
                 .ReturnsAsync(response);
             
             //Act
-            var actual = await service.GetProviderEmployerDemand(ukprn, courseId, location, locationRadius, sectors);
+            var actual = await service.GetProviderEmployerDemand(ukprn, courseId, location, locationRadius);
             
             //Act
             actual.Should().BeEquivalentTo(response);
