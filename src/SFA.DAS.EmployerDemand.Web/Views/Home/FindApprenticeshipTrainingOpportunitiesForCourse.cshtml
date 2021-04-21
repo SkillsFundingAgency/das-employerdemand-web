@@ -81,7 +81,7 @@
                             @foreach (var employerDemand in Model.CourseDemandDetailsList)
                             {
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input" id="EmployerDemandIds" name="EmployerDemandIds" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
+                                    <input class="govuk-checkboxes__input" id="EmployerDemandIds-@employerDemand.DemandId" name="EmployerDemandIds" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
                                     <label class="govuk-label govuk-checkboxes__label" for="EmployerDemandIds-@employerDemand.DemandId">
                                         <span class="govuk-!-font-weight-bold">Employer</span>
                                         <br/>
