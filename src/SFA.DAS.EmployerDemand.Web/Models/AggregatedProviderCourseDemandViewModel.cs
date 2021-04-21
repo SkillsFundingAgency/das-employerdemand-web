@@ -6,13 +6,13 @@ using SFA.DAS.EmployerDemand.Domain.Locations;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
-    public class AggregatedProviderCourseDemandViewModel
+    public class AggregatedProviderCourseDemandViewModel : ProviderCourseDemandBaseViewModel
     {
         public IEnumerable<TrainingCourseViewModel> Courses { get ; set ; }
         public int TotalResults { get ; set ; }
         public int TotalFiltered { get ; set ; }
         public IEnumerable<ProviderCourseDemandViewModel> CourseDemands { get ; set ; }
-        public bool ShowFilterOptions => ShouldShowFilterOptions();
+        public override bool ShowFilterOptions => ShouldShowFilterOptions();
         public string SelectedCourse { get ; set ; }
         public string Location { get ; set ; }
         public int Ukprn { get; set; }
@@ -20,7 +20,6 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string ClearCourseLink => BuildClearCourseLink();
         public string ClearLocationLink => BuildClearLocationLink();
         public string SelectedRadius { get ; set ; }
-        public Dictionary<string, string> LocationRadius => BuildLocationRadiusList();
         private int? SelectedCourseId { get; set; }
         private Location SelectedLocation { get; set; }
         public static implicit operator AggregatedProviderCourseDemandViewModel(GetProviderEmployerDemandQueryResult source)
@@ -64,19 +63,6 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 return "";    
             }
             return $"?selectedCourseId={SelectedCourseId}";
-        }
-        
-        private static Dictionary<string, string> BuildLocationRadiusList()
-        {
-            return new Dictionary<string, string>
-            {
-                {"5", "5 miles"},
-                {"10", "10 miles"},
-                {"25", "25 miles"},
-                {"50", "50 miles"},
-                {"80", "80 miles"},
-                {"1000", "England"},
-            };
         }
     }
 }

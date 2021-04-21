@@ -20,6 +20,11 @@
     "id": 51,
     "sector": "Construction"
   },
+  "providerContactDetails": {
+    "emailAddress": "testperson@test.com",
+    "telephoneNumber": "01234 445566",
+    "website": "test@test.com"
+  },
   "totalFiltered": 1,
   "total": 5,
   "location": {

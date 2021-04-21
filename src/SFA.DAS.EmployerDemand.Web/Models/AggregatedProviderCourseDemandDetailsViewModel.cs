@@ -6,19 +6,18 @@ using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDeman
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
-    public class AggregatedProviderCourseDemandDetailsViewModel
+    public class AggregatedProviderCourseDemandDetailsViewModel : ProviderCourseDemandBaseViewModel
     {
-        private const string AllEnglandKey = "1000";
         public TrainingCourseViewModel Course { get ; set ; }
         public IReadOnlyList<ProviderCourseDemandDetailsViewModel> CourseDemandDetailsList { get ; set ; }
-        public bool ShowFilterOptions => ShouldShowFilterOptions();
+        public override bool ShowFilterOptions => ShouldShowFilterOptions();
         public string Location { get ; set ; }
-
-        public string ClearLocationLink => "";
         public string SelectedRadius { get ; set ; }
-        public Dictionary<string, string> LocationRadius => BuildLocationRadiusList();
         public string CountDescription => BuildCountDescription();
         public IReadOnlyList<Guid> SelectedEmployerDemandIds { get; set; }
+        public string ProviderEmail { get ; set ; }
+        public string ProviderTelephoneNumber { get ; set ; }
+        public string ProviderWebsite { get ; set ; }
 
         public static implicit operator AggregatedProviderCourseDemandDetailsViewModel(GetProviderEmployerDemandDetailsQueryResult source)
         {
@@ -28,26 +27,16 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Course = source.Course,
                 CourseDemandDetailsList = source.CourseDemandDetailsList.Select(c=>(ProviderCourseDemandDetailsViewModel)c).ToList(),
                 Location = source.SelectedLocation?.Name,
-                SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key
+                SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
+                ProviderEmail = source.ProviderContactDetails.EmailAddress,
+                ProviderWebsite = source.ProviderContactDetails.Website,
+                ProviderTelephoneNumber = source.ProviderContactDetails.TelephoneNumber
             };
         }
         
         private bool ShouldShowFilterOptions()
         {
             return !string.IsNullOrEmpty(Location);
-        }
-
-        private static Dictionary<string, string> BuildLocationRadiusList()
-        {
-            return new Dictionary<string, string>
-            {
-                {"5", "5 miles"},
-                {"10", "10 miles"},
-                {"25", "25 miles"},
-                {"50", "50 miles"},
-                {"80", "80 miles"},
-                {AllEnglandKey, "England"},
-            };
         }
 
         private string BuildCountDescription()
