@@ -15,6 +15,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public bool ShowFilterOptions => ShouldShowFilterOptions();
         public string SelectedCourse { get ; set ; }
         public string Location { get ; set ; }
+        public int Ukprn { get; set; }
 
         public string ClearCourseLink => BuildClearCourseLink();
         public string ClearLocationLink => BuildClearLocationLink();
@@ -36,7 +37,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 CourseDemands = source.CourseDemands.Select(c=>(ProviderCourseDemandViewModel)c),
                 SelectedLocation = source.SelectedLocation,
                 Location = source.SelectedLocation?.Name,
-                SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key
+                SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
+                Ukprn = source.Ukprn
             };
         }
         

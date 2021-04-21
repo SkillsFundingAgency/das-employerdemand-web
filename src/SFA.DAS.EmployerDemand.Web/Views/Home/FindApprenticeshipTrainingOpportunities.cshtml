@@ -106,6 +106,14 @@
                 <ol class="das-search-results__list">
                     @foreach (var courseDemand in Model.CourseDemands)
                     {
+                        var detailsRouteData = new Dictionary<string, string>()
+                        {
+                            { "ukprn", Model.Ukprn.ToString() },
+                            { "courseId", courseDemand.Course.Id.ToString() },
+                            { "location", Model.Location },
+                            { "locationRadius", Model.SelectedRadius },
+                        };
+
                         <li class="das-search-results__list-item">
                             <div class="govuk-grid-row">
                                 <div class="govuk-grid-column-two-thirds">
@@ -122,7 +130,7 @@
                                     </dl>
                                 </div>
                                 <div class="govuk-grid-column-one-third das-!-text-align-right--from-tablet">
-                                    <a href="#" class="govuk-link govuk-link--no-visited-state govuk-body">View employers <span class="govuk-visually-hidden">looking for training providers for @courseDemand.Course.Title</span></a>
+                                    <a asp-route="@RouteNames.ProviderDemandDetails" asp-all-route-data="detailsRouteData" class="govuk-link govuk-link--no-visited-state govuk-body">View employers <span class="govuk-visually-hidden">looking for training providers for @courseDemand.Course.Title</span></a>
                                 </div>
                             </div>
                         </li>

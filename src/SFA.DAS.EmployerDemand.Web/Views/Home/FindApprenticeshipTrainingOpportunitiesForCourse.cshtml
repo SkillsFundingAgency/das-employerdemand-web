@@ -1,0 +1,103 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@model SFA.DAS.EmployerDemand.Web.Models.AggregatedProviderCourseDemandDetailsViewModel
+@{
+    Layout = "_LayoutProvider";
+    var title = $"{Model.Course.TitleAndLevel} opportunities";
+    if (!ViewData.ModelState.IsValid)
+    {
+        title = $"Error: {title}";
+    }
+    ViewData["Title"] = title;
+    ViewData["Description"] = $"Check employer interest in {Model.Course.TitleAndLevel}.";
+}
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <partial name="_pageErrorsOverview" />
+            <h1 class="govuk-heading-xl">
+                <span class="govuk-caption-xl">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></span>
+                Which employers are you interested in?
+            </h1>
+
+            <div class="das-highlight govuk-!-padding-bottom-0">
+                <form asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="GET">
+                    <fieldset class="govuk-fieldset">
+                        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Filter employers by location</legend>
+                        <div class="govuk-grid-row">
+                            <div class="govuk-grid-column-one-third das-float-right">
+                                <div class="govuk-form-group govuk-!-margin-bottom-5">
+                                    <label class="govuk-label" for="radius">
+                                        Radius
+                                    </label>
+                                    <select class="govuk-select govuk-!-width-three-quarters" id="radius" name="radius">
+                                        @foreach (var radius in Model.LocationRadius)
+                                        {
+                                            <!option @(Model.SelectedRadius == radius.Key ? "selected" : "") value="@radius.Key">@radius.Value</!option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="govuk-grid-column-two-thirds">
+                                <div class="govuk-form-group govuk-!-margin-bottom-5 das-search-form">
+                                    <label class="govuk-label" for="search-location">
+                                        Enter a town, city or postcode
+                                    </label>
+                                    <div class="das-search-form__group">
+                                        <input type="search" id="search-location" name="location" title="Search" class="govuk-input das-search-form__input" data-submit-on-selection="true" data-default-value="@Model.Location">
+                                        <div class="das-search-form__button-wrap">
+                                            <button class="govuk-button das-search-form__button" type="submit">
+                                                Apply filters
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                 </form>
+            </div>
+
+            @if (Model.ShowFilterOptions)
+            {
+                <p class="govuk-body"><a asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" class="govuk-link govuk-link--no-visited-state">Clear filters</a></p>
+                <p class="govuk-body">@Model.CountDescription</p>
+            }
+            
+            @if (Model.CourseDemandDetailsList != null && Model.CourseDemandDetailsList.Count > 0)
+            {
+            <form asp-route="@RouteNames.PostProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="POST">
+                <input type="hidden" id="hidden_location" name="location" value="@Model.Location"/>
+                <input type="hidden" id="hidden_radius" name="radius" value="@Model.SelectedRadius"/>
+                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("EmployerDemandIds") && ViewData.ModelState["EmployerDemandIds"].Errors.Any()? "govuk-form-group--error" : "")">
+                    <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
+                        <p class="govuk-body">Select all employers that apply.</p>
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("EmployerDemandIds"))
+                        {
+                            <span id="demandids-error" class="govuk-error-message">
+                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["EmployerDemandIds"].Errors.First().ErrorMessage
+                            </span>
+                        }
+                        <div class="govuk-checkboxes">
+                            @foreach (var employerDemand in Model.CourseDemandDetailsList)
+                            {
+                                <div class="govuk-checkboxes__item">
+                                    <input class="govuk-checkboxes__input" id="EmployerDemandIds" name="EmployerDemandIds" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
+                                    <label class="govuk-label govuk-checkboxes__label" for="EmployerDemandIds-@employerDemand.DemandId">
+                                        <span class="govuk-!-font-weight-bold">Employer</span>
+                                        <br/>
+                                        @employerDemand.Location.Name
+                                        <br/>
+                                        @employerDemand.NumberOfApprentices apprentice@(employerDemand.NumberOfApprentices != 1 ? "s":"")
+                                    </label>
+                                </div>
+                            }
+                        </div>
+
+                    </fieldset>
+                </div>
+                <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+            </form>
+            }
+        </div>
+    </div>
+</main>
