@@ -1,3 +1,4 @@
+@model SFA.DAS.EmployerDemand.Web.Models.ProviderContactDetailsViewModel
 @{
     Layout = "_LayoutProvider";
     ViewData["Title"] = "Edit contact details";
@@ -6,26 +7,27 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">Edit [provider name]'s contact details</h1>
-            <p>We'll share these with the employers you're showing interest in, so they can contact you about [standard name] (level [standard level]).</p>
+            <h1 class="govuk-heading-xl">Edit @Context.User.Identity.Name's contact details</h1>
+            <p>We'll share these with the employers you're showing interest in, so they can contact you about @Model.Course.TitleAndLevel.</p>
             <form method="POST">
+                <input type="hidden" asp-for="Id"/>
                 <div class="govuk-form-group">
-                    <label class="govuk-label govuk-label--m" for="provider-email">
+                    <label asp-for="EmailAddress" class="govuk-label govuk-label--m">
                         Email address
                     </label>
-                    <input class="govuk-input govuk-input--width-20 " id="provider-email" name="provider-email" type="email" autocomplete="email" value="">
+                    <input asp-for="EmailAddress" class="govuk-input govuk-input--width-20" type="email" autocomplete="email"/>
                 </div>
                 <div class="govuk-form-group">
-                    <label class="govuk-label govuk-label--m" for="provider-telephone">
+                    <label asp-for="PhoneNumber" class="govuk-label govuk-label--m">
                         Telephone number
                     </label>
-                    <input class="govuk-input govuk-input--width-20 " id="provider-telephone" name="provider-telephone" type="tel" autocomplete="tel" value="">
+                    <input asp-for="PhoneNumber" class="govuk-input govuk-input--width-20" type="tel" autocomplete="tel"/>
                 </div>
                 <div class="govuk-form-group">
-                    <label class="govuk-label govuk-label--m" for="provider-website">
+                    <label asp-for="Website" class="govuk-label govuk-label--m">
                         Website (optional)
                     </label>
-                    <input class="govuk-input govuk-input--width-20" id="provider-website" name="provider-website" type="text" value="">
+                    <input asp-for="Website" class="govuk-input govuk-input--width-20" type="text"/>
                 </div>
                 <button class="govuk-button" data-module="govuk-button">Continue</button>
             </form>

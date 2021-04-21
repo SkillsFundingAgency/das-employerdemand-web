@@ -8,5 +8,6 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Website { get; set; }
+        public TrainingCourseViewModel Course { get; set; }
     }
 }
