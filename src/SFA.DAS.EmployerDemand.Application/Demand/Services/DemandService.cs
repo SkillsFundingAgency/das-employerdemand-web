@@ -64,5 +64,10 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             return result;
         }
+
+        public async Task CreateCachedProviderInterest(IProviderDemandInterest item)
+        {
+            await _cacheStorageService.SaveToCache(item.Id.ToString(), item, TimeSpan.FromMinutes(30));
+        }
     }
 }
