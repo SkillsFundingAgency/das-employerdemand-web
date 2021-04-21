@@ -69,7 +69,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}", Name = RouteNames.PostProviderDemandDetails)]
         public async Task<IActionResult> PostFindApprenticeshipTrainingOpportunitiesForCourse(ProviderRegisterInterestRequest request)
         {

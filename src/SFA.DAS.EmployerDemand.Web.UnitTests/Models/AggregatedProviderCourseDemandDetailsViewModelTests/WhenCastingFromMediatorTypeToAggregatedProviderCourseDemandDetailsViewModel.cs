@@ -65,5 +65,17 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             //Assert
             actual.SelectedRadius.Should().Be("5");
         }
+
+        [Test, AutoData]
+        public void Then_The_Provider_Details_Are_Added_To_The_Model(GetProviderEmployerDemandDetailsQueryResult source)
+        {
+            //Act
+            var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
+            
+            //Assert
+            actual.ProviderEmail.Should().Be(source.ProviderContactDetails.EmailAddress);
+            actual.ProviderTelephoneNumber.Should().Be(source.ProviderContactDetails.TelephoneNumber);
+            actual.ProviderWebsite.Should().Be(source.ProviderContactDetails.Website);
+        }
     }
 }

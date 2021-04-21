@@ -15,6 +15,9 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string SelectedRadius { get ; set ; }
         public string CountDescription => BuildCountDescription();
         public IReadOnlyList<Guid> SelectedEmployerDemandIds { get; set; }
+        public string ProviderEmail { get ; set ; }
+        public string ProviderTelephoneNumber { get ; set ; }
+        public string ProviderWebsite { get ; set ; }
 
         public static implicit operator AggregatedProviderCourseDemandDetailsViewModel(GetProviderEmployerDemandDetailsQueryResult source)
         {
@@ -24,7 +27,10 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Course = source.Course,
                 CourseDemandDetailsList = source.CourseDemandDetailsList.Select(c=>(ProviderCourseDemandDetailsViewModel)c).ToList(),
                 Location = source.SelectedLocation?.Name,
-                SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key
+                SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
+                ProviderEmail = source.ProviderContactDetails.EmailAddress,
+                ProviderWebsite = source.ProviderContactDetails.Website,
+                ProviderTelephoneNumber = source.ProviderContactDetails.TelephoneNumber
             };
         }
         
