@@ -70,10 +70,10 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                             && c.Website.Equals(request.ProviderWebsite)
                             && c.EmailAddress.Equals(request.ProviderEmail)
                             && c.PhoneNumber.Equals(request.ProviderTelephoneNumber)
-                            && c.CourseId.Equals(request.CourseId)
-                            && c.CourseLevel.Equals(request.CourseLevel)
-                            && c.CourseTitle.Equals(request.CourseTitle)
-                            && c.CourseSector.Equals(request.CourseSector)
+                            && c.Course.Id.Equals(request.CourseId)
+                            && c.Course.Level.Equals(request.CourseLevel)
+                            && c.Course.Title.Equals(request.CourseTitle)
+                            && c.Course.Sector.Equals(request.CourseSector)
                             && c.EmployerDemandIds.Count().Equals(request.EmployerDemandIds.Count)),
                     It.IsAny<CancellationToken>())).ReturnsAsync(result);
             
