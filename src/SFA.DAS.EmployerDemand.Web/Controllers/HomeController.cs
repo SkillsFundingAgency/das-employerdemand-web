@@ -77,10 +77,22 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 var result = await _mediator.Send(new CreateCachedProviderInterestCommand
                 {
                     Ukprn = request.Ukprn,
-                    EmployerDemandIds = request.EmployerDemandIds
+                    EmployerDemandIds = request.EmployerDemandIds,
+                    Id = Guid.NewGuid(),
+                    Website = request.ProviderWebsite,
+                    EmailAddress = request.ProviderEmail,
+                    PhoneNumber = request.ProviderTelephoneNumber,
+                    CourseId = request.CourseId,
+                    CourseLevel = request.CourseLevel,
+                    CourseSector = request.CourseSector,
+                    CourseTitle = request.CourseTitle
                 });
 
-                return RedirectToRoute(RouteNames.ProviderDashboard, new {request.Ukprn});
+                return RedirectToRoute(RouteNames.ConfirmProviderDetails, new {
+                    id = result.Id, 
+                    ukprn = request.Ukprn,
+                    courseId = request.CourseId
+                });
             }
             catch (ValidationException e)
             {

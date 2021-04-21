@@ -69,9 +69,14 @@
             <form asp-route="@RouteNames.PostProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="POST">
                 <input type="hidden" id="hidden_location" name="location" value="@Model.Location"/>
                 <input type="hidden" id="hidden_radius" name="radius" value="@Model.SelectedRadius"/>
+                <input type="hidden" name="courseId" value="@Model.Course.Id"/>
+                <input type="hidden" name="courseLevel" value="@Model.Course.Level"/>
+                <input type="hidden" name="courseTitle" value="@Model.Course.Title"/>
+                <input type="hidden" name="courseSector" value="@Model.Course.Sector"/>
                 <input type="hidden" asp-for="ProviderEmail"/>
                 <input type="hidden" asp-for="ProviderWebsite"/>
                 <input type="hidden" asp-for="ProviderTelephoneNumber"/>
+                
                 <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("EmployerDemandIds") && ViewData.ModelState["EmployerDemandIds"].Errors.Any()? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
                         <p class="govuk-body">Select all employers that apply.</p>

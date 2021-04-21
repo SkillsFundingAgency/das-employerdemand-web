@@ -13,5 +13,9 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProvide
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Website { get; set; }
+        public int CourseId { get ; set ; }
+        public int CourseLevel { get ; set ; }
+        public string CourseTitle { get ; set ; }
+        public string CourseSector { get ; set ; }
     }
 }
