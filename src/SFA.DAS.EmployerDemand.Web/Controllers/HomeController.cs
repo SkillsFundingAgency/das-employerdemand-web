@@ -7,8 +7,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest;
 using Microsoft.Extensions.Options;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
+using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -82,10 +84,13 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     Website = request.ProviderWebsite,
                     EmailAddress = request.ProviderEmail,
                     PhoneNumber = request.ProviderTelephoneNumber,
-                    CourseId = request.CourseId,
-                    CourseLevel = request.CourseLevel,
-                    CourseSector = request.CourseSector,
-                    CourseTitle = request.CourseTitle
+                    Course = new Course
+                    {
+                        Id = request.CourseId,
+                        Level = request.CourseLevel,
+                        Sector = request.CourseSector,
+                        Title = request.CourseTitle
+                    }
                 });
 
                 return RedirectToRoute(RouteNames.ConfirmProviderDetails, new {
@@ -114,9 +119,16 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         [HttpGet]
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}", Name = RouteNames.ConfirmProviderDetails)]
-        public async Task<IActionResult> ConfirmProviderDetails()
+        public async Task<IActionResult> ConfirmProviderDetails([FromRoute]int ukprn, [FromRoute]int courseId, [FromRoute]Guid id)
         {
-            return View();
+            var result = await _mediator.Send(new GetCachedProviderInterestQuery
+            {
+                Id = id
+            });
+
+            var model = (ProviderContactDetailsViewModel)result.ProviderInterest; 
+            
+            return View(model);
         }
         
         [HttpGet]
