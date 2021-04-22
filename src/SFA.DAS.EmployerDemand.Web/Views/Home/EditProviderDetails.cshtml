@@ -13,23 +13,27 @@
             <p>We'll share these with the employers you're showing interest in, so they can contact you about @Model.Course.TitleAndLevel.</p>
             <form method="POST" asp-route="@RouteNames.PostEditProviderDetails" asp-all-route-data="@Model.RouteDictionary">
                 <input type="hidden" asp-for="Id"/>
-                <div class="govuk-form-group">
-                    <label asp-for="EmailAddress" class="govuk-label govuk-label--m">
-                        Email address
-                    </label>
-                    <input asp-for="EmailAddress" class="govuk-input govuk-input--width-20" type="email" autocomplete="email"/>
-                </div>
-                <div class="govuk-form-group">
-                    <label asp-for="PhoneNumber" class="govuk-label govuk-label--m">
-                        Telephone number
-                    </label>
-                    <input asp-for="PhoneNumber" class="govuk-input govuk-input--width-20" type="tel" autocomplete="tel"/>
-                </div>
-                <div class="govuk-form-group">
-                    <label asp-for="Website" class="govuk-label govuk-label--m">
-                        Website (optional)
-                    </label>
-                    <input asp-for="Website" class="govuk-input govuk-input--width-20" type="text"/>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-two-thirds">
+                        <div class="govuk-form-group">
+                            <label asp-for="EmailAddress" class="govuk-label govuk-label--m">
+                                Email address
+                            </label>
+                            <input asp-for="EmailAddress" class="govuk-input" type="email" autocomplete="email"/>
+                        </div>
+                        <div class="govuk-form-group">
+                            <label asp-for="PhoneNumber" class="govuk-label govuk-label--m">
+                                Telephone number
+                            </label>
+                            <input asp-for="PhoneNumber" class="govuk-input" type="tel" autocomplete="tel"/>
+                        </div>
+                        <div class="govuk-form-group">
+                            <label asp-for="Website" class="govuk-label govuk-label--m">
+                                Website (optional)
+                            </label>
+                            <input asp-for="Website" class="govuk-input" type="text"/>
+                        </div>
+                    </div>
                 </div>
                 <button class="govuk-button" data-module="govuk-button">Continue</button>
             </form>
