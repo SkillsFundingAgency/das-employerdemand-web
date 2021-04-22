@@ -134,6 +134,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 Id = id
             });
 
+            if (result.ProviderInterest == null)
+            {
+                return RedirectToRoute(RouteNames.ProviderDemandDetails, new {ukprn, courseId});
+            }
+            
             var model = (ProviderContactDetailsViewModel)result.ProviderInterest; 
             
             return View(model);
@@ -147,7 +152,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 Id = id
             });
-
+            
+            if (result.ProviderInterest == null)
+            {
+                return RedirectToRoute(RouteNames.ProviderDemandDetails, new {ukprn, courseId});
+            }
+            
             var model = (ProviderContactDetailsViewModel)result.ProviderInterest; 
             
             return View(model);
@@ -159,7 +169,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         {
             try
             {
-                var result = await _mediator.Send(new UpdateCachedProviderInterestCommand()
+                var result = await _mediator.Send(new UpdateCachedProviderInterestCommand
                 {
                     Id = request.Id,
                     Website = request.Website,
@@ -167,6 +177,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     PhoneNumber = request.PhoneNumber
                 });
             
+                if (result.Id == null)
+                {
+                    return RedirectToRoute(RouteNames.ProviderDemandDetails, new {request.Ukprn, request.CourseId});
+                }
+                
                 return RedirectToRoute(RouteNames.ConfirmProviderDetails, new
                 {
                     id = result.Id, ukprn = request.Ukprn, courseId = request.CourseId

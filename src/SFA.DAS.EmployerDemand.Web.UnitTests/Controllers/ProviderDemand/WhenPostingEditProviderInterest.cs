@@ -86,5 +86,33 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
             actual.RouteValues["courseId"].Should().Be(request.CourseId);
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_Valid_But_Null_Returned_Then_Redirected_To_ProviderDemandDetails(
+            UpdateProviderInterestDetails request,
+            UpdateCachedProviderInterestCommandResult result,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] HomeController controller)
+        {
+            //Arrange
+            result.Id = null;
+            mediator.Setup(x => x.Send(
+                It.Is<UpdateCachedProviderInterestCommand>(c => 
+                    c.Id.Equals(request.Id)
+                    && c.Website.Equals(request.Website)
+                    && c.PhoneNumber.Equals(request.PhoneNumber)
+                    && c.EmailAddress.Equals(request.EmailAddress)
+                ),
+                It.IsAny<CancellationToken>())).ReturnsAsync(result);
+            
+            //Act
+            var actual = await controller.PostEditProviderDetails(request) as RedirectToRouteResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.ProviderDemandDetails);
+            actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
+            actual.RouteValues["courseId"].Should().Be(request.CourseId);
+        }
     }
 }

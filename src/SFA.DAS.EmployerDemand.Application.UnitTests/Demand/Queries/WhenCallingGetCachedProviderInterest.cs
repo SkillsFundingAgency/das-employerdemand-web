@@ -29,5 +29,21 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             //Assert
             actual.ProviderInterest.Should().BeEquivalentTo(result);
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Cached_Object_Has_Expired_Then_Null_Returned(
+            GetCachedProviderInterestQuery query,
+            [Frozen] Mock<IDemandService> service,
+            GetCachedProviderInterestQueryHandler handler)
+        {
+            //Arrange
+            service.Setup(x => x.GetCachedProviderInterest(query.Id)).ReturnsAsync((ProviderInterestRequest)null);
+            
+            //Act
+            var actual = await handler.Handle(query, CancellationToken.None);
+            
+            //Assert
+            actual.ProviderInterest.Should().BeNull();
+        }
     }
 }

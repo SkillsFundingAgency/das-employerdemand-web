@@ -27,6 +27,15 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.UpdateCachedProvide
             }
 
             var cachedInterest = await _service.GetCachedProviderInterest(request.Id);
+
+            if (cachedInterest == null)
+            {
+                return new UpdateCachedProviderInterestCommandResult
+                {
+                    Id = null
+                };
+            }
+            
             cachedInterest.Website = request.Website;
             cachedInterest.PhoneNumber = request.PhoneNumber;
             cachedInterest.EmailAddress = request.EmailAddress;

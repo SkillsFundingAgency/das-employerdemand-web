@@ -4,6 +4,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.UpdateCachedProvide
 {
     public class UpdateCachedProviderInterestCommandResult
     {
-        public Guid Id { get; set; }
+        public Guid? Id { get; set; }
     }
 }
