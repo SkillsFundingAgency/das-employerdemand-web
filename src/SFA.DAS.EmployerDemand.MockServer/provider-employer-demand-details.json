@@ -75,7 +75,7 @@
   "providerContactDetails": {
     "ukprn": 10000001,
     "emailAddress": "testperson@test.com",
-    "telephoneNumber": "01234 445566",
+    "phoneNumber": "01234 445566",
     "website": "test@test.com"
   },
   "totalFiltered": 5,
