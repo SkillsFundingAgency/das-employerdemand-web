@@ -1,3 +1,4 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
 @model SFA.DAS.EmployerDemand.Web.Models.ProviderContactDetailsViewModel
 @{
     Layout = "_LayoutProvider";
@@ -9,7 +10,7 @@
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl">Edit @Context.User.Identity.Name's contact details</h1>
             <p>We'll share these with the employers you're showing interest in, so they can contact you about @Model.Course.TitleAndLevel.</p>
-            <form method="POST">
+            <form method="POST" asp-route="@RouteNames.PostEditProviderDetails" asp-all-route-data="@Model.RouteDictionary">
                 <input type="hidden" asp-for="Id"/>
                 <div class="govuk-form-group">
                     <label asp-for="EmailAddress" class="govuk-label govuk-label--m">

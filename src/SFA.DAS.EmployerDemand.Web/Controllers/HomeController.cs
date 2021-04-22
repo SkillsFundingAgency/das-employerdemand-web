@@ -119,7 +119,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         [HttpGet]
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}", Name = RouteNames.ConfirmProviderDetails)]
-        public async Task<IActionResult> ConfirmProviderDetails([FromRoute]int ukprn, [FromRoute]int courseId, [FromRoute]Guid id)
+        public async Task<IActionResult> ConfirmProviderDetails(int ukprn, int courseId, Guid id)
         {
             var result = await _mediator.Send(new GetCachedProviderInterestQuery
             {
@@ -133,16 +133,26 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         
         [HttpGet]
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/edit/{id}", Name = RouteNames.EditProviderDetails)]
-        public async Task<IActionResult> EditProviderDetails()
+        public async Task<IActionResult> EditProviderDetails(int ukprn, int courseId, Guid id)
         {
-            return View();
+            var result = await _mediator.Send(new GetCachedProviderInterestQuery
+            {
+                Id = id
+            });
+
+            var model = (ProviderContactDetailsViewModel)result.ProviderInterest; 
+            
+            return View(model);
         }
         
         [HttpPost]
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/edit/{id}", Name = RouteNames.PostEditProviderDetails)]
-        public async Task<IActionResult> PostEditProviderDetails()
+        public async Task<IActionResult> PostEditProviderDetails(int ukprn, int courseId, Guid id)
         {
-            return RedirectToRoute(RouteNames.ConfirmProviderDetails);
+            return RedirectToRoute(RouteNames.ConfirmProviderDetails, new
+            {
+                id, ukprn, courseId
+            });
         }
 
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
