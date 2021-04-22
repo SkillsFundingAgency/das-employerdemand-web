@@ -22,8 +22,10 @@
 				Website <br />
 				<span class="govuk-!-font-weight-bold">@Model.Website</span>
 			</p>
-            <p class="govuk-!-margin-top-6"><a asp-route="@RouteNames.EditProviderDetails" class="govuk-link govuk-link--no-visited-state">Edit contact details</a></p>
-            <form method="POST">
+            <p class="govuk-!-margin-top-6">
+                <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Edit contact details</a>
+            </p>
+            <form>
                 <button class="govuk-button" data-module="govuk-button">Continue</button>
             </form>
         </div>
