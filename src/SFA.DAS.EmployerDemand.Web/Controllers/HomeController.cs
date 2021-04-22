@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest;
 using Microsoft.Extensions.Options;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.UpdateCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
@@ -147,12 +148,43 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         
         [HttpPost]
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/edit/{id}", Name = RouteNames.PostEditProviderDetails)]
-        public async Task<IActionResult> PostEditProviderDetails(int ukprn, int courseId, Guid id)
+        public async Task<IActionResult> PostEditProviderDetails(UpdateProviderInterestDetails request)
         {
-            return RedirectToRoute(RouteNames.ConfirmProviderDetails, new
+            try
             {
-                id, ukprn, courseId
-            });
+                var result = await _mediator.Send(new UpdateCachedProviderInterestCommand()
+                {
+                    Id = request.Id,
+                    Website = request.Website,
+                    EmailAddress = request.EmailAddress,
+                    PhoneNumber = request.PhoneNumber
+                });
+            
+                return RedirectToRoute(RouteNames.ConfirmProviderDetails, new
+                {
+                    id = result.Id, ukprn = request.Ukprn, courseId = request.CourseId
+                });
+            }
+            catch (ValidationException e)
+            {
+                foreach (var member in e.ValidationResult.MemberNames)
+                {
+                    ModelState.AddModelError(member.Split('|')[0], member.Split('|')[1]);
+                }
+
+                var result = await _mediator.Send(new GetCachedProviderInterestQuery
+                {
+                    Id = request.Id
+                });
+
+                var model = (ProviderContactDetailsViewModel)result.ProviderInterest;
+                model.Website = request.Website;
+                model.EmailAddress = request.EmailAddress;
+                model.PhoneNumber = request.PhoneNumber;
+                
+                return View("EditProviderDetails", model);
+            }
+            
         }
 
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
