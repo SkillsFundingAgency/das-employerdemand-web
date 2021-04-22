@@ -87,5 +87,60 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
             actual.RouteValues["courseId"].Should().Be(request.CourseId);
         }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_There_Is_No_Validation_Error_Then_The_Command_Is_Handled_And_Redirected_To_Edit_If_No_Email(
+            ProviderRegisterInterestRequest request,
+            CreateCachedProviderInterestResult result,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Greedy] HomeController controller)
+        {
+            //Arrange
+            request.ProviderEmail = string.Empty;
+            mockMediator
+                .Setup(x => x.Send(
+                    It.Is<CreateCachedProviderInterestCommand>(c =>
+                        c.Id != Guid.Empty
+                        && c.Ukprn.Equals(request.Ukprn)),
+                    It.IsAny<CancellationToken>())).ReturnsAsync(result);
+            
+            //Act
+            var actual = await controller.PostFindApprenticeshipTrainingOpportunitiesForCourse(request) as RedirectToRouteResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.EditProviderDetails);
+            actual.RouteValues["id"].Should().Be(result.Id);
+            actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
+            actual.RouteValues["courseId"].Should().Be(request.CourseId);
+        }
+        
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_There_Is_No_Validation_Error_Then_The_Command_Is_Handled_And_Redirected_To_Edit_If_No_PhoneNumber(
+            ProviderRegisterInterestRequest request,
+            CreateCachedProviderInterestResult result,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Greedy] HomeController controller)
+        {
+            //Arrange
+            request.ProviderTelephoneNumber = string.Empty;
+            mockMediator
+                .Setup(x => x.Send(
+                    It.Is<CreateCachedProviderInterestCommand>(c =>
+                        c.Id != Guid.Empty
+                        && c.Ukprn.Equals(request.Ukprn)),
+                    It.IsAny<CancellationToken>())).ReturnsAsync(result);
+            
+            //Act
+            var actual = await controller.PostFindApprenticeshipTrainingOpportunitiesForCourse(request) as RedirectToRouteResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.EditProviderDetails);
+            actual.RouteValues["id"].Should().Be(result.Id);
+            actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
+            actual.RouteValues["courseId"].Should().Be(request.CourseId);
+        }
     }
 }

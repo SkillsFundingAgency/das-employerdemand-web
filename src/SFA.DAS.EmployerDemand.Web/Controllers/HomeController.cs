@@ -94,7 +94,14 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     }
                 });
 
-                return RedirectToRoute(RouteNames.ConfirmProviderDetails, new {
+                var routeName = RouteNames.ConfirmProviderDetails;
+                if (string.IsNullOrEmpty(request.ProviderEmail) ||
+                    string.IsNullOrEmpty(request.ProviderTelephoneNumber))
+                {
+                    routeName = RouteNames.EditProviderDetails;
+                }
+                
+                return RedirectToRoute(routeName, new {
                     id = result.Id, 
                     ukprn = request.Ukprn,
                     courseId = request.CourseId
