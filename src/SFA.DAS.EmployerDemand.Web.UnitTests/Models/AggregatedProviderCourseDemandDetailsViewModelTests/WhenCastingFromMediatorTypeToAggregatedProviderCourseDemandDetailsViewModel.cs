@@ -74,8 +74,23 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             
             //Assert
             actual.ProviderEmail.Should().Be(source.ProviderContactDetails.EmailAddress);
-            actual.ProviderTelephoneNumber.Should().Be(source.ProviderContactDetails.TelephoneNumber);
+            actual.ProviderTelephoneNumber.Should().Be(source.ProviderContactDetails.PhoneNumber);
             actual.ProviderWebsite.Should().Be(source.ProviderContactDetails.Website);
+        }
+
+        [Test, AutoData]
+        public void Then_If_The_ProviderContactDetails_Are_Null_Then_Empty_Is_Set(GetProviderEmployerDemandDetailsQueryResult source)
+        {
+            //Arrange
+            source.ProviderContactDetails = null;
+            
+            //Act
+            var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
+            
+            //Assert
+            actual.ProviderEmail.Should().BeEmpty();
+            actual.ProviderTelephoneNumber.Should().BeEmpty();
+            actual.ProviderWebsite.Should().BeEmpty();
         }
     }
 }

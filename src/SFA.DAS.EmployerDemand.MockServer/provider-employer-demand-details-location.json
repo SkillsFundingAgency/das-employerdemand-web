@@ -20,12 +20,6 @@
     "id": 51,
     "sector": "Construction"
   },
-  "providerContactDetails": {
-    "ukprn": 10000001,
-    "emailAddress": "testperson@test.com",
-    "telephoneNumber": "",
-    "website": "test@test.com"
-  },
   "totalFiltered": 1,
   "total": 5,
   "location": {

@@ -34,8 +34,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public int Ukprn { get; set; }
         [JsonProperty("emailAddress")]
         public string EmailAddress { get; set; }
-        [JsonProperty("telephoneNumber")]
-        public string TelephoneNumber { get; set; }
+        [JsonProperty("phoneNumber")]
+        public string PhoneNumber { get; set; }
         [JsonProperty("website")]
         public string Website { get; set; }
     }

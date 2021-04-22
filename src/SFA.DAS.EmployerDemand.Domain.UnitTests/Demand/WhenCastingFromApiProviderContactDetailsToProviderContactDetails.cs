@@ -16,5 +16,15 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand
             //Assert
             actual.Should().BeEquivalentTo(source);
         }
+
+        [Test]
+        public void Then_If_Null_Then_Null_Returned()
+        {
+            //Act
+            var actual = (Domain.Demand.ProviderContactDetails)(ProviderContactDetails) null;
+            
+            //Assert
+            actual.Should().BeNull();
+        }
     }
 }

@@ -28,9 +28,9 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 CourseDemandDetailsList = source.CourseDemandDetailsList.Select(c=>(ProviderCourseDemandDetailsViewModel)c).ToList(),
                 Location = source.SelectedLocation?.Name,
                 SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
-                ProviderEmail = source.ProviderContactDetails.EmailAddress,
-                ProviderWebsite = source.ProviderContactDetails.Website,
-                ProviderTelephoneNumber = source.ProviderContactDetails.TelephoneNumber
+                ProviderEmail = source.ProviderContactDetails?.EmailAddress ?? string.Empty,
+                ProviderWebsite = source.ProviderContactDetails?.Website ?? string.Empty,
+                ProviderTelephoneNumber = source.ProviderContactDetails?.PhoneNumber ?? string.Empty
             };
         }
         
