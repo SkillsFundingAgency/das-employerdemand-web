@@ -8,6 +8,7 @@
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
+            <partial name="_pageErrorsOverview" />
             <h1 class="govuk-heading-xl">Edit @Context.User.Identity.Name's contact details</h1>
             <p>We'll share these with the employers you're showing interest in, so they can contact you about @Model.Course.TitleAndLevel.</p>
             <form method="POST" asp-route="@RouteNames.PostEditProviderDetails" asp-all-route-data="@Model.RouteDictionary">
