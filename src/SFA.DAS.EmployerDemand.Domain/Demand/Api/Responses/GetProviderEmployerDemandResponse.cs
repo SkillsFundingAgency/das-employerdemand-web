@@ -29,4 +29,9 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         [JsonProperty("employersCount")]
         public int Employers { get; set; }
     }
+    public class Sector
+    {
+        [JsonProperty("route")]
+        public string Route { get; set; }
+    }
 }
