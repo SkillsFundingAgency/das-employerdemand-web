@@ -95,24 +95,28 @@
                                     }
                                 </select>
                             </div>
-                            <div class="govuk-form-group">
-                                <fieldset class="govuk-fieldset">
-                                    <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
-                                        Apprenticeship category
-                                    </legend>
-                                    <div class="govuk-checkboxes govuk-checkboxes--small">
-                                        @foreach (var sector in Model.Sectors)
-                                        {
-                                            <div class="govuk-checkboxes__item">
-                                                <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="sectors" type="checkbox" value="@sector.Route">
-                                                <label class="govuk-label govuk-checkboxes__label" for="route-@sector.Id">
-                                                    @sector.Route
-                                                </label>
-                                            </div>
-                                        }
-                                    </div>
-                                </fieldset>
-                            </div>
+                            @if (string.IsNullOrEmpty(Model.SelectedCourse))
+                            {
+                                <div class="govuk-form-group">
+                                    <fieldset class="govuk-fieldset">
+                                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                             Apprenticeship category
+                                         </legend>
+                                         <div class="govuk-checkboxes govuk-checkboxes--small">
+                                             @foreach (var sector in Model.Sectors)
+                                             {
+                                                 <div class="govuk-checkboxes__item">
+                                                     <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="sectors" type="checkbox" value="@sector.Route">
+                                                     <label class="govuk-label govuk-checkboxes__label" for="route-@sector.Id">
+                                                         @sector.Route
+                                                     </label>
+                                                 </div>
+                                             }
+                                         </div>
+                                    </fieldset>
+                                </div>
+                            }
+                            
                             <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                         </form>
                     </div>
