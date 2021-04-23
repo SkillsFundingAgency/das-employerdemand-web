@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
@@ -14,7 +15,17 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public TrainingCourseViewModel Course { get; set; }
         public Dictionary<string,string> RouteDictionary { get ; set ; }
 
-
+        public static Dictionary<string, int> BuildPropertyOrderDictionary()
+        {   
+            var itemCount = 0;
+            var propertyOrderDictionary = typeof(ProviderContactDetailsViewModel).GetProperties().Select(c => new
+            {
+                Order = itemCount++,
+                c.Name
+            }).ToDictionary(key => key.Name, value => value.Order);
+            return propertyOrderDictionary;
+        }
+        
         public static implicit operator ProviderContactDetailsViewModel(ProviderInterestRequest source)
         {
             return new ProviderContactDetailsViewModel
