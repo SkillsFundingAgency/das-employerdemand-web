@@ -14,6 +14,6 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         }
         public bool Selected { get; }
         public string Route { get; }
-        public Guid Id { get ; set ; }
+        public Guid Id { get ; }
     }
 }
