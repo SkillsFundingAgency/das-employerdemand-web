@@ -4,10 +4,8 @@ using System.Linq;
 using System.Web;
 using AutoFixture.NUnit3;
 using FluentAssertions;
-using Microsoft.AspNetCore.Components.RenderTree;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
-using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Web.Models;
 
 namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
@@ -21,7 +19,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             source.SelectedRadius = null;
             source.SelectedLocation = null;
             source.SelectedCourseId = null;
-            source.Sectors = new List<Sector>();
+            source.SelectedSectors = null;
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -62,7 +60,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = null;
-            source.Sectors = new List<Sector>();
+            source.Sectors = new List<string>();
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -77,7 +75,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
             source.SelectedLocation = null;
-            source.Sectors = new List<Sector>();
+            source.Sectors = new List<string>();
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -87,12 +85,12 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         }
 
         [Test, AutoData]
-        public void Then_Show_Filter_Options_Is_True_If_Just_Sector(GetProviderEmployerDemandQueryResult source)
+        public void Then_Show_Filter_Options_Is_True_If_Just_Sector(GetProviderEmployerDemandQueryResult source, string sector)
         {
             //Arrange
             source.SelectedCourseId = null;
             source.SelectedLocation = null;
-            source.Sectors = new List<Sector> {new Sector {Id = new Guid(), Route = "route"}};
+            source.Sectors = new List<string> {sector};
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel)source;
@@ -106,7 +104,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
-            source.Sectors = new List<Sector>();
+            source.Sectors = new List<string>();
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -117,11 +115,11 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         }
 
         [Test, AutoData]
-        public void Then_The_Clear_Location_Link_Does_Not_Contain_Sectors_If_Course_Selected(GetProviderEmployerDemandQueryResult source)
+        public void Then_The_Clear_Location_Link_Does_Not_Contain_Sectors_If_Course_Selected(GetProviderEmployerDemandQueryResult source, string sector)
         {
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
-            source.Sectors = new List<Sector> {new Sector{Id = new Guid(), Route = "route"}};
+            source.Sectors = new List<string> {sector};
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel)source;
@@ -129,6 +127,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
             actual.ClearLocationLink.Should().Be($"?selectedCourseId={source.SelectedCourseId}");
+            actual.ClearSectorLink.Should().BeEmpty();
         }
 
         [Test, AutoData]
@@ -136,14 +135,13 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = null;
-            source.Sectors = new List<Sector> { new Sector { Id = new Guid(), Route = "route" } };
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel)source;
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearLocationLink.Should().Be($"?sectors={source.Sectors.FirstOrDefault().Route}");
+            actual.ClearLocationLink.Should().Be("?sectors=" + string.Join("&sectors=", actual.SelectedSectors.Select(HttpUtility.HtmlEncode)));
         }
 
         [Test, AutoData]
@@ -151,7 +149,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = null;
-            source.Sectors = new List<Sector>();
+            source.SelectedSectors = new List<string>();
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -181,17 +179,22 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Arrange
             source.SelectedCourseId = null;
             source.SelectedLocation = null;
+            source.SelectedSectors = new List<string> {source.Sectors.FirstOrDefault()};
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearSectorLink.Should().Be("");
+            foreach (var sectorLink in actual.ClearSectorLink)
+            {
+                sectorLink.Value.Should()
+                    .Contain($"?sectors=");
+            }
         }
 
         [Test, AutoData]
-        public void Then_The_Clear_Sector_Link_Is_Built_If_Course_Selected_And_No_Location_Selected(GetProviderEmployerDemandQueryResult source)
+        public void Then_The_Clear_Sector_Link_Is_Empty_If_Course_Selected_And_No_Location_Selected(GetProviderEmployerDemandQueryResult source)
         {
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
@@ -202,7 +205,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearSectorLink.Should().Be($"?selectedCourseId={source.SelectedCourseId}");
+            actual.ClearSectorLink.Should().BeEmpty();
         }
 
         [Test, AutoData]
@@ -210,17 +213,22 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = null;
-            
+            source.SelectedSectors = new List<string> {source.Sectors.FirstOrDefault()};
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel)source;
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearSectorLink.Should().Be($"?location={HttpUtility.UrlEncode(actual.Location)}&radius={actual.SelectedRadius}");
+            foreach (var sectorLink in actual.ClearSectorLink)
+            {
+                sectorLink.Value.Should()
+                    .Contain($"?location={HttpUtility.UrlEncode(actual.Location)}&radius={actual.SelectedRadius}");
+            }
+            
         }
 
         [Test, AutoData]
-        public void Then_The_Clear_Sector_Link_Is_Built_If_Course_And_Location_Selected(GetProviderEmployerDemandQueryResult source)
+        public void Then_The_Clear_Sector_Link_Is_Empty_If_Course_And_Location_Selected(GetProviderEmployerDemandQueryResult source)
         {
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
@@ -230,7 +238,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearSectorLink.Should().Be($"?selectedCourseId={source.SelectedCourseId}&location={HttpUtility.UrlEncode(actual.Location)}&radius={actual.SelectedRadius}");
+            actual.ClearSectorLink.Should().BeEmpty();
         }
 
         [Test, AutoData]
