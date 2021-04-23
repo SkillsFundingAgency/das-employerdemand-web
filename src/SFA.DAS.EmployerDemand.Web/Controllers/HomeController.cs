@@ -39,7 +39,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 Ukprn = request.Ukprn,
                 CourseId = request.SelectedCourseId,
                 Location = request.Location,
-                LocationRadius = request.Radius
+                LocationRadius = request.Radius,
+                SelectedSectors = request.Sectors
             });
 
             var model = (AggregatedProviderCourseDemandViewModel) result;
