@@ -3,7 +3,12 @@
 @model SFA.DAS.EmployerDemand.Web.Models.ProviderContactDetailsViewModel
 @{
     Layout = "_LayoutProvider";
-    ViewData["Title"] = "Edit contact details";
+    var title = "Edit contact details";
+    if (!ViewData.ModelState.IsValid)
+    {
+        title = $"Error: {title}";
+    }
+    ViewData["Title"] = title;
     ViewData["Description"] = "Edit the training provider’s email address, telephone number or website.";
     ViewData["CustomOrder"] = ProviderContactDetailsViewModel.BuildPropertyOrderDictionary();
 }
