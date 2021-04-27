@@ -38,7 +38,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             actual.SelectedLocation.Should().BeEquivalentTo((Location)response.Location);
             actual.SelectedRadius.Should().Be(query.LocationRadius);
             actual.Ukprn.Should().Be(query.Ukprn);
-            actual.Sectors.Should().BeEquivalentTo(response.Sectors.Select(c=>c.Route));
+            actual.Routes.Should().BeEquivalentTo(response.Routes.Select(c=>c.Route));
         }
 
         [Test, MoqAutoData]
@@ -56,7 +56,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             var actual = await handler.Handle(query, CancellationToken.None);
             
             //Assert
-            actual.SelectedSectors.Should().BeNull();
+            actual.SelectedRoutes.Should().BeNull();
         }
         
         [Test, MoqAutoData]
@@ -69,14 +69,14 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             //Arrange
             query.CourseId = null;
             //Arrange
-            service.Setup(x => x.GetProviderEmployerDemand(query.Ukprn, query.CourseId, query.Location, query.LocationRadius, query.SelectedSectors))
+            service.Setup(x => x.GetProviderEmployerDemand(query.Ukprn, query.CourseId, query.Location, query.LocationRadius, query.SelectedRoutes))
                 .ReturnsAsync(response);
             
             //Act
             var actual = await handler.Handle(query, CancellationToken.None);
             
             //Assert
-            actual.SelectedSectors.Should().BeEquivalentTo(query.SelectedSectors);
+            actual.SelectedRoutes.Should().BeEquivalentTo(query.SelectedRoutes);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn);
             
             //Assert
-            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId=&location=&locationRadius=&sectors=");
+            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId=&location=&locationRadius=&routes=");
         }
         
         [Test, AutoData]
@@ -27,7 +27,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn, courseId);
             
             //Assert
-            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId={courseId}&location=&locationRadius=&sectors=");
+            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId={courseId}&location=&locationRadius=&routes=");
         }
         
         [Test, AutoData]
@@ -39,7 +39,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn,null, locationParam, locationRadius);
             
             //Assert
-            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId=&location={HttpUtility.UrlEncode(locationParam)}&locationRadius={locationRadius}&sectors=");
+            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId=&location={HttpUtility.UrlEncode(locationParam)}&locationRadius={locationRadius}&routes=");
         }
 
         [Test, AutoData]
@@ -49,8 +49,8 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn,null, null, null, selectedRoutes);
             
             //Assert
-            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId=&location=&locationRadius=&sectors=" 
-                                      + string.Join("&sectors=", selectedRoutes.Select(HttpUtility.UrlEncode)));
+            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId=&location=&locationRadius=&routes=" 
+                                      + string.Join("&routes=", selectedRoutes.Select(HttpUtility.UrlEncode)));
         }
 
         [Test, AutoData]
@@ -60,7 +60,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             var actual = new GetProviderEmployerDemandRequest(ukprn,courseId, null, null, selectedRoutes);
             
             //Assert
-            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId={courseId}&location=&locationRadius=&sectors=");
+            actual.GetUrl.Should().Be($"demand/aggregated/providers/{ukprn}?courseId={courseId}&location=&locationRadius=&routes=");
         }
     }
 }

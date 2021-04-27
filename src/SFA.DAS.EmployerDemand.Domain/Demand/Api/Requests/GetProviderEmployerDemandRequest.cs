@@ -22,7 +22,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
             _selectedRoutes = selectedRoutes == null || courseId != null ? new List<string>() : selectedRoutes;
         }
 
-        public string GetUrl => $"demand/aggregated/providers/{_ukprn}?courseId={_courseId}&location={HttpUtility.UrlEncode(_location)}&locationRadius={_locationRadius}&sectors=" 
-                                + string.Join("&sectors=", _selectedRoutes.Select(HttpUtility.UrlEncode));
+        public string GetUrl => $"demand/aggregated/providers/{_ukprn}?courseId={_courseId}&location={HttpUtility.UrlEncode(_location)}&locationRadius={_locationRadius}&routes=" 
+                                + string.Join("&routes=", _selectedRoutes.Select(HttpUtility.UrlEncode));
     }
 }

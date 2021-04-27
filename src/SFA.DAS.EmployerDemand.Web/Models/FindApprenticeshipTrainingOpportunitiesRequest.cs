@@ -13,6 +13,6 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         [FromQuery] 
         public string Radius { get; set; }
         [FromQuery] 
-        public List<string> Sectors { get; set; }
+        public List<string> Routes { get; set; }
     }
 }

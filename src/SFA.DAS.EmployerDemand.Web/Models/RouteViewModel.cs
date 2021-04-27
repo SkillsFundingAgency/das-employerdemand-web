@@ -4,12 +4,12 @@ using System.Linq;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
-    public class SectorViewModel
+    public class RouteViewModel
     {
-        public SectorViewModel(string sector, IEnumerable<string> selectedSectors)
+        public RouteViewModel(string route, IEnumerable<string> selectedRoutes)
         {
-            Selected = selectedSectors?.Contains(sector) ?? false;
-            Route = sector;
+            Selected = selectedRoutes?.Contains(route) ?? false;
+            Route = route;
             Id = Guid.NewGuid();
         }
         public bool Selected { get; }

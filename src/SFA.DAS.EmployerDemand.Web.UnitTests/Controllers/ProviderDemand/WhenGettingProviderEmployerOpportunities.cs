@@ -34,7 +34,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                     && c.CourseId.Equals(request.SelectedCourseId) 
                     && c.Location.Equals(request.Location)
                     && c.LocationRadius.Equals(request.Radius)
-                    && c.SelectedSectors.Equals(request.Sectors)
+                    && c.SelectedRoutes.Equals(request.Routes)
                     ), CancellationToken.None)).ReturnsAsync(mediatorResult);
             
             //Act

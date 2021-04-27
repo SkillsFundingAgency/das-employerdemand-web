@@ -19,10 +19,10 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         {
             if (request.CourseId != null)
             {
-                request.SelectedSectors = null;
+                request.SelectedRoutes = null;
             }
             
-            var result = await _demandService.GetProviderEmployerDemand(request.Ukprn, request.CourseId, request.Location, request.LocationRadius, request.SelectedSectors);
+            var result = await _demandService.GetProviderEmployerDemand(request.Ukprn, request.CourseId, request.Location, request.LocationRadius, request.SelectedRoutes);
 
             return new GetProviderEmployerDemandQueryResult
             {
@@ -34,8 +34,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 SelectedLocation = result.Location,
                 SelectedRadius = request.LocationRadius,
                 Ukprn = request.Ukprn,
-                Sectors = result.Sectors.Select(c => c.Route).ToList(),
-                SelectedSectors = request.SelectedSectors
+                Routes = result.Routes.Select(c => c.Route).ToList(),
+                SelectedRoutes = request.SelectedRoutes
             };
         }
     }

@@ -17,14 +17,14 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string SelectedCourse { get ; private set ; }
         public string Location { get ; private set ; }
         public int Ukprn { get; set; }
-        public List<SectorViewModel> Sectors { get; private set; }
+        public List<RouteViewModel> Routes { get; private set; }
         public string ClearCourseLink => BuildClearCourseLink();
         public string ClearLocationLink => BuildClearLocationLink();
-        public Dictionary<string,string> ClearSectorLink => BuildClearSectorsLinks();
+        public Dictionary<string,string> ClearRouteLinks => BuildClearRouteLinks();
         public string SelectedRadius { get ; private set ; }
         private int? SelectedCourseId { get; set; }
         private Location SelectedLocation { get; set; }
-        public List<string> SelectedSectors { get; private set; }
+        public List<string> SelectedRoutes { get; private set; }
         public static implicit operator AggregatedProviderCourseDemandViewModel(GetProviderEmployerDemandQueryResult source)
         {
             var locationList = BuildLocationRadiusList();
@@ -41,14 +41,14 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Location = source.SelectedLocation?.Name,
                 SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
                 Ukprn = source.Ukprn,
-                Sectors = source.Sectors.Select(c=>new SectorViewModel(c, source.SelectedSectors)).ToList(),
-                SelectedSectors = source.SelectedSectors != null ? source.SelectedSectors.ToList() : new List<string>()
+                Routes = source.Routes.Select(c=>new RouteViewModel(c, source.SelectedRoutes)).ToList(),
+                SelectedRoutes = source.SelectedRoutes != null ? source.SelectedRoutes.ToList() : new List<string>()
             };
         }
         
         private bool ShouldShowFilterOptions()
         {
-            return !string.IsNullOrEmpty(SelectedCourse) || !string.IsNullOrEmpty(Location) || SelectedSectors.Any();
+            return !string.IsNullOrEmpty(SelectedCourse) || !string.IsNullOrEmpty(Location) || SelectedRoutes.Any();
         }
 
         private string BuildClearCourseLink()
@@ -65,20 +65,20 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         {
             if (SelectedCourseId == null)
             {
-                if (!SelectedSectors.Any())
+                if (!SelectedRoutes.Any())
                 {
                     return "";
                 }
 
-                return "?sectors=" + string.Join("&sectors=", SelectedSectors.Select(HttpUtility.UrlEncode));
+                return "?routes=" + string.Join("&routes=", SelectedRoutes.Select(HttpUtility.UrlEncode));
             }
             return $"?selectedCourseId={SelectedCourseId}";
         }
 
-        private Dictionary<string, string> BuildClearSectorsLinks()
+        private Dictionary<string, string> BuildClearRouteLinks()
         {
             var clearFilterLinks = new Dictionary<string, string>();
-            if (SelectedSectors?.FirstOrDefault() == null)
+            if (SelectedRoutes?.FirstOrDefault() == null)
             {
                 return clearFilterLinks;
             }
@@ -97,17 +97,17 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             }
             
 
-            foreach (var selectedSector in SelectedSectors)
+            foreach (var selectedRoute in SelectedRoutes)
             {
-                clearFilterString += $"{separator}sectors=" + string.Join("&sectors=",
-                    SelectedSectors
-                        .Where(c => !c.Equals(selectedSector,
+                clearFilterString += $"{separator}routes=" + string.Join("&routes=",
+                    SelectedRoutes
+                        .Where(c => !c.Equals(selectedRoute,
                             StringComparison.CurrentCultureIgnoreCase))
                         .Select(HttpUtility.UrlEncode));
 
-                if (Sectors.SingleOrDefault(c=>c.Route.Equals(selectedSector, StringComparison.CurrentCultureIgnoreCase))!=null)
+                if (Routes.SingleOrDefault(c=>c.Route.Equals(selectedRoute, StringComparison.CurrentCultureIgnoreCase))!=null)
                 {
-                    clearFilterLinks.Add(selectedSector, clearFilterString);
+                    clearFilterLinks.Add(selectedRoute, clearFilterString);
                 }
             }
 

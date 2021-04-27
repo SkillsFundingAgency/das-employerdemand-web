@@ -19,7 +19,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             source.SelectedRadius = null;
             source.SelectedLocation = null;
             source.SelectedCourseId = null;
-            source.SelectedSectors = null;
+            source.SelectedRoutes = null;
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -32,7 +32,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             actual.SelectedCourse.Should().BeEmpty();
             actual.ShowFilterOptions.Should().BeFalse();
             actual.SelectedRadius.Should().Be("5");
-            actual.SelectedSectors.Should().BeEmpty();
+            actual.SelectedRoutes.Should().BeEmpty();
             actual.Ukprn.Should().Be(source.Ukprn);
         }
 
@@ -61,7 +61,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = null;
-            source.Sectors = new List<string>();
+            source.Routes = new List<string>();
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -76,7 +76,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
             source.SelectedLocation = null;
-            source.Sectors = new List<string>();
+            source.Routes = new List<string>();
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -91,7 +91,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Arrange
             source.SelectedCourseId = null;
             source.SelectedLocation = null;
-            source.Sectors = new List<string> {sector};
+            source.Routes = new List<string> {sector};
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel)source;
@@ -105,7 +105,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
-            source.Sectors = new List<string>();
+            source.Routes = new List<string>();
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -120,7 +120,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = source.Courses.First().Id;
-            source.Sectors = new List<string> {sector};
+            source.Routes = new List<string> {sector};
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel)source;
@@ -128,7 +128,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
             actual.ClearLocationLink.Should().Be($"?selectedCourseId={source.SelectedCourseId}");
-            actual.ClearSectorLink.Should().BeEmpty();
+            actual.ClearRouteLinks.Should().BeEmpty();
         }
 
         [Test, AutoData]
@@ -142,7 +142,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearLocationLink.Should().Be("?sectors=" + string.Join("&sectors=", actual.SelectedSectors.Select(HttpUtility.HtmlEncode)));
+            actual.ClearLocationLink.Should().Be("?routes=" + string.Join("&routes=", actual.SelectedRoutes.Select(HttpUtility.HtmlEncode)));
         }
 
         [Test, AutoData]
@@ -150,7 +150,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = null;
-            source.SelectedSectors = new List<string>();
+            source.SelectedRoutes = new List<string>();
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
@@ -180,17 +180,17 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Arrange
             source.SelectedCourseId = null;
             source.SelectedLocation = null;
-            source.SelectedSectors = new List<string> {source.Sectors.FirstOrDefault()};
+            source.SelectedRoutes = new List<string> {source.Routes.FirstOrDefault()};
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            foreach (var sectorLink in actual.ClearSectorLink)
+            foreach (var sectorLink in actual.ClearRouteLinks)
             {
                 sectorLink.Value.Should()
-                    .Contain($"?sectors=");
+                    .Contain($"?routes=");
             }
         }
 
@@ -206,7 +206,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearSectorLink.Should().BeEmpty();
+            actual.ClearRouteLinks.Should().BeEmpty();
         }
 
         [Test, AutoData]
@@ -214,13 +214,13 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             //Arrange
             source.SelectedCourseId = null;
-            source.SelectedSectors = new List<string> {source.Sectors.FirstOrDefault()};
+            source.SelectedRoutes = new List<string> {source.Routes.FirstOrDefault()};
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel)source;
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            foreach (var sectorLink in actual.ClearSectorLink)
+            foreach (var sectorLink in actual.ClearRouteLinks)
             {
                 sectorLink.Value.Should()
                     .Contain($"?location={HttpUtility.UrlEncode(actual.Location)}&radius={actual.SelectedRadius}");
@@ -239,7 +239,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            actual.ClearSectorLink.Should().BeEmpty();
+            actual.ClearRouteLinks.Should().BeEmpty();
         }
 
         [Test, AutoData]
