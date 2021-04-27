@@ -103,8 +103,8 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         [InlineAutoData("01012 111555#100", true)]
         [InlineAutoData("01012 111555 100/100", true)]
         [InlineAutoData("01112223443 / 01112223443", true)]
-        [InlineAutoData("01112223443 / 01112223443 12345678901234", true)]
-        [InlineAutoData("01112223443 / 01112223443 123456789012341", false)]
+        [InlineAutoData("01112223443 / 01112223443 123456789012341234567891", true)]
+        [InlineAutoData("01112223443 / 01112223443 1234567890123412345678912", false)]
         [InlineAutoData("01112223443 / 01112223443 abc", false)]
         public async Task Then_Validates_PhoneNumbers_Correctly(string phoneNumber, bool expected, UpdateCachedProviderInterestCommand command)
         {
