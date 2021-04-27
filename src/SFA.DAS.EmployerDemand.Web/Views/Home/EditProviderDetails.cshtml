@@ -1,0 +1,67 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@using SFA.DAS.EmployerDemand.Web.Models
+@model SFA.DAS.EmployerDemand.Web.Models.ProviderContactDetailsViewModel
+@{
+    Layout = "_LayoutProvider";
+    var title = "Edit contact details";
+    if (!ViewData.ModelState.IsValid)
+    {
+        title = $"Error: {title}";
+    }
+    ViewData["Title"] = title;
+    ViewData["Description"] = "Edit the training provider’s email address, telephone number or website.";
+    ViewData["CustomOrder"] = ProviderContactDetailsViewModel.BuildPropertyOrderDictionary();
+}
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <partial name="_pageErrorsOverview" />
+            <h1 class="govuk-heading-xl">Edit @Context.User.Identity.Name's contact details</h1>
+            <p>We'll share these with the employers you're showing interest in, so they can contact you about @Model.Course.TitleAndLevel.</p>
+            <form method="POST" asp-route="@RouteNames.PostEditProviderDetails" asp-all-route-data="@Model.RouteDictionary" novalidate>
+                <input type="hidden" asp-for="Id"/>
+                <div class="govuk-grid-row">
+                    <div class="govuk-grid-column-three-quarters">
+                        @{ 
+                            var emailInvalid = !ViewData.ModelState.IsValid && ViewData.ModelState[nameof(Model.EmailAddress)].Errors.Any();
+                        }
+                        <div class="govuk-form-group @(emailInvalid ? "govuk-form-group--error" : "")">
+                            <label asp-for="EmailAddress" class="govuk-label govuk-label--m">
+                                Email address
+                            </label>
+                            @if (emailInvalid)
+                            {
+                                <span class="govuk-error-message" id="email-error">
+                                    <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.EmailAddress)].Errors.First().ErrorMessage
+                                </span>
+                            }
+                            <input asp-for="EmailAddress" class="govuk-input @(emailInvalid ? "govuk-input--error" : "")" type="email" autocomplete="email"/>
+                        </div>
+                        @{ 
+                            var phoneInvalid = !ViewData.ModelState.IsValid && ViewData.ModelState[nameof(Model.PhoneNumber)].Errors.Any();
+                        }
+                        <div class="govuk-form-group @(phoneInvalid ? "govuk-form-group--error" : "")">
+                            <label asp-for="PhoneNumber" class="govuk-label govuk-label--m">
+                                Telephone number
+                            </label>
+                            @if (phoneInvalid)
+                            {
+                                <span class="govuk-error-message" id="phone-error">
+                                    <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.PhoneNumber)].Errors.First().ErrorMessage
+                                </span>
+                            }
+                            <input asp-for="PhoneNumber" class="govuk-input @(phoneInvalid ? "govuk-input--error" : "")" type="tel" autocomplete="tel"/>
+                        </div>
+                        <div class="govuk-form-group">
+                            <label asp-for="Website" class="govuk-label govuk-label--m">
+                                Website (optional)
+                            </label>
+                            <input asp-for="Website" class="govuk-input" type="text"/>
+                        </div>
+                    </div>
+                </div>
+                <button class="govuk-button" data-module="govuk-button">Continue</button>
+            </form>
+        </div>
+    </div>
+</main>

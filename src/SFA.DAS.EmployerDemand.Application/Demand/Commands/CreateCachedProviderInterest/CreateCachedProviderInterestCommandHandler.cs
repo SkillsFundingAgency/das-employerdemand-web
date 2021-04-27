@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
@@ -6,12 +7,15 @@ using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest
 {
-    public class CreateCachedProviderInterestCommandHandler : IRequestHandler<CreateCachedProviderInterestCommand, CreateCachedProviderInterestResult> {
+    public class CreateCachedProviderInterestCommandHandler : IRequestHandler<CreateCachedProviderInterestCommand, CreateCachedProviderInterestResult> 
+    {
         private readonly IValidator<CreateCachedProviderInterestCommand> _validator;
+        private readonly IDemandService _demandService;
 
-        public CreateCachedProviderInterestCommandHandler(IValidator<CreateCachedProviderInterestCommand> validator)
+        public CreateCachedProviderInterestCommandHandler(IValidator<CreateCachedProviderInterestCommand> validator, IDemandService demandService)
         {
             _validator = validator;
+            _demandService = demandService;
         }
 
         public async Task<CreateCachedProviderInterestResult> Handle(CreateCachedProviderInterestCommand request, CancellationToken cancellationToken)
@@ -23,7 +27,12 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProvide
                 throw new ValidationException(validationResult.DataAnnotationResult,null, null);
             }
 
-            return new CreateCachedProviderInterestResult();
+            await _demandService.CreateCachedProviderInterest(request);
+            
+            return new CreateCachedProviderInterestResult
+            {
+                Id = request.Id
+            };
         }
     }
 }
