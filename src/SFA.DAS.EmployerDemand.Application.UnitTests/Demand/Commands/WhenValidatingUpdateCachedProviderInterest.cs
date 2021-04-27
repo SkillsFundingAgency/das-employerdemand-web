@@ -91,5 +91,33 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             //Assert
             actual.IsValid().Should().BeTrue();
         }
+
+        [Test]
+        [InlineAutoData("010 5656 5656 ( Option: 1 )", true)]
+        [InlineAutoData("+ 44 (0)111 011 1110 ( Option: 1 )", true)]
+        [InlineAutoData("+ 44 (0)111 011 1110 ( OPTION: 1 )", true)]
+        [InlineAutoData("010 1010 1100 ( ext: 1000 ) ", true)]
+        [InlineAutoData("01012 111555 Ext 100/100", true)]
+        [InlineAutoData("01012 111555 EXT 100/100", true)]
+        [InlineAutoData("01012 111555 ext 100/100", true)]
+        [InlineAutoData("01012 111555#100", true)]
+        [InlineAutoData("01012 111555 100/100", true)]
+        [InlineAutoData("01112223443 / 01112223443", true)]
+        [InlineAutoData("01112223443 / 01112223443 12345678901234", true)]
+        [InlineAutoData("01112223443 / 01112223443 123456789012341", false)]
+        [InlineAutoData("01112223443 / 01112223443 abc", false)]
+        public async Task Then_Validates_PhoneNumbers_Correctly(string phoneNumber, bool expected, UpdateCachedProviderInterestCommand command)
+        {
+            //Arrange
+            var validator = new UpdateCachedProviderInterestCommandValidator();
+            command.EmailAddress = "test@test.com";
+            command.PhoneNumber = phoneNumber;
+            
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().Be(expected);
+        }
     }
 }

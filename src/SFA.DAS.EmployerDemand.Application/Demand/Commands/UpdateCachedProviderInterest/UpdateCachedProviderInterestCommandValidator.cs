@@ -17,7 +17,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.UpdateCachedProvide
             {
                 validationResult.AddError(nameof(item.PhoneNumber), "Enter a telephone number");
             } 
-            else if (!Regex.IsMatch(item.PhoneNumber, @"^[0-9 \+]*$"))
+            else if (!Regex.IsMatch(item.PhoneNumber, @"^[0-9extEXTOoPpIiNn \:\+\(\)\#\/]*$") || item.PhoneNumber.Length > 40)
             {
                 validationResult.AddError(nameof(item.PhoneNumber), "Enter a telephone number, like 01632 960 001, 07700 900 982 or +44 0808 157 0192");
             }
