@@ -57,5 +57,14 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             return result;
         }
+
+        public async Task<GetProviderEmployerDemandDetailsResponse> GetProviderEmployerDemandDetails( int ukprn, int courseId, string location, string locationRadius)
+        {
+            var result =
+                await _apiClient.Get<GetProviderEmployerDemandDetailsResponse>(
+                    new GetProviderEmployerDemandDetailsRequest(ukprn, courseId, location, locationRadius));
+
+            return result;
+        }
     }
 }

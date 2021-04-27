@@ -8,6 +8,7 @@ using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
+using SFA.DAS.EmployerDemand.Domain.Locations;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
@@ -34,6 +35,9 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             actual.TotalResults.Should().Be(response.TotalResults);
             actual.CourseDemands.Should().BeEquivalentTo(actual.CourseDemands);
             actual.SelectedCourseId.Should().Be(query.CourseId);
+            actual.SelectedLocation.Should().BeEquivalentTo((Location)response.Location);
+            actual.SelectedRadius.Should().Be(query.LocationRadius);
+            actual.Ukprn.Should().Be(query.Ukprn);
             actual.Sectors.Should().BeEquivalentTo(response.Sectors.Select(c=>c.Route));
         }
 
