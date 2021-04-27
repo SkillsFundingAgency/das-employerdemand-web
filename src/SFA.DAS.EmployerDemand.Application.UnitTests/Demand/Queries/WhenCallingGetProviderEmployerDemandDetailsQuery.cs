@@ -36,6 +36,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             actual.CourseDemandDetailsList.Should().BeEquivalentTo(response.ProviderEmployerDemandDetailsList.Select(item => (ProviderCourseDemandDetails)item));
             actual.SelectedLocation.Should().BeEquivalentTo((Location)response.Location);
             actual.SelectedRadius.Should().Be(query.LocationRadius);
+            actual.ProviderContactDetails.Should().BeEquivalentTo(response.ProviderContactDetails);
         }
     }
 }

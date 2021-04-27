@@ -7,7 +7,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProvide
 {
     public class CreateProviderInterestCommandValidator : IValidator<CreateCachedProviderInterestCommand>
     {
-        public async Task<ValidationResult> ValidateAsync(CreateCachedProviderInterestCommand item)
+        public Task<ValidationResult> ValidateAsync(CreateCachedProviderInterestCommand item)
         {
             var result = new ValidationResult();
 
@@ -16,7 +16,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProvide
                 result.AddError(nameof(item.EmployerDemandIds), "Select the employers you're interested in");
             }
 
-            return result;
+            return Task.FromResult(result);
         }
     }
 }

@@ -13,6 +13,9 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public TrainingCourse TrainingCourse { get; set; }
         [JsonProperty("location")]
         public LocationItem Location { get; set; }
+
+        [JsonProperty("providerContactDetails")]
+        public ProviderContactDetails ProviderContactDetails { get ; set ; }
     }
 
     public class ProviderEmployerDemandDetailsItem
@@ -23,5 +26,17 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public int Apprentices { get; set; }
         [JsonProperty("location")]
         public LocationItem Location { get; set; }
+    }
+
+    public class ProviderContactDetails
+    {
+        [JsonProperty("ukprn")]
+        public int Ukprn { get; set; }
+        [JsonProperty("emailAddress")]
+        public string EmailAddress { get; set; }
+        [JsonProperty("phoneNumber")]
+        public string PhoneNumber { get; set; }
+        [JsonProperty("website")]
+        public string Website { get; set; }
     }
 }

@@ -72,6 +72,12 @@
     "id": 51,
     "sector": "Construction"
   },
+  "providerContactDetails": {
+    "ukprn": 10000001,
+    "emailAddress": "testperson@test.com",
+    "phoneNumber": "01234 445566",
+    "website": "test@test.com"
+  },
   "totalFiltered": 5,
   "total": 5
 }

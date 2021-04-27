@@ -7,8 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest;
 using Microsoft.Extensions.Options;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.UpdateCachedProviderInterest;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
+using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -70,7 +73,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}", Name = RouteNames.PostProviderDemandDetails)]
         public async Task<IActionResult> PostFindApprenticeshipTrainingOpportunitiesForCourse(ProviderRegisterInterestRequest request)
         {
@@ -79,10 +81,32 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 var result = await _mediator.Send(new CreateCachedProviderInterestCommand
                 {
                     Ukprn = request.Ukprn,
-                    EmployerDemandIds = request.EmployerDemandIds
+                    EmployerDemandIds = request.EmployerDemandIds,
+                    Id = Guid.NewGuid(),
+                    Website = request.ProviderWebsite,
+                    EmailAddress = request.ProviderEmail,
+                    PhoneNumber = request.ProviderTelephoneNumber,
+                    Course = new Course
+                    {
+                        Id = request.CourseId,
+                        Level = request.CourseLevel,
+                        Sector = request.CourseSector,
+                        Title = request.CourseTitle
+                    }
                 });
 
-                return RedirectToRoute(RouteNames.ProviderDashboard, new {request.Ukprn});
+                var routeName = RouteNames.ConfirmProviderDetails;
+                if (string.IsNullOrEmpty(request.ProviderEmail) ||
+                    string.IsNullOrEmpty(request.ProviderTelephoneNumber))
+                {
+                    routeName = RouteNames.EditProviderDetails;
+                }
+                
+                return RedirectToRoute(routeName, new {
+                    id = result.Id, 
+                    ukprn = request.Ukprn,
+                    courseId = request.CourseId
+                });
             }
             catch (ValidationException e)
             {
@@ -100,6 +124,90 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 
                 return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
+        }
+
+        [HttpGet]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}", Name = RouteNames.ConfirmProviderDetails)]
+        public async Task<IActionResult> ConfirmProviderDetails(int ukprn, int courseId, Guid id)
+        {
+            var result = await _mediator.Send(new GetCachedProviderInterestQuery
+            {
+                Id = id
+            });
+
+            if (result.ProviderInterest == null)
+            {
+                return RedirectToRoute(RouteNames.ProviderDemandDetails, new {ukprn, courseId});
+            }
+            
+            var model = (ProviderContactDetailsViewModel)result.ProviderInterest; 
+            
+            return View(model);
+        }
+        
+        [HttpGet]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/edit/{id}", Name = RouteNames.EditProviderDetails)]
+        public async Task<IActionResult> EditProviderDetails(int ukprn, int courseId, Guid id)
+        {
+            var result = await _mediator.Send(new GetCachedProviderInterestQuery
+            {
+                Id = id
+            });
+            
+            if (result.ProviderInterest == null)
+            {
+                return RedirectToRoute(RouteNames.ProviderDemandDetails, new {ukprn, courseId});
+            }
+            
+            var model = (ProviderContactDetailsViewModel)result.ProviderInterest; 
+            
+            return View(model);
+        }
+        
+        [HttpPost]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/edit/{id}", Name = RouteNames.PostEditProviderDetails)]
+        public async Task<IActionResult> PostEditProviderDetails(UpdateProviderInterestDetails request)
+        {
+            try
+            {
+                var result = await _mediator.Send(new UpdateCachedProviderInterestCommand
+                {
+                    Id = request.Id,
+                    Website = request.Website,
+                    EmailAddress = request.EmailAddress,
+                    PhoneNumber = request.PhoneNumber
+                });
+            
+                if (result.Id == null)
+                {
+                    return RedirectToRoute(RouteNames.ProviderDemandDetails, new {request.Ukprn, request.CourseId});
+                }
+                
+                return RedirectToRoute(RouteNames.ConfirmProviderDetails, new
+                {
+                    id = result.Id, ukprn = request.Ukprn, courseId = request.CourseId
+                });
+            }
+            catch (ValidationException e)
+            {
+                foreach (var member in e.ValidationResult.MemberNames)
+                {
+                    ModelState.AddModelError(member.Split('|')[0], member.Split('|')[1]);
+                }
+
+                var result = await _mediator.Send(new GetCachedProviderInterestQuery
+                {
+                    Id = request.Id
+                });
+
+                var model = (ProviderContactDetailsViewModel)result.ProviderInterest;
+                model.Website = request.Website;
+                model.EmailAddress = request.EmailAddress;
+                model.PhoneNumber = request.PhoneNumber;
+                
+                return View("EditProviderDetails", model);
+            }
+            
         }
 
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(

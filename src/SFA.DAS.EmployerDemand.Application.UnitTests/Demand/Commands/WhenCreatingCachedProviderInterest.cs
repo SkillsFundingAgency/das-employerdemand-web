@@ -34,5 +34,26 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             act.Should().Throw<ValidationException>()
                 .WithMessage($"*{propertyName}*");
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Request_Is_Valid_The_Item_Is_Added_To_The_Cache(
+            string propertyName,
+            CreateCachedProviderInterestCommand command,
+            [Frozen] Mock<IDemandService> service,
+            [Frozen] Mock<IValidator<CreateCachedProviderInterestCommand>> validator,
+            CreateCachedProviderInterestCommandHandler handler)
+        {
+            //Arrange
+            validator
+                .Setup(x=>x.ValidateAsync(command))
+                .ReturnsAsync(new ValidationResult());
+            
+            //Act
+            var actual = await handler.Handle(command, CancellationToken.None);
+            
+            //Assert
+            service.Verify(x=>x.CreateCachedProviderInterest(command), Times.Once);
+            actual.Id.Should().Be(command.Id);
+        }
     }
 }

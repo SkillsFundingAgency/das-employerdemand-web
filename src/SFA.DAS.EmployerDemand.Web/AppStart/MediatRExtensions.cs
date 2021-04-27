@@ -1,6 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.UpdateCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 
 namespace SFA.DAS.EmployerDemand.Web.AppStart
@@ -11,6 +12,7 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
         {
             services.AddScoped(typeof(IValidator<CreateCachedCourseDemandCommand>), typeof(CreateCourseDemandCommandValidator));
             services.AddScoped(typeof(IValidator<CreateCachedProviderInterestCommand>), typeof(CreateProviderInterestCommandValidator));
+            services.AddScoped(typeof(IValidator<UpdateCachedProviderInterestCommand>), typeof(UpdateCachedProviderInterestCommandValidator));
         }
     }
 }
