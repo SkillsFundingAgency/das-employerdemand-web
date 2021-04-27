@@ -43,5 +43,19 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Assert
             actual.Should().BeNull();           
         }
+        
+        
+        [Test, AutoData]
+        public void Then_If_It_Is_A_Full_Postcode_Only_Postcode_And_Not_DistrictName_Is_Shown(CourseDemandRequest source, string district)
+        {
+            //Arrange
+            var postcode = "CV1 1QT"; 
+            source.LocationItem.Name = $"{postcode}, {district}";
+            //Act
+            var actual = (CompletedCourseDemandViewModel) source;
+            
+            //Assert
+            actual.LocationName.Should().Be(postcode);
+        }
     }
 }
