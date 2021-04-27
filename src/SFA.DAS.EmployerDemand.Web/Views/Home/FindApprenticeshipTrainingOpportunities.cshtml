@@ -106,7 +106,7 @@
                                              @foreach (var sector in Model.Routes)
                                              {
                                                  <div class="govuk-checkboxes__item">
-                                                     <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="sectors" type="checkbox" value="@sector.Route">
+                                                     <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="routes" type="checkbox" value="@sector.Route">
                                                      <label class="govuk-label govuk-checkboxes__label" for="route-@sector.Id">
                                                          @sector.Route
                                                      </label>

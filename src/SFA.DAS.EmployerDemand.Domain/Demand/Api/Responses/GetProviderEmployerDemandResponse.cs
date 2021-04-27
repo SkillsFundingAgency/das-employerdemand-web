@@ -31,7 +31,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
     }
     public class RouteItem
     {
-        [JsonProperty("route")]
+        [JsonProperty("name")]
         public string Route { get; set; }
     }
 }
