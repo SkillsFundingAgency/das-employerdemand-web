@@ -41,7 +41,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 SelectedLocation = source.SelectedLocation,
                 Location = source.SelectedLocation?.Name,
                 SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
-                Ukprn = source.Ukprn
+                Ukprn = source.Ukprn,
                 Sectors = source.Sectors.Select(c=>new SectorViewModel(c, source.SelectedSectors)).ToList(),
                 SelectedSectors = source.SelectedSectors != null ? source.SelectedSectors.ToList() : new List<string>()
             };

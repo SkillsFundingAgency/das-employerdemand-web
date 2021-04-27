@@ -33,7 +33,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 SelectedCourseId = request.CourseId,
                 SelectedLocation = result.Location,
                 SelectedRadius = request.LocationRadius,
-                Ukprn = request.Ukprn
+                Ukprn = request.Ukprn,
                 Sectors = result.Sectors.Select(c => c.Route).ToList(),
                 SelectedSectors = request.SelectedSectors
             };
