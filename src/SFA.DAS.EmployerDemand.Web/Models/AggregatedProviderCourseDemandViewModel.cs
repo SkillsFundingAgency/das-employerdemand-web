@@ -99,7 +99,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
 
             foreach (var selectedRoute in SelectedRoutes)
             {
-                clearFilterString += $"{separator}routes=" + string.Join("&routes=",
+                var selectedRouteLink = $"{separator}routes=" + string.Join("&routes=",
                     SelectedRoutes
                         .Where(c => !c.Equals(selectedRoute,
                             StringComparison.CurrentCultureIgnoreCase))
@@ -107,10 +107,9 @@ namespace SFA.DAS.EmployerDemand.Web.Models
 
                 if (Routes.SingleOrDefault(c=>c.Route.Equals(selectedRoute, StringComparison.CurrentCultureIgnoreCase))!=null)
                 {
-                    clearFilterLinks.Add(selectedRoute, clearFilterString);
+                    clearFilterLinks.Add(selectedRoute, clearFilterString + selectedRouteLink);
                 }
             }
-
             return clearFilterLinks;
         }
     }

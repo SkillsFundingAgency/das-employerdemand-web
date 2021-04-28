@@ -180,18 +180,15 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Arrange
             source.SelectedCourseId = null;
             source.SelectedLocation = null;
-            source.SelectedRoutes = new List<string> {source.Routes.FirstOrDefault()};
+            source.SelectedRoutes = new List<string> {source.Routes.FirstOrDefault(), source.Routes.LastOrDefault()};
 
             //Act
             var actual = (AggregatedProviderCourseDemandViewModel) source;
 
             //Assert
             actual.ShowFilterOptions.Should().BeTrue();
-            foreach (var sectorLink in actual.ClearRouteLinks)
-            {
-                sectorLink.Value.Should()
-                    .Contain($"?routes=");
-            }
+            actual.ClearRouteLinks.Should().ContainValue($"?routes={HttpUtility.UrlEncode(source.Routes.FirstOrDefault())}");
+            actual.ClearRouteLinks.Should().ContainValue($"?routes={HttpUtility.UrlEncode(source.Routes.LastOrDefault())}");
         }
 
         [Test, AutoData]
