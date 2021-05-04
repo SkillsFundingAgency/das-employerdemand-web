@@ -1,0 +1,76 @@
+﻿@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@{
+    Layout = "_LayoutProvider";
+    var title = "Check your answers";
+    if (!ViewData.ModelState.IsValid)
+    {
+        title = $"Error: {title}";
+    }
+    ViewData["Title"] = title;
+    ViewData["Description"] = "Confirm the apprenticeship training course, opportunities and contact details.";
+    ViewData["ShowJSBackLink"] = true;
+}
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <partial name="_pageErrorsOverview" />
+            <h1 class="govuk-heading-xl">
+                Check your answers
+            </h1>
+            <dl class="govuk-summary-list">
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Apprenticeship <br> training course</dt>
+                    <dd class="govuk-summary-list__value">@Model.Course.Title</dd>
+                    <dd class="govuk-summary-list__actions"></dd>
+                </div>
+                <div class="govuk-summary-list__row">
+                    <dt class="govuk-summary-list__key">Employers</dt>
+                    <dd class="govuk-summary-list__value">
+
+                        @foreach (var course in Model.ProviderCourseDemandDetails)
+                        {
+                        <dd>@course.Location</dd>
+                        <br>
+                        <dd>@course.NumberOfApprentices apprentice@(course.NumberOfApprentices != 1 ? "s":"")</dd>
+                    }
+                        </dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a>asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </dd>
+                    </div>
+                </dl>
+
+            <h2 class="govuk-heading-m"><!--@Model.Name-->'s contact details</h2>
+                <dl class="govuk-summary-list">
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Email address</dt>
+                        <dd class="govuk-summary-list__value"><span style="white-space: nowrap">@Model.EmailAddress</span></dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a>asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </dd>
+                    </div>
+                    <div class="govuk-summary-list__row">
+                        <dt class="govuk-summary-list__key">Telephone number</dt>
+                        <dd class="govuk-summary-list__value"><span style="white-space: nowrap">@Model.PhoneNumber</span></dd>
+                        <dd class="govuk-summary-list__actions">
+                            <a>asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Change</a>
+                        </dd>
+                    </div>
+                    @if (!Model.Website.IsNullOrEmpty())
+                    {
+                        <div class="govuk-summary-list__row">
+                            <dt class="govuk-summary-list__key">Website</dt>
+                            <dd class="govuk-summary-list__value"><span style="white-space: nowrap">@Model.Website</span></dd>
+                            <dd class="govuk-summary-list__actions">
+                                <a>asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Change</a>
+                            </dd>
+                        </div>
+                    }
+                </dl>
+                <p class="govuk-body">We’ll share these contact details with the employers you’re showing interest in.</p>
+                <form>
+                    <button class="govuk-button" data-module="govuk-button">Confirm</button>
+                </form>
+            </div>
+    </div>
+</main>
