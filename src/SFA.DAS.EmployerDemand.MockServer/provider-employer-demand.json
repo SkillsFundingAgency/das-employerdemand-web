@@ -83,6 +83,53 @@
       "level": 3
     }
   ],
+  "routes": [
+    {
+      "name": "Agriculture, environmental and animal care"
+    },
+    {
+      "name": "Business and administration"
+    },
+    {
+      "name": "Care services"
+    },
+    {
+      "name": "Catering and hospitality"
+    },
+    {
+      "name": "Construction"
+    },
+    {
+      "name": "Creative and design"
+    },
+    {
+      "name": "Digital"
+    },
+    {
+      "name": "Education and childcare"
+    },
+    {
+      "name": "Engineering and manufacturing"
+    },
+    {
+      "name": "Hair and beauty"
+    },
+    {
+      "name": "Health and science"
+    },
+    {
+      "name": "Legal, finance and accounting"
+    },
+    {
+      "name": "Protective services"
+    },
+    {
+      "name": "Sales, marketing and procurement"
+    },
+    {
+      "name": "Transport and logistics"
+    }
+  ],
   "total": 10,
   "totalFiltered": 10,
   "location": null
