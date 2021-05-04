@@ -95,7 +95,12 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             {
                 separator = "?";
             }
-            
+
+            if (SelectedRoutes.Count == 1)
+            {
+                clearFilterLinks.Add(SelectedRoutes.First(), clearFilterString);
+                return clearFilterLinks;
+            }
 
             foreach (var selectedRoute in SelectedRoutes)
             {

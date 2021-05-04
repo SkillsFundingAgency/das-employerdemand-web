@@ -146,6 +146,40 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         }
 
         [Test, AutoData]
+        public void Then_If_Only_One_Selected_Route_Then_Link_Does_Not_Contain_Route(GetProviderEmployerDemandQueryResult source)
+        {
+            //Arrange
+            source.SelectedCourseId = null;
+            source.SelectedLocation = null;
+            source.SelectedRoutes = new List<string> {source.Routes.FirstOrDefault()};
+
+            //Act
+            var actual = (AggregatedProviderCourseDemandViewModel)source;
+
+            //Assert
+            actual.ShowFilterOptions.Should().BeTrue();
+            actual.ClearRouteLinks.Count.Should().Be(1);
+            actual.ClearRouteLinks.First().Value.Should().Be("");
+        }
+        
+        
+        [Test, AutoData]
+        public void Then_If_Only_One_Selected_Route_Then_Link_Does_Not_Contain_Route_But_Contains_Other_Parts(GetProviderEmployerDemandQueryResult source)
+        {
+            //Arrange
+            source.SelectedCourseId = null;
+            source.SelectedRoutes = new List<string> {source.Routes.FirstOrDefault()};
+
+            //Act
+            var actual = (AggregatedProviderCourseDemandViewModel)source;
+
+            //Assert
+            actual.ShowFilterOptions.Should().BeTrue();
+            actual.ClearRouteLinks.Count.Should().Be(1);
+            actual.ClearRouteLinks.First().Value.Should().Be($"?location={HttpUtility.UrlEncode(actual.Location)}&radius={actual.SelectedRadius}");
+        }
+
+        [Test, AutoData]
         public void Then_The_Clear_Location_Link_Is_Built_If_No_Course_And_Sector_Selected(GetProviderEmployerDemandQueryResult source)
         {
             //Arrange
