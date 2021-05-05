@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +17,7 @@ using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
+using EmployerDemands = SFA.DAS.EmployerDemand.Domain.Demand.EmployerDemands;
 
 namespace SFA.DAS.EmployerDemand.Web.Controllers
 {
@@ -80,11 +83,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 var result = await _mediator.Send(new CreateCachedProviderInterestCommand
                 {
                     Ukprn = request.Ukprn,
-                    EmployerDemandIds = request.EmployerDemandIds,
                     Id = Guid.NewGuid(),
                     Website = request.ProviderWebsite,
                     EmailAddress = request.ProviderEmail,
                     PhoneNumber = request.ProviderTelephoneNumber,
+                    EmployerDemands = BuildEmployerDemands(request.EmployerDemands),
                     Course = new Course
                     {
                         Id = request.CourseId,
@@ -119,7 +122,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     request.CourseId,
                     request.Location,
                     request.Radius,
-                    request.EmployerDemandIds);
+                    BuildEmployerDemands(request.EmployerDemands).Select(c => c.EmployerDemandId).ToList());
                 
                 return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
@@ -209,6 +212,25 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             
         }
 
+        [HttpGet]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}/review", Name = RouteNames.ReviewProviderDetails)]
+        public async Task<IActionResult> ReviewProviderDetails(int ukprn, int courseId, Guid id)
+        {
+            var result = await _mediator.Send(new GetCachedProviderInterestQuery
+            {
+                Id = id
+            });
+
+            if (result.ProviderInterest == null)
+            {
+                return RedirectToRoute(RouteNames.ProviderDemandDetails, new { ukprn, courseId });
+            }
+
+            var model = (ReviewProviderDetailsViewModel) result.ProviderInterest;
+
+            return View(model);
+        }
+
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
             int ukprn,
             int courseId,
@@ -228,6 +250,23 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             model.SelectedEmployerDemandIds = selectedEmployerDemandIds ?? new List<Guid>();
 
             return model;
+        }
+
+        private IEnumerable<EmployerDemands> BuildEmployerDemands(List<string> source)
+        {
+            var returnList = new List<EmployerDemands>();
+            foreach (var employerDemand in source)
+            {
+                var demand = employerDemand.Split('|');
+                returnList.Add(new EmployerDemands
+                {
+                    EmployerDemandId = Guid.Parse(demand[0]),
+                    NumberOfApprentices = int.Parse(demand[1]),
+                    LocationName = demand[2]
+                });
+            }
+
+            return returnList;
         }
     }
 }
