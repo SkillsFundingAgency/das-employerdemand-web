@@ -4,7 +4,7 @@ using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 {
-    public class WhenCastingFromMediatorTypeToEmployerDemand
+    public class WhenCastingEmployerDemand
     {
         [Test, MoqAutoData]
         public void Then_The_Fields_Are_Mapped_Correctly(Domain.Demand.EmployerDemands source)
