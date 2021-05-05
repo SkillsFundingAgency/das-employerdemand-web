@@ -1,4 +1,6 @@
 ﻿@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@using SFA.DAS.EmployerDemand.Web.Models
+@model SFA.DAS.EmployerDemand.Web.Models.ReviewProviderDetailsViewModel
 @{
     Layout = "_LayoutProvider";
     var title = "Check your answers";
@@ -8,6 +10,7 @@
     }
     ViewData["Title"] = title;
     ViewData["Description"] = "Confirm the apprenticeship training course, opportunities and contact details.";
+    ViewData["CustomOrder"] = ReviewProviderDetailsViewModel.BuildPropertyOrderDictionary();
     ViewData["ShowJSBackLink"] = true;
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
@@ -20,18 +23,18 @@
             <dl class="govuk-summary-list">
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Apprenticeship <br> training course</dt>
-                    <dd class="govuk-summary-list__value">@Model.Course.Title</dd>
+                    <dd class="govuk-summary-list__value">@Model.Course.TitleAndLevel</dd>
                     <dd class="govuk-summary-list__actions"></dd>
                 </div>
                 <div class="govuk-summary-list__row">
                     <dt class="govuk-summary-list__key">Employers</dt>
                     <dd class="govuk-summary-list__value">
 
-                        @foreach (var course in Model.ProviderCourseDemandDetails)
+                        @foreach (var demand in Model.EmployerDemands)
                         {
-                        <dd>@course.Location</dd>
+                        <dd>@demand.LocationName</dd>
                         <br>
-                        <dd>@course.NumberOfApprentices apprentice@(course.NumberOfApprentices != 1 ? "s":"")</dd>
+                        <dd>@demand.NumberOfApprentices apprentice@(demand.NumberOfApprentices != 1 ? "s":"")</dd>
                     }
                         </dd>
                         <dd class="govuk-summary-list__actions">
@@ -40,7 +43,7 @@
                     </div>
                 </dl>
 
-            <h2 class="govuk-heading-m"><!--@Model.Name-->'s contact details</h2>
+            <h2 class="govuk-heading-m">@Context.User.Identity.Name's contact details</h2>
                 <dl class="govuk-summary-list">
                     <div class="govuk-summary-list__row">
                         <dt class="govuk-summary-list__key">Email address</dt>
@@ -56,7 +59,7 @@
                             <a>asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Change</a>
                         </dd>
                     </div>
-                    @if (!Model.Website.IsNullOrEmpty())
+                    @if (!String.IsNullOrEmpty(Model.Website))
                     {
                         <div class="govuk-summary-list__row">
                             <dt class="govuk-summary-list__key">Website</dt>
@@ -72,5 +75,5 @@
                     <button class="govuk-button" data-module="govuk-button">Confirm</button>
                 </form>
             </div>
-    </div>
-</main>
+        </div>
+    </main>
