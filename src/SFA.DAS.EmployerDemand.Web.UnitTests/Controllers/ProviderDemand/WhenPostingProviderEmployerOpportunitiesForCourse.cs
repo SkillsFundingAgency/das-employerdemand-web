@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading;
@@ -22,12 +23,20 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
     {
         [Test, MoqAutoData]
         public async Task And_There_Is_A_Validation_Exception_Then_Register_View_Is_Returned(
+            Guid demandId,
             ProviderRegisterInterestRequest request,
             GetProviderEmployerDemandDetailsQueryResult resultForGet,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] HomeController controller)
         {
             //Arrange
+            request.EmployerDemands = new List<string>
+            {
+                $"{demandId}|1|testLocation1",
+                $"{demandId}|2|testLocation2",
+                $"{demandId}|3|testLocation3"
+            };
+
             mockMediator
                 .Setup(x => x.Send(
                     It.IsAny<CreateCachedProviderInterestCommand>(),
@@ -43,6 +52,9 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                     CancellationToken.None))
                 .ReturnsAsync(resultForGet);
 
+            var employerDemandIds =
+                BuildEmployerDemands(request.EmployerDemands).Select(c => c.EmployerDemandId).ToList();
+
             //Act
             var actual = await controller.PostFindApprenticeshipTrainingOpportunitiesForCourse(request) as ViewResult;
             
@@ -50,18 +62,26 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             Assert.IsNotNull(actual);
             actual.ViewName.Should().Be("FindApprenticeshipTrainingOpportunitiesForCourse");
             var model = actual.Model as AggregatedProviderCourseDemandDetailsViewModel;
-            model.SelectedEmployerDemandIds.Should().BeEquivalentTo(request.EmployerDemandIds);
+            model.SelectedEmployerDemandIds.Should().BeEquivalentTo(employerDemandIds);
             model.Should().BeEquivalentTo((AggregatedProviderCourseDemandDetailsViewModel)resultForGet, options => options.Excluding(viewModel => viewModel.SelectedEmployerDemandIds));
         }
 
         [Test, MoqAutoData]
         public async Task Then_If_There_Is_No_Validation_Error_Then_The_Command_Is_Handled_And_Redirected(
+            Guid demandId,
             ProviderRegisterInterestRequest request,
             CreateCachedProviderInterestResult result,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] HomeController controller)
         {
             //Arrange
+            request.EmployerDemands = new List<string>
+            {
+                $"{demandId}|1|testLocation1",
+                $"{demandId}|2|testLocation2",
+                $"{demandId}|3|testLocation3"
+            };
+
             mockMediator
                 .Setup(x => x.Send(
                     It.Is<CreateCachedProviderInterestCommand>(c =>
@@ -74,7 +94,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                             && c.Course.Level.Equals(request.CourseLevel)
                             && c.Course.Title.Equals(request.CourseTitle)
                             && c.Course.Sector.Equals(request.CourseSector)
-                            && c.EmployerDemandIds.Count().Equals(request.EmployerDemandIds.Count)),
+                            && c.EmployerDemands.Count().Equals(request.EmployerDemands.Count)),
                     It.IsAny<CancellationToken>())).ReturnsAsync(result);
             
             //Act
@@ -90,6 +110,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
         
         [Test, MoqAutoData]
         public async Task Then_If_There_Is_No_Validation_Error_Then_The_Command_Is_Handled_And_Redirected_To_Edit_If_No_Email(
+            Guid demandId,
             ProviderRegisterInterestRequest request,
             CreateCachedProviderInterestResult result,
             [Frozen] Mock<IMediator> mockMediator,
@@ -97,6 +118,13 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
         {
             //Arrange
             request.ProviderEmail = string.Empty;
+            request.EmployerDemands = new List<string>
+            {
+                $"{demandId}|1|testLocation1",
+                $"{demandId}|2|testLocation2",
+                $"{demandId}|3|testLocation3"
+            };
+
             mockMediator
                 .Setup(x => x.Send(
                     It.Is<CreateCachedProviderInterestCommand>(c =>
@@ -118,6 +146,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
         
         [Test, MoqAutoData]
         public async Task Then_If_There_Is_No_Validation_Error_Then_The_Command_Is_Handled_And_Redirected_To_Edit_If_No_PhoneNumber(
+            Guid demandId,
             ProviderRegisterInterestRequest request,
             CreateCachedProviderInterestResult result,
             [Frozen] Mock<IMediator> mockMediator,
@@ -125,6 +154,13 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
         {
             //Arrange
             request.ProviderTelephoneNumber = string.Empty;
+            request.EmployerDemands = new List<string>
+            {
+                $"{demandId}|1|testLocation1",
+                $"{demandId}|2|testLocation2",
+                $"{demandId}|3|testLocation3"
+            };
+
             mockMediator
                 .Setup(x => x.Send(
                     It.Is<CreateCachedProviderInterestCommand>(c =>
@@ -141,6 +177,23 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             actual.RouteValues["id"].Should().Be(result.Id);
             actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
             actual.RouteValues["courseId"].Should().Be(request.CourseId);
+        }
+
+        private IEnumerable<EmployerDemands> BuildEmployerDemands(List<string> source)
+        {
+            var returnList = new List<EmployerDemands>();
+            foreach (var employerDemand in source)
+            {
+                var demand = employerDemand.Split('|');
+                returnList.Add(new EmployerDemands
+                {
+                    EmployerDemandId = Guid.Parse(demand[0]),
+                    NumberOfApprentices = int.Parse(demand[1]),
+                    LocationName = demand[2]
+                });
+            }
+
+            return returnList;
         }
     }
 }

@@ -9,7 +9,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProvide
     public class CreateCachedProviderInterestCommand : IRequest<CreateCachedProviderInterestResult>, IProviderDemandInterest
     {
         public int Ukprn { get; set; }
-        public IEnumerable<Guid> EmployerDemandIds { get; set; }
+        public IEnumerable<EmployerDemands> EmployerDemands { get; set; }
         public Guid Id { get; set; }
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
