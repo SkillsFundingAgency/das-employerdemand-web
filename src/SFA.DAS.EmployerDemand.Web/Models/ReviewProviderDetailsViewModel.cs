@@ -14,7 +14,19 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string Website { get; set; }
         public TrainingCourseViewModel Course { get; set; }
         public List<EmployerDemands> EmployerDemands { get; set; }
-        
+        public Dictionary<string, string> RouteDictionary { get; set; }
+
+        public static Dictionary<string, int> BuildPropertyOrderDictionary()
+        {
+            var itemCount = 0;
+            var propertyOrderDictionary = typeof(ProviderContactDetailsViewModel).GetProperties().Select(c => new
+            {
+                Order = itemCount++,
+                c.Name
+            }).ToDictionary(key => key.Name, value => value.Order);
+            return propertyOrderDictionary;
+        }
+
 
         public static implicit operator ReviewProviderDetailsViewModel(ProviderInterestRequest source)
         {
