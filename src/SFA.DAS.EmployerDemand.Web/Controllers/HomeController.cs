@@ -212,7 +212,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             
         }
 
-        [HttpGet]
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}/review", Name = RouteNames.ReviewProviderDetails)]
         public async Task<IActionResult> ReviewProviderDetails(int ukprn, int courseId, Guid id)
         {
