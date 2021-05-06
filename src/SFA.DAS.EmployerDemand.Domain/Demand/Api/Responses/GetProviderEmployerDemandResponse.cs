@@ -16,6 +16,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public int FilteredResults { get; set; }
         [JsonProperty("location")]
         public LocationItem Location { get; set; }
+        [JsonProperty("routes")]
+        public List<RouteItem> Routes { get; set; }
     }
 
     public class ProviderEmployerDemandItem
@@ -26,5 +28,10 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public int Apprentices { get; set; }
         [JsonProperty("employersCount")]
         public int Employers { get; set; }
+    }
+    public class RouteItem
+    {
+        [JsonProperty("name")]
+        public string Route { get; set; }
     }
 }

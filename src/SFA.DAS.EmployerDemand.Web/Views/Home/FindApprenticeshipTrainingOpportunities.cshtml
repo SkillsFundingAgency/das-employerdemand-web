@@ -51,20 +51,28 @@
                             <h4 class="das-filter__selected-sub-heading">Courses</h4>
                             <a asp-querystring="@Model.ClearCourseLink" title="Clear this filter '@Model.SelectedCourse'" class="das-filter__tag das-breakable">&lsquo;@Model.SelectedCourse&rsquo;</a>
                         }
+                        @if (Model.ClearRouteLinks.Any())
+                        {
+                            <h4 class="das-filter__selected-sub-heading">Apprenticeship category</h4>
+                            @foreach (var filterLink in Model.ClearRouteLinks)
+                            {
+                                <a class="das-filter__tag" asp-querystring="@filterLink.Value" title="Clear this sector filter @filterLink.Key">@filterLink.Key</a>
+                            }
+                        }
                     </div>
                     }
                     <div class="das-filter__body das-!-show--from-tablet" id="fat-filter-options">
                         <form asp-route="@RouteNames.ProviderDashboard" method="GET">
-                            
+
                             <button type="submit" class="govuk-button" id="filters-submit">Apply filters</button>
                             <div class="govuk-form-group govuk-!-margin-bottom-3">
-                            	<label class="govuk-label govuk-label--m govuk-!-margin-bottom-0" for="search-location">
-                            		Location
-                            	</label>
-                            	<span id="search-location-hint" class="govuk-hint">
-                            		Enter a town, city or postcode
-                            	</span>
-                                <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="false" data-default-value="@Model.Location"  aria-describedby="search-location-hint">
+                                <label class="govuk-label govuk-label--m govuk-!-margin-bottom-0" for="search-location">
+                                    Location
+                                </label>
+                                <span id="search-location-hint" class="govuk-hint">
+                                    Enter a town, city or postcode
+                                </span>
+                                <input type="search" id="search-location" name="location" title="Search" class="govuk-input" data-submit-on-selection="false" data-default-value="@Model.Location" aria-describedby="search-location-hint">
                             </div>
                             <div class="govuk-form-group">
                                 <label class="govuk-label" for="radius">
@@ -87,6 +95,28 @@
                                     }
                                 </select>
                             </div>
+                            @if (string.IsNullOrEmpty(Model.SelectedCourse))
+                            {
+                                <div class="govuk-form-group">
+                                    <fieldset class="govuk-fieldset">
+                                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
+                                             Apprenticeship category
+                                         </legend>
+                                         <div class="govuk-checkboxes govuk-checkboxes--small">
+                                             @foreach (var sector in Model.Routes)
+                                             {
+                                                 <div class="govuk-checkboxes__item">
+                                                     <input @(sector.Selected ? "checked='checked'" : "") class="govuk-checkboxes__input" id="route-@sector.Id" name="routes" type="checkbox" value="@sector.Route">
+                                                     <label class="govuk-label govuk-checkboxes__label" for="route-@sector.Id">
+                                                         @sector.Route
+                                                     </label>
+                                                 </div>
+                                             }
+                                         </div>
+                                    </fieldset>
+                                </div>
+                            }
+                            
                             <button type="submit" class="govuk-button" id="filters-submit-second">Apply filters</button>
                         </form>
                     </div>
