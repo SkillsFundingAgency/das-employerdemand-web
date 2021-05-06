@@ -19,7 +19,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public static Dictionary<string, int> BuildPropertyOrderDictionary()
         {
             var itemCount = 0;
-            var propertyOrderDictionary = typeof(ProviderContactDetailsViewModel).GetProperties().Select(c => new
+            var propertyOrderDictionary = typeof(ReviewProviderDetailsViewModel).GetProperties().Select(c => new
             {
                 Order = itemCount++,
                 c.Name
