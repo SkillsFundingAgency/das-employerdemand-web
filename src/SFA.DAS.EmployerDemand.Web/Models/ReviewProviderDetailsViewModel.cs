@@ -43,7 +43,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 {
                     {"ukprn", source.Ukprn.ToString()},
                     {"id", source.Id.ToString()},
-                    {"courseId", source.Course.Id.ToString()},
+                    {"courseId", source.Course.Id.ToString()}
                 }
             };
         }

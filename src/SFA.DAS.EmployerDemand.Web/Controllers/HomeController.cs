@@ -63,15 +63,33 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int ukprn, 
             int courseId, 
             [FromQuery]string location, 
-            [FromQuery]string radius)
+            [FromQuery]string radius,
+            string id = null)
         {
-            var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
+            var model = new AggregatedProviderCourseDemandDetailsViewModel();
+            if (Guid.TryParse(id, out var guid))
+            {
+                var result = await _mediator.Send(new GetCachedProviderInterestQuery
+                {
+                    Id = guid
+                });
+                model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
+                    ukprn,
+                    courseId,
+                    location,
+                    radius,
+                    result?.ProviderInterest.EmployerDemands.Select(c => c.EmployerDemandId).ToList());
+                return View(model);
+            }
+            
+            model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
                 ukprn,
                 courseId,
                 location,
                 radius);
-            
+
             return View(model);
+
         }
 
         [HttpPost]
