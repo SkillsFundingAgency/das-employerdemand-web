@@ -38,7 +38,13 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Website = source.Website,
                 EmailAddress = source.EmailAddress,
                 PhoneNumber = source.PhoneNumber,
-                EmployerDemands = source.EmployerDemands.Select(c => (EmployerDemands)c).ToList()
+                EmployerDemands = source.EmployerDemands.Select(c => (EmployerDemands)c).ToList(),
+                RouteDictionary = new Dictionary<string, string>
+                {
+                    {"ukprn", source.Ukprn.ToString()},
+                    {"id", source.Id.ToString()},
+                    {"courseId", source.Course.Id.ToString()},
+                }
             };
         }
     }
