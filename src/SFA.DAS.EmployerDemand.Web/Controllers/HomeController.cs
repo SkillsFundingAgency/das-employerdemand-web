@@ -263,21 +263,22 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             return model;
         }
 
-        private IEnumerable<EmployerDemands> BuildEmployerDemands(List<string> source)
+        private IEnumerable<EmployerDemands> BuildEmployerDemands(IReadOnlyCollection<string> source)
         {
             var returnList = new List<EmployerDemands>();
-            if (source != null && source.Count > 0)
+            if (source == null || source.Count == 0)
             {
-                foreach (var employerDemand in source)
+                return returnList;
+            }
+            foreach (var employerDemand in source)
+            {
+                var demand = employerDemand.Split('|');
+                returnList.Add(new EmployerDemands
                 {
-                    var demand = employerDemand.Split('|');
-                    returnList.Add(new EmployerDemands
-                    {
-                        EmployerDemandId = Guid.Parse(demand[0]),
-                        NumberOfApprentices = int.Parse(demand[1]),
-                        LocationName = demand[2]
-                    });
-                }
+                    EmployerDemandId = Guid.Parse(demand[0]),
+                    NumberOfApprentices = int.Parse(demand[1]),
+                    LocationName = demand[2]
+                });
             }
 
             return returnList;
