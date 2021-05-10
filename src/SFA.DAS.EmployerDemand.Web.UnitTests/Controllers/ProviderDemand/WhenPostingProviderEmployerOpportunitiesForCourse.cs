@@ -74,6 +74,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             [Greedy] HomeController controller)
         {
             //Arrange
+            request.Id = null;
             request.EmployerDemands = new List<string>
             {
                 $"{demandId}|1|testLocation1",
@@ -94,6 +95,48 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                             && c.Course.Title.Equals(request.CourseTitle)
                             && c.Course.Sector.Equals(request.CourseSector)
                             && c.EmployerDemands.Count().Equals(request.EmployerDemands.Count)),
+                    It.IsAny<CancellationToken>())).ReturnsAsync(result);
+            
+            //Act
+            var actual = await controller.PostFindApprenticeshipTrainingOpportunitiesForCourse(request) as RedirectToRouteResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.RouteName.Should().Be(RouteNames.ConfirmProviderDetails);
+            actual.RouteValues["id"].Should().Be(result.Id);
+            actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
+            actual.RouteValues["courseId"].Should().Be(request.CourseId);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_It_Is_An_Update_The_Request_Id_Is_Passed_To_The_Handler(
+            Guid demandId,
+            ProviderRegisterInterestRequest request,
+            CreateCachedProviderInterestResult result,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Greedy] HomeController controller)
+        {
+            //Arrange
+            request.EmployerDemands = new List<string>
+            {
+                $"{demandId}|1|testLocation1",
+                $"{demandId}|2|testLocation2",
+                $"{demandId}|3|testLocation3"
+            };
+
+            mockMediator
+                .Setup(x => x.Send(
+                    It.Is<CreateCachedProviderInterestCommand>(c =>
+                        c.Id.Equals(request.Id)
+                        && c.Ukprn.Equals(request.Ukprn)
+                        && c.Website.Equals(request.ProviderWebsite)
+                        && c.EmailAddress.Equals(request.ProviderEmail)
+                        && c.PhoneNumber.Equals(request.ProviderTelephoneNumber)
+                        && c.Course.Id.Equals(request.CourseId)
+                        && c.Course.Level.Equals(request.CourseLevel)
+                        && c.Course.Title.Equals(request.CourseTitle)
+                        && c.Course.Sector.Equals(request.CourseSector)
+                        && c.EmployerDemands.Count().Equals(request.EmployerDemands.Count)),
                     It.IsAny<CancellationToken>())).ReturnsAsync(result);
             
             //Act
