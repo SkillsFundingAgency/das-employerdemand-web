@@ -101,7 +101,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             GetProviderEmployerDemandDetailsQueryResult source)
         {
             //Arrange
-            source.EmployerDemandIds = new List<Guid>();
+            source.EmployerDemandIds = null;
 
             //Act
             var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
