@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,6 +38,56 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             actual.SelectedLocation.Should().BeEquivalentTo((Location)response.Location);
             actual.SelectedRadius.Should().Be(query.LocationRadius);
             actual.ProviderContactDetails.Should().BeEquivalentTo(response.ProviderContactDetails);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_Cached_Object_The_Service_Is_Called_And_Data_Returned(
+            GetProviderEmployerDemandDetailsQuery query,
+            GetProviderEmployerDemandDetailsResponse response,
+            ProviderInterestRequest providerInterest,
+            [Frozen] Mock<IDemandService> service,
+            GetProviderEmployerDemandDetailsQueryHandler handler)
+        {
+            //Arrange
+            var expectedDemandIds = providerInterest.EmployerDemands.Select(c => c.EmployerDemandId);
+
+            query.CachedObjectId = new Guid().ToString();
+            service.Setup(x => x.GetCachedProviderInterest(Guid.Parse(query.CachedObjectId)))
+                .ReturnsAsync(providerInterest);
+
+            service
+                .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await handler.Handle(query, CancellationToken.None);
+
+            //Assert
+            service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Once);
+            actual.EmployerDemandIds.Should().BeEquivalentTo(expectedDemandIds);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_No_Cached_Object_The_Service_Is_Not_Called_And_No_Data_Returned(
+            GetProviderEmployerDemandDetailsQuery query,
+            GetProviderEmployerDemandDetailsResponse response,
+            ProviderInterestRequest providerInterest,
+            [Frozen] Mock<IDemandService> service,
+            GetProviderEmployerDemandDetailsQueryHandler handler)
+        {
+            //Arrange
+            query.CachedObjectId = "";
+
+            service
+                .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await handler.Handle(query, CancellationToken.None);
+
+            //Assert
+            service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Never);
+            actual.EmployerDemandIds.Should().BeNull();
         }
     }
 }

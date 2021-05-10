@@ -30,7 +30,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
                 ProviderEmail = source.ProviderContactDetails?.EmailAddress ?? string.Empty,
                 ProviderWebsite = source.ProviderContactDetails?.Website ?? string.Empty,
-                ProviderTelephoneNumber = source.ProviderContactDetails?.PhoneNumber ?? string.Empty
+                ProviderTelephoneNumber = source.ProviderContactDetails?.PhoneNumber ?? string.Empty,
+                SelectedEmployerDemandIds = source.EmployerDemandIds.Any() ? source.EmployerDemandIds.ToList() : new List<Guid>()
             };
         }
         

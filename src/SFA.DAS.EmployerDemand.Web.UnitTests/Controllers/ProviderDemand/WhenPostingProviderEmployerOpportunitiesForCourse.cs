@@ -23,7 +23,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
     {
         [Test, MoqAutoData]
         public async Task And_There_Is_A_Validation_Exception_Then_Register_View_Is_Returned(
-            Guid demandId,
             ProviderRegisterInterestRequest request,
             GetProviderEmployerDemandDetailsQueryResult resultForGet,
             [Frozen] Mock<IMediator> mockMediator,
@@ -32,9 +31,9 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             //Arrange
             request.EmployerDemands = new List<string>
             {
-                $"{demandId}|1|testLocation1",
-                $"{demandId}|2|testLocation2",
-                $"{demandId}|3|testLocation3"
+                $"{resultForGet.EmployerDemandIds.ElementAt(0)}|1|testLocation1",
+                $"{resultForGet.EmployerDemandIds.ElementAt(1)}|2|testLocation2",
+                $"{resultForGet.EmployerDemandIds.ElementAt(2)}|3|testLocation3"
             };
 
             mockMediator

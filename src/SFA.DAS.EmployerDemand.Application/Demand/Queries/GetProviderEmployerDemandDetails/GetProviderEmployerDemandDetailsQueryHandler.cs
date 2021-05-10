@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -17,6 +18,13 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         }
         public async Task<GetProviderEmployerDemandDetailsQueryResult> Handle(GetProviderEmployerDemandDetailsQuery request, CancellationToken cancellationToken)
         {
+            var cacheResult = new ProviderInterestRequest();
+            
+            if (Guid.TryParse(request.CachedObjectId, out var guid))
+            {
+                cacheResult = (ProviderInterestRequest)await _demandService.GetCachedProviderInterest(guid);
+            }
+
             var result = await _demandService.GetProviderEmployerDemandDetails(request.Ukprn, request.CourseId, request.Location, request.LocationRadius);
 
             return new GetProviderEmployerDemandDetailsQueryResult
@@ -25,7 +33,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 CourseDemandDetailsList = result.ProviderEmployerDemandDetailsList.Select(c => (ProviderCourseDemandDetails) c),
                 SelectedLocation = result.Location,
                 SelectedRadius = request.LocationRadius,
-                ProviderContactDetails = result.ProviderContactDetails
+                ProviderContactDetails = result.ProviderContactDetails,
+                EmployerDemandIds = cacheResult?.EmployerDemands?.Select(c => c.EmployerDemandId).ToList()
             };
         }
     }

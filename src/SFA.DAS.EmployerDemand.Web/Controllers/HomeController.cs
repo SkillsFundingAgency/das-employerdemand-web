@@ -67,27 +67,13 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             [FromQuery]string radius,
             string id = null)
         {
-            var model = new AggregatedProviderCourseDemandDetailsViewModel();
-            if (Guid.TryParse(id, out var guid))
-            {
-                var result = await _mediator.Send(new GetCachedProviderInterestQuery
-                {
-                    Id = guid
-                });
-                model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
-                    ukprn,
-                    courseId,
-                    location,
-                    radius,
-                    result?.ProviderInterest.EmployerDemands.Select(c => c.EmployerDemandId).ToList());
-                return View(model);
-            }
-            
-            model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
+            var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
                 ukprn,
                 courseId,
                 location,
-                radius);
+                radius,
+                null,
+                id);
 
             return View(model);
 
@@ -254,18 +240,24 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int courseId,
             string location,
             string radius,
-            IReadOnlyList<Guid> selectedEmployerDemandIds = null)
+            IReadOnlyList<Guid> selectedEmployerDemandIds = null,
+            string cachedObjectId = null)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
             {
                 Ukprn = ukprn,
                 CourseId = courseId,
                 Location = location,
-                LocationRadius = radius
+                LocationRadius = radius,
+                CachedObjectId = cachedObjectId
             });
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
-            model.SelectedEmployerDemandIds = selectedEmployerDemandIds ?? new List<Guid>();
+
+            if (model.SelectedEmployerDemandIds.Count == 0)
+            {
+                model.SelectedEmployerDemandIds = selectedEmployerDemandIds ?? new List<Guid>();
+            }
 
             return model;
         }
