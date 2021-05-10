@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -265,15 +266,18 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         private IEnumerable<EmployerDemands> BuildEmployerDemands(List<string> source)
         {
             var returnList = new List<EmployerDemands>();
-            foreach (var employerDemand in source)
+            if (source != null && source.Count > 0)
             {
-                var demand = employerDemand.Split('|');
-                returnList.Add(new EmployerDemands
+                foreach (var employerDemand in source)
                 {
-                    EmployerDemandId = Guid.Parse(demand[0]),
-                    NumberOfApprentices = int.Parse(demand[1]),
-                    LocationName = demand[2]
-                });
+                    var demand = employerDemand.Split('|');
+                    returnList.Add(new EmployerDemands
+                    {
+                        EmployerDemandId = Guid.Parse(demand[0]),
+                        NumberOfApprentices = int.Parse(demand[1]),
+                        LocationName = demand[2]
+                    });
+                }
             }
 
             return returnList;

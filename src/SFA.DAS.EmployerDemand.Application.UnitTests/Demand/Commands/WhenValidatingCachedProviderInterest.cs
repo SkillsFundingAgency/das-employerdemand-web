@@ -40,5 +40,22 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             actual.ValidationDictionary[nameof(command.EmployerDemands)].Should()
                 .Be("Select the employers you're interested in");
         }
+
+        [Test, AutoData]
+        public async Task And_Demands_Is_Null_Then_Not_Invalid(CreateCachedProviderInterestCommand command)
+        {
+            //Arrange
+            command.EmployerDemands = null;
+            var validator = new CreateProviderInterestCommandValidator();
+
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().BeFalse();
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.EmployerDemands));
+            actual.ValidationDictionary[nameof(command.EmployerDemands)].Should()
+                .Be("Select the employers you're interested in");
+        }
     }
 }
