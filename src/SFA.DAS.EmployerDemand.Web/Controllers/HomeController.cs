@@ -88,7 +88,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 var result = await _mediator.Send(new CreateCachedProviderInterestCommand
                 {
                     Ukprn = request.Ukprn,
-                    Id = Guid.NewGuid(),
+                    Id = request.Id ?? new Guid(),
                     Website = request.ProviderWebsite,
                     EmailAddress = request.ProviderEmail,
                     PhoneNumber = request.ProviderTelephoneNumber,

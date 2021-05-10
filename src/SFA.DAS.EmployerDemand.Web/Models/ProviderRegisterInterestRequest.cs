@@ -19,5 +19,6 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public int CourseLevel { get; set; }
         public string CourseTitle { get; set; }
         public string CourseSector { get; set; }
+        public Guid? Id { get; set; }
     }
 }

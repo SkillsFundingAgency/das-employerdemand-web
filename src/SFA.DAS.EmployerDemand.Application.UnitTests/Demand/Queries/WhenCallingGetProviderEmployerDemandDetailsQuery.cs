@@ -65,6 +65,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             //Assert
             service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Once);
             actual.EmployerDemandIds.Should().BeEquivalentTo(expectedDemandIds);
+            actual.Id.Should().Be(providerInterest.Id);
         }
 
         [Test, MoqAutoData]
@@ -76,7 +77,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             GetProviderEmployerDemandDetailsQueryHandler handler)
         {
             //Arrange
-            query.CachedObjectId = "";
+            query.CachedObjectId = "not a guid";
 
             service
                 .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
@@ -88,6 +89,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             //Assert
             service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Never);
             actual.EmployerDemandIds.Should().BeNull();
+            actual.Id.Should().BeEmpty();
         }
     }
 }

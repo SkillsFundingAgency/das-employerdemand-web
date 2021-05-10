@@ -21,7 +21,7 @@
             </h1>
 
             <div class="das-highlight govuk-!-padding-bottom-0">
-                <form asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="GET">
+                <form asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" asp-route-id="@Model.Id" method="GET">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Filter employers by location</legend>
                         <div class="govuk-grid-row">

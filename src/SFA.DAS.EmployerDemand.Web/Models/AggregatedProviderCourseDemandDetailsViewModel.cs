@@ -18,6 +18,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string ProviderEmail { get ; set ; }
         public string ProviderTelephoneNumber { get ; set ; }
         public string ProviderWebsite { get ; set ; }
+        public Guid? Id { get; set; }
 
         public static implicit operator AggregatedProviderCourseDemandDetailsViewModel(GetProviderEmployerDemandDetailsQueryResult source)
         {
@@ -31,7 +32,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 ProviderEmail = source.ProviderContactDetails?.EmailAddress ?? string.Empty,
                 ProviderWebsite = source.ProviderContactDetails?.Website ?? string.Empty,
                 ProviderTelephoneNumber = source.ProviderContactDetails?.PhoneNumber ?? string.Empty,
-                SelectedEmployerDemandIds = source.EmployerDemandIds != null ? source.EmployerDemandIds.ToList() : new List<Guid>()
+                SelectedEmployerDemandIds = source.EmployerDemandIds != null ? source.EmployerDemandIds.ToList() : new List<Guid>(),
+                Id = source.Id ?? Guid.Empty
             };
         }
         
