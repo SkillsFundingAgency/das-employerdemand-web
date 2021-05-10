@@ -36,8 +36,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_The_Request_Is_Valid_The_Item_Is_Added_To_The_Cache(
-            string propertyName,
+        public async Task Then_If_The_Request_Is_Valid_And_No_Cached_Objed_Exists_The_Item_Is_Added_To_The_Cache(
             CreateCachedProviderInterestCommand command,
             [Frozen] Mock<IDemandService> service,
             [Frozen] Mock<IValidator<CreateCachedProviderInterestCommand>> validator,
@@ -47,6 +46,10 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             validator
                 .Setup(x=>x.ValidateAsync(command))
                 .ReturnsAsync(new ValidationResult());
+
+            service
+                .Setup(x => x.GetCachedProviderInterest(command.Id))
+                .ReturnsAsync((IProviderDemandInterest) null);
             
             //Act
             var actual = await handler.Handle(command, CancellationToken.None);
@@ -54,6 +57,35 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             //Assert
             service.Verify(x=>x.CreateCachedProviderInterest(command), Times.Once);
             actual.Id.Should().Be(command.Id);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Request_Is_Valid_And_Cached_Object_Exists_EmployerDemands_Are_Updated_In_The_Cache(
+            CreateCachedProviderInterestCommand command,
+            IProviderDemandInterest providerInterest,
+            [Frozen] Mock<IDemandService> service,
+            [Frozen] Mock<IValidator<CreateCachedProviderInterestCommand>> validator,
+            CreateCachedProviderInterestCommandHandler handler)
+        {
+            //Arrange
+            var expectedCachedObject = providerInterest;
+            expectedCachedObject.EmployerDemands = command.EmployerDemands;
+
+            validator
+                .Setup(x => x.ValidateAsync(command))
+                .ReturnsAsync(new ValidationResult());
+
+            service
+                .Setup(x => x.GetCachedProviderInterest(command.Id))
+                .ReturnsAsync(providerInterest);
+
+            //Act
+            var actual = await handler.Handle(command, CancellationToken.None);
+
+            //Assert
+            service.Verify(x => x.CreateCachedProviderInterest(expectedCachedObject), Times.Once);
+            service.Verify(x => x.CreateCachedProviderInterest(command), Times.Never);
+            actual.Id.Should().Be(expectedCachedObject.Id);
         }
     }
 }
