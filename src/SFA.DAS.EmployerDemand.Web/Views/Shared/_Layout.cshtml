@@ -6,6 +6,8 @@
     {
         backRouteData = tempBackRouteData as Dictionary<string, string>;
     }
+
+    var config = EmployerDemandConfiguration.Value;
 }
 
 <!DOCTYPE html>
@@ -169,19 +171,19 @@
                     </li>
 
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="https://findapprenticeshiptraining.apprenticeships.education.gov.uk/privacy">
+                        <a class="govuk-footer__link" href="@(config.FindApprenticeshipTrainingUrl)/privacy">
                             Privacy
                         </a>
                     </li>
 
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="https://findapprenticeshiptraining.apprenticeships.education.gov.uk/accessibility">
+                        <a class="govuk-footer__link" href="@(config.FindApprenticeshipTrainingUrl)/accessibility">
                             Accessibility statement
                         </a>
                     </li>
 
                     <li class="govuk-footer__inline-list-item">
-                        <a class="govuk-footer__link" href="https://findapprenticeshiptraining.apprenticeships.education.gov.uk/cookies">
+                        <a class="govuk-footer__link" href="@(config.FindApprenticeshipTrainingUrl)/cookies">
                             Cookies
                         </a>
                     </li>
