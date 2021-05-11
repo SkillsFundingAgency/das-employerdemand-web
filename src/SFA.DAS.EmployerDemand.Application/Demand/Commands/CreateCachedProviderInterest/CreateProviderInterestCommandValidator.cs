@@ -11,7 +11,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProvide
         {
             var result = new ValidationResult();
 
-            if (item.EmployerDemands == null || !item.EmployerDemands.Any())
+            if (!item.EmployerDemands.Any())
             {
                 result.AddError(nameof(item.EmployerDemands), "Select the employers you're interested in");
             }
