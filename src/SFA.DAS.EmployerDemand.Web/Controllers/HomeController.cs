@@ -73,7 +73,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 courseId,
                 location,
                 radius,
-                null,
                 id);
 
             return View(model);
@@ -127,8 +126,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     request.Ukprn,
                     request.CourseId,
                     request.Location,
-                    request.Radius,
-                    BuildEmployerDemands(request.EmployerDemands).Select(c => c.EmployerDemandId).ToList());
+                    request.Radius);
                 
                 return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
@@ -241,7 +239,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int courseId,
             string location,
             string radius,
-            IReadOnlyList<Guid> selectedEmployerDemandIds = null,
             Guid? cachedObjectId = null)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
