@@ -36,7 +36,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_The_Request_Is_Valid_And_No_Cached_Objed_Exists_The_Item_Is_Added_To_The_Cache(
+        public async Task Then_If_The_Request_Is_Valid_And_No_Cached_Object_Exists_The_Item_Is_Added_To_The_Cache(
             CreateCachedProviderInterestCommand command,
             [Frozen] Mock<IDemandService> service,
             [Frozen] Mock<IValidator<CreateCachedProviderInterestCommand>> validator,
