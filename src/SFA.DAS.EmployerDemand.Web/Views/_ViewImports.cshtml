@@ -1,5 +1,7 @@
 @using Microsoft.Extensions.Configuration
-@inject IConfiguration Configuration
+@using Microsoft.Extensions.Options
+@using SFA.DAS.EmployerDemand.Domain.Configuration
+@inject IOptions<EmployerDemand> EmployerDemandConfiguration
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @addTagHelper *, WebEssentials.AspNetCore.CdnTagHelpers
 @inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
