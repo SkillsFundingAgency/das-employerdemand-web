@@ -254,12 +254,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             });
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
-
-            if (model.SelectedEmployerDemandIds.Count == 0)
-            {
-                model.SelectedEmployerDemandIds = selectedEmployerDemandIds ?? new List<Guid>();
-            }
-
+            
             return model;
         }
 
