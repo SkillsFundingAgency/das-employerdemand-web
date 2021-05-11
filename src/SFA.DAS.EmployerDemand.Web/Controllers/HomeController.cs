@@ -66,7 +66,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int courseId, 
             [FromQuery]string location, 
             [FromQuery]string radius,
-            string id = null)
+            Guid? id = null)
         {
             var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
                 ukprn,
@@ -242,7 +242,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             string location,
             string radius,
             IReadOnlyList<Guid> selectedEmployerDemandIds = null,
-            string cachedObjectId = null)
+            Guid? cachedObjectId = null)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
             {
@@ -250,7 +250,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 CourseId = courseId,
                 Location = location,
                 LocationRadius = radius,
-                CachedObjectId = cachedObjectId
+                Id = cachedObjectId
             });
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;

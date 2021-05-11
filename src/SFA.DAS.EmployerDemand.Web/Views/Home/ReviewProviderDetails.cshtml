@@ -3,14 +3,8 @@
 @model SFA.DAS.EmployerDemand.Web.Models.ReviewProviderDetailsViewModel
 @{
     Layout = "_LayoutProvider";
-    var title = "Check your answers";
-    if (!ViewData.ModelState.IsValid)
-    {
-        title = $"Error: {title}";
-    }
-    ViewData["Title"] = title;
+    ViewData["Title"] = "Check your answers";
     ViewData["Description"] = "Confirm the apprenticeship training course, opportunities and contact details.";
-    ViewData["CustomOrder"] = ReviewProviderDetailsViewModel.BuildPropertyOrderDictionary();
     ViewData["ShowJSBackLink"] = true;
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">

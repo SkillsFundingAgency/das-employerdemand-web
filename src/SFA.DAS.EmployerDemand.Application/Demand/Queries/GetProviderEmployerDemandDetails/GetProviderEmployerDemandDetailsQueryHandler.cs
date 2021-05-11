@@ -20,9 +20,9 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         {
             var cacheResult = new ProviderInterestRequest();
             
-            if (Guid.TryParse(request.CachedObjectId, out var guid))
+            if (request.Id != null)
             {
-                cacheResult = (ProviderInterestRequest)await _demandService.GetCachedProviderInterest(guid);
+                cacheResult = (ProviderInterestRequest)await _demandService.GetCachedProviderInterest((Guid)request.Id);
             }
 
             var result = await _demandService.GetProviderEmployerDemandDetails(request.Ukprn, request.CourseId, request.Location, request.LocationRadius);

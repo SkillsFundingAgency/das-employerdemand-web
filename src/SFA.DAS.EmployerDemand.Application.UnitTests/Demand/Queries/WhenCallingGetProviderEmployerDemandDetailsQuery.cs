@@ -25,6 +25,8 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             GetProviderEmployerDemandDetailsQueryHandler handler)
         {
             //Arrange
+            query.Id = null;
+
             service
                 .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
                 .ReturnsAsync(response);
@@ -51,8 +53,8 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             //Arrange
             var expectedDemandIds = providerInterest.EmployerDemands.Select(c => c.EmployerDemandId);
 
-            query.CachedObjectId = new Guid().ToString();
-            service.Setup(x => x.GetCachedProviderInterest(Guid.Parse(query.CachedObjectId)))
+            query.Id = new Guid();
+            service.Setup(x => x.GetCachedProviderInterest((Guid)query.Id))
                 .ReturnsAsync(providerInterest);
 
             service
@@ -72,12 +74,11 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
         public async Task Then_If_No_Cached_Object_The_Service_Is_Not_Called_And_No_Data_Returned(
             GetProviderEmployerDemandDetailsQuery query,
             GetProviderEmployerDemandDetailsResponse response,
-            ProviderInterestRequest providerInterest,
             [Frozen] Mock<IDemandService> service,
             GetProviderEmployerDemandDetailsQueryHandler handler)
         {
             //Arrange
-            query.CachedObjectId = "not a guid";
+            query.Id = null;
 
             service
                 .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
