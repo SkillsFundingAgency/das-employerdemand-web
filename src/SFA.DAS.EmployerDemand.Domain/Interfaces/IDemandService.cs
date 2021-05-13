@@ -16,5 +16,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         Task<GetProviderEmployerDemandDetailsResponse> GetProviderEmployerDemandDetails( int ukprn, int courseId, string location, string locationRadius);
         Task CreateCachedProviderInterest(IProviderDemandInterest item);
         Task<IProviderDemandInterest> GetCachedProviderInterest(Guid itemKey);
+        Task<CourseDemand> GetCourseDemand(Guid id);
     }
 }

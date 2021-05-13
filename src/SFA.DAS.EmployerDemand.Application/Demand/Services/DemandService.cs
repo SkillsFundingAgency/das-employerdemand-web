@@ -78,5 +78,22 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             return result;
         }
+
+        public async Task<CourseDemand> GetCourseDemand(Guid id)
+        {
+            var cachedResultTask = _cacheStorageService.RetrieveFromCache<CourseDemand>(id.ToString());
+            var apiResultTask = _apiClient.Get<GetCourseDemandResponse>(new GetEmployerDemandRequest(id));
+
+            await Task.WhenAll(cachedResultTask, apiResultTask);
+
+            if (cachedResultTask.Result == null || apiResultTask.Result == null)
+            {
+                return null;
+            }
+
+            cachedResultTask.Result.EmailVerified =  apiResultTask.Result.EmployerCourseDemand.EmailVerified;
+            
+            return cachedResultTask.Result;
+        }
     }
 }
