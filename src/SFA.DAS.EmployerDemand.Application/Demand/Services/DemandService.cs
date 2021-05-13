@@ -95,5 +95,14 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             
             return cachedResultTask.Result;
         }
+
+        public async Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id)
+        {
+            var result =
+                await _apiClient.Post<VerifyEmployerCourseDemandResponse>(
+                    new PostVerifyEmployerCourseDemandRequest(id));
+
+            return result;
+        }
     }
 }
