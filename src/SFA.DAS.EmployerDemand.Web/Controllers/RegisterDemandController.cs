@@ -7,6 +7,7 @@ using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -120,8 +121,31 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
            
             return View(model);
         }
-        
-        
+
+        [HttpGet]
+        [Route("course/{id}/verify-email", Name= RouteNames.ConfirmEmployerDemandEmail)]
+        public async Task<IActionResult> VerifyEmployerDemandEmail(int id, [FromQuery] Guid createDemandId)
+        {
+            var result = await _mediator.Send(new GetCourseDemandQuery
+            {
+                Id = createDemandId
+            });
+
+            var model = (VerifyEmployerCourseDemandViewModel) result.CourseDemand;
+
+            if (model == null)
+            {
+                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+            }
+
+            if (model.Verified)
+            {
+                return RedirectToRoute(RouteNames.RegisterDemandCompleted, new {Id = id});
+            }
+
+            return View(model);
+        }
+
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
             RegisterDemandRequest request)
         {
