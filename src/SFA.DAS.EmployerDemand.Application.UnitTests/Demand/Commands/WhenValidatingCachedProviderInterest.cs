@@ -5,6 +5,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest;
+using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
 {
@@ -24,10 +25,10 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         }
 
         [Test, AutoData]
-        public async Task And_Has_No_Demands_Then_Not_Invalid(CreateCachedProviderInterestCommand command)
+        public async Task And_Has_No_Demands_Then_Invalid(CreateCachedProviderInterestCommand command)
         {
             //Arrange
-            command.EmployerDemandIds = new List<Guid>();
+            command.EmployerDemands = new List<EmployerDemands>();
             var validator = new CreateProviderInterestCommandValidator();
             
             //Act
@@ -35,9 +36,10 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
 
             //Assert
             actual.IsValid().Should().BeFalse();
-            actual.ValidationDictionary.Should().ContainKey(nameof(command.EmployerDemandIds));
-            actual.ValidationDictionary[nameof(command.EmployerDemandIds)].Should()
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.EmployerDemands));
+            actual.ValidationDictionary[nameof(command.EmployerDemands)].Should()
                 .Be("Select the employers you're interested in");
         }
+
     }
 }

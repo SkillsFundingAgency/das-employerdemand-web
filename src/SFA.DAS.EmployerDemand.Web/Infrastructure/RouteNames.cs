@@ -19,5 +19,6 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         public const string ConfirmProviderDetails = "confirm-provider-details";
         public const string EditProviderDetails = "edit-provider-details";
         public const string PostEditProviderDetails = "post-edit-provider-details";
+        public const string ReviewProviderDetails = "review-provider-details";
     }
 }
