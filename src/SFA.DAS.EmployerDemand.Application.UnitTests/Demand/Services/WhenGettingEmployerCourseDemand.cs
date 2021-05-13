@@ -25,6 +25,8 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             DemandService service)
         {
             //Arrange
+            item.EmailVerified = false;
+            apiResponse.EmployerCourseDemand.EmailVerified = true;
             cacheStorageService.Setup(x => x.RetrieveFromCache<CourseDemand>(employerDemandKey.ToString()))
                 .ReturnsAsync(item);
             apiClient.Setup(x =>
