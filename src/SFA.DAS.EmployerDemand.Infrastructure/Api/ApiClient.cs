@@ -44,6 +44,11 @@ namespace SFA.DAS.EmployerDemand.Infrastructure.Api
             return default;
         }
 
+        public async Task<TResponse> Post<TResponse>(IPostApiRequest request)
+        {
+            return await Post<TResponse, string>((IPostApiRequest<string>) request);
+        }
+        
         public async Task<TResponse> Post<TResponse,TPostData>(IPostApiRequest<TPostData> request)
         {
             AddHeaders();
