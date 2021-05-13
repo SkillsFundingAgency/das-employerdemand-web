@@ -79,7 +79,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             return result;
         }
 
-        public async Task<CourseDemand> GetCourseDemand(Guid id)
+        public async Task<CourseDemand> GetUnverifiedEmployerCourseDemand(Guid id)
         {
             var cachedResultTask = _cacheStorageService.RetrieveFromCache<CourseDemand>(id.ToString());
             var apiResultTask = _apiClient.Get<GetCourseDemandResponse>(new GetEmployerDemandRequest(id));

@@ -34,7 +34,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
                 .ReturnsAsync(apiResponse);
             
             //Act
-            var actual = await service.GetCourseDemand(employerDemandKey);
+            var actual = await service.GetUnverifiedEmployerCourseDemand(employerDemandKey);
 
             //Assert
             actual.Should().BeEquivalentTo(item);
@@ -55,7 +55,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
                 .ReturnsAsync((ICourseDemand)null);
             
             //Act
-            var actual = await service.GetCourseDemand(employerDemandKey);
+            var actual = await service.GetUnverifiedEmployerCourseDemand(employerDemandKey);
 
             //Assert
             actual.Should().BeNull();
@@ -77,7 +77,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
                 .ReturnsAsync((GetCourseDemandResponse)null);
             
             //Act
-            var actual = await service.GetCourseDemand(employerDemandKey);
+            var actual = await service.GetUnverifiedEmployerCourseDemand(employerDemandKey);
 
             //Assert
             actual.Should().BeNull();

@@ -7,8 +7,8 @@ using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
-using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetUnverifiedEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
 
@@ -108,7 +108,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/shared-interest", Name = RouteNames.RegisterDemandCompleted)]
         public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] Guid createDemandId)
         {
-            var result = await _mediator.Send(new GetCourseDemandQuery {Id = createDemandId});
+            var result = await _mediator.Send(new GetUnverifiedEmployerCourseDemandQuery {Id = createDemandId});
             
             var model = (CompletedCourseDemandViewModel) result.CourseDemand;
 
@@ -132,7 +132,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/verify-email", Name= RouteNames.ConfirmEmployerDemandEmail)]
         public async Task<IActionResult> VerifyEmployerDemandEmail(int id, [FromQuery] Guid createDemandId)
         {
-            var result = await _mediator.Send(new GetCourseDemandQuery
+            var result = await _mediator.Send(new GetUnverifiedEmployerCourseDemandQuery
             {
                 Id = createDemandId
             });

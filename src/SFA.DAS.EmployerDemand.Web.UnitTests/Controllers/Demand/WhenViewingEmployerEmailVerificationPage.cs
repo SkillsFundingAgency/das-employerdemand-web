@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
-using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetUnverifiedEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Controllers;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -22,7 +22,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task Then_Mediator_Is_Called_And_The_Unverified_Demand_Returned(
             int courseId,
             Guid demandId,
-            GetCourseDemandQueryResult mediatorResult,
+            GetUnverifiedEmployerCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
@@ -30,7 +30,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             mediatorResult.CourseDemand.EmailVerified = false;
             mediator.Setup(x =>
-                    x.Send(It.Is<GetCourseDemandQuery>(c => 
+                    x.Send(It.Is<GetUnverifiedEmployerCourseDemandQuery>(c => 
                             c.Id.Equals(demandId))
                         , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
@@ -49,7 +49,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task Then_If_The_Interest_Is_Already_Verified_Then_Redirected_To_Complete(
             int courseId,
             Guid demandId,
-            GetCourseDemandQueryResult mediatorResult,
+            GetUnverifiedEmployerCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
@@ -57,7 +57,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             mediatorResult.CourseDemand.EmailVerified = true;
             mediator.Setup(x =>
-                    x.Send(It.Is<GetCourseDemandQuery>(c => 
+                    x.Send(It.Is<GetUnverifiedEmployerCourseDemandQuery>(c => 
                             c.Id.Equals(demandId))
                         , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
@@ -83,10 +83,10 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         {
             //Arrange
             mediator.Setup(x =>
-                    x.Send(It.Is<GetCourseDemandQuery>(c => 
+                    x.Send(It.Is<GetUnverifiedEmployerCourseDemandQuery>(c => 
                             c.Id.Equals(demandId))
                         , It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GetCourseDemandQueryResult{CourseDemand = null});
+                .ReturnsAsync(new GetUnverifiedEmployerCourseDemandQueryResult{CourseDemand = null});
             
             //Act
             var actual = await controller.VerifyEmployerDemandEmail(courseId, demandId) as RedirectToRouteResult;
