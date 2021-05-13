@@ -21,7 +21,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCours
 
             return new GetCachedCreateCourseDemandQueryResult
             {
-                CourseDemand = (CourseDemandRequest)result
+                CourseDemand = result
             };
         }
     }

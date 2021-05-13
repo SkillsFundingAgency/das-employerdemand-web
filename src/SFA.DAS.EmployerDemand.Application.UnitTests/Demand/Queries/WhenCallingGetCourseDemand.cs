@@ -29,7 +29,5 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             //Assert
             actual.CourseDemand.Should().BeEquivalentTo(result);
         }
-
-
     }
 }

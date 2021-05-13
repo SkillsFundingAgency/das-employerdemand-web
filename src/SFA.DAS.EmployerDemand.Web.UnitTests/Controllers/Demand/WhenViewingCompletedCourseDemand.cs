@@ -9,6 +9,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCourseDemand;
 using SFA.DAS.EmployerDemand.Web.Controllers;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -22,14 +23,15 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task Then_Mediator_Is_Called_And_The_ViewModel_Returned_And_FAT_Url_Taken_From_Config(
             int courseId,
             Guid demandId,
-            GetCachedCreateCourseDemandQueryResult mediatorResult,
+            GetCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
+            mediatorResult.CourseDemand.EmailVerified = true;
             mediator.Setup(x =>
-                    x.Send(It.Is<GetCachedCreateCourseDemandQuery>(c => 
+                    x.Send(It.Is<GetCourseDemandQuery>(c => 
                             c.Id.Equals(demandId))
                         , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
@@ -46,17 +48,45 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         }
 
         [Test, MoqAutoData]
+        public async Task Then_If_The_Email_Is_Not_Verified_Then_Redirect_To_ConfirmEmail(
+            int courseId,
+            Guid demandId,
+            GetCourseDemandQueryResult mediatorResult,
+            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] RegisterDemandController controller)
+        {
+            //Arrange
+            mediatorResult.CourseDemand.EmailVerified = false;
+            mediator.Setup(x =>
+                    x.Send(It.Is<GetCourseDemandQuery>(c => 
+                            c.Id.Equals(demandId))
+                        , It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
+            
+            //Act
+            var actual = await controller.RegisterDemandCompleted(courseId, demandId) as RedirectToRouteResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            
+            actual.RouteName.Should().Be(RouteNames.ConfirmEmployerDemandEmail);
+            actual.RouteValues.ContainsKey("Id").Should().BeTrue();
+            actual.RouteValues["Id"].Should().Be(courseId);
+        }
+
+        [Test, MoqAutoData]
         public async Task Then_If_The_Cached_Object_Is_Null_Then_Redirect_To_EnterApprenticeshipDetails(
             int courseId,
             Guid demandId,
-            GetCachedCreateCourseDemandQueryResult mediatorResult,
+            GetCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
             mediatorResult.CourseDemand = null;
             mediator.Setup(x =>
-                    x.Send(It.Is<GetCachedCreateCourseDemandQuery>(c => 
+                    x.Send(It.Is<GetCourseDemandQuery>(c => 
                             c.Id.Equals(demandId))
                         , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);

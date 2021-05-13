@@ -17,7 +17,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
     public class WhenPostingConfirmRegisterDemand
     {
         [Test, MoqAutoData]
-        public async Task Then_Mediator_Is_Called_And_Redirected_To_Completed(
+        public async Task Then_Mediator_Is_Called_And_Redirected_To_ConfirmEmail(
             Guid demandId,
             int trainingCourseId,
             [Frozen] Mock<IMediator> mediator,
@@ -33,7 +33,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                     )
                     , It.IsAny<CancellationToken>()), Times.Once);
             Assert.IsNotNull(actual);
-            actual.RouteName.Should().Be(RouteNames.RegisterDemandCompleted);
+            actual.RouteName.Should().Be(RouteNames.ConfirmEmployerDemandEmail);
             actual.RouteValues["id"].Should().Be(trainingCourseId);
             actual.RouteValues["createDemandId"].Should().Be(demandId);
         }

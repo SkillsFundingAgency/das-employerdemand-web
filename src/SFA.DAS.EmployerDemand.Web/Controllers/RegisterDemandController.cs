@@ -101,20 +101,26 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         {
             await _mediator.Send(new CreateCourseDemandCommand {Id = createDemandId});
 
-            return RedirectToRoute(RouteNames.RegisterDemandCompleted, new {Id = id, CreateDemandId = createDemandId});
+            return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, new {Id = id, CreateDemandId = createDemandId});
         }
 
         [HttpGet]
         [Route("course/{id}/shared-interest", Name = RouteNames.RegisterDemandCompleted)]
         public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] Guid createDemandId)
         {
-            var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = createDemandId});
+            var result = await _mediator.Send(new GetCourseDemandQuery {Id = createDemandId});
             
             var model = (CompletedCourseDemandViewModel) result.CourseDemand;
 
             if (model == null)
             {
                 return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+            }
+
+            if (model.EmailVerified)
+            {
+                return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, 
+                    new { Id = id, CreateDemandId = createDemandId });
             }
 
             model.FindApprenticeshipTrainingCourseUrl = _config.FindApprenticeshipTrainingUrl + "/courses";
