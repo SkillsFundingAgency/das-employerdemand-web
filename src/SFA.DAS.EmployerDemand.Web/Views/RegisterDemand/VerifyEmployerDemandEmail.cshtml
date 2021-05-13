@@ -1,16 +1,23 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
 @model SFA.DAS.EmployerDemand.Web.Models.VerifyEmployerCourseDemandViewModel
+@{
+    ViewData["Title"] = $"Click the link we've sent to {Model.EmailAddress}";
+}
 
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-        
-            <div class="govuk-panel govuk-panel--confirmation">
-			    <h1 class="govuk-panel__title">
-				    Verify your email
-			    </h1>
+            <h1 class="govuk-heading-xl">@ViewData["Title"]</h1>
+            <p class="govuk-body">We've sent an email to @Model.EmailAddress. Click on the link in the email to confirm the address.</p>
+            <div class="govuk-warning-text">
+                <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+                <strong class="govuk-warning-text__text">
+                    <span class="govuk-warning-text__assistive">Warning</span>
+                    We will not share any interest with training providers until someone clicks the link in the email.
+                </strong>
             </div>
-            
-            
+            <p class="govuk-body">If you can't find the email, please check the spam or junk mail folders. If you haven't received the email, please check your email address is correct.</p>
+            <p class="govuk-body"><a asp-route="@RouteNames.RegisterDemand" class="govuk-link govuk-link--no-visited-state">Update details</a></p>
         </div>
     </div>
 </main>
