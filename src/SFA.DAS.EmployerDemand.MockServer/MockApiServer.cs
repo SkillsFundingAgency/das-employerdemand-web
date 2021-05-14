@@ -31,6 +31,13 @@ namespace SFA.DAS.EmployerDemand.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("get-unverified-demand.json"));
             
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/[0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12}/verify"))
+                    .UsingPost())
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("get-verified-demand.json"));
+            
             server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/create"))
                 .UsingGet())
                 .RespondWith(Response.Create()
