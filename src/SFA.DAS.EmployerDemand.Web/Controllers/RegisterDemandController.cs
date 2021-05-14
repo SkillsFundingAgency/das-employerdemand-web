@@ -115,14 +115,21 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         {
             var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
                 System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
+
+            var url = Url.RouteUrl(RouteNames.RegisterDemandCompleted, new
+            {
+                id = id,
+                demandId = encodedId
+            }, Request.Scheme, Request.Host.Host);
+                
             await _mediator.Send(new CreateCourseDemandCommand
             {
                 Id = createDemandId,
-                EncodedId = encodedId
+                ResponseUrl = url
             });
 
 #if DEBUG
-            _logger.LogInformation($"confirm page at https://localhost:5011/registerdemand/course/14/complete?demandId={encodedId}");
+            _logger.LogInformation($"confirm page at {url}");
 #endif
             
             return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, new {Id = id, CreateDemandId = createDemandId});

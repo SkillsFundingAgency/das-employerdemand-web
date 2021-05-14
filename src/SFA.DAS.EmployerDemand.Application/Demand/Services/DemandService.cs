@@ -38,13 +38,13 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             return result;
         }
 
-        public async Task CreateCourseDemand(Guid id, string encodedId)
+        public async Task CreateCourseDemand(Guid id, string responseUrl)
         {
             var item = await _cacheStorageService.RetrieveFromCache<CourseDemandRequest>(id.ToString());
 
             var data = new PostCreateDemandData(item)
             {
-                EncodedId = encodedId
+                ResponseUrl = responseUrl
             };
 
             await _apiClient.Post<Guid, PostCreateDemandData>(new PostCreateDemandRequest(data));

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,7 +7,9 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.WebUtilities;
 using Moq;
 using NUnit.Framework;
@@ -25,28 +28,52 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             Guid demandId,
             int trainingCourseId,
             string encodedDemand,
+            string demandUrl,
             [Frozen] Mock<IDataProtector> protector,
             [Frozen] Mock<IDataProtectionProvider> provider,
             [Frozen] Mock<IMediator> mediator,
+            [Frozen] Mock<IUrlHelper> urlHelper,
             [Greedy] RegisterDemandController controller)
         {
-            //Act
+            //Arrange
+            UrlRouteContext routeValues = null;
+            var httpContext = new DefaultHttpContext();
             var toEncode = WebEncoders.Base64UrlDecode(demandId.ToString());
+            urlHelper
+                .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c=>
+                    c.RouteName.Equals(RouteNames.RegisterDemandCompleted)
+                )))
+                .Returns(demandUrl).Callback<UrlRouteContext>(c =>
+                {
+                    routeValues = c;
+                });
             provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
             protector.Setup(c => c.Protect(It.Is<byte[]>(
                 x => x[0].Equals(Encoding.UTF8.GetBytes($"{demandId}")[0])))).Returns(toEncode);
+            controller.Url = urlHelper.Object;
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = httpContext
+            };
+            
+            //Act
             var actual = await controller.PostConfirmRegisterDemand(trainingCourseId, demandId) as RedirectToRouteResult;
             
             //Assert
             mediator.Verify(x =>
                 x.Send(It.Is<CreateCourseDemandCommand>(c => 
                         c.Id == demandId
-                        && c.EncodedId == WebEncoders.Base64UrlEncode(toEncode)
+                        && c.ResponseUrl == demandUrl
                     ), It.IsAny<CancellationToken>()), Times.Once);
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.ConfirmEmployerDemandEmail);
             actual.RouteValues["id"].Should().Be(trainingCourseId);
             actual.RouteValues["createDemandId"].Should().Be(demandId);
+            routeValues.Values.Should().BeEquivalentTo(new
+            {
+                id = trainingCourseId,
+                demandId = WebEncoders.Base64UrlEncode(toEncode)
+            });
         }
     }
 }

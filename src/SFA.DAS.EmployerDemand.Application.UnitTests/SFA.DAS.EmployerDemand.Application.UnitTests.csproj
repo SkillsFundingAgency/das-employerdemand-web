@@ -23,6 +23,7 @@
     <ItemGroup>
       <ProjectReference Include="..\SFA.DAS.EmployerDemand.Application\SFA.DAS.EmployerDemand.Application.csproj" />
       <ProjectReference Include="..\SFA.DAS.EmployerDemand.Domain\SFA.DAS.EmployerDemand.Domain.csproj" />
+      <ProjectReference Include="..\SFA.DAS.EmployerDemand.Web\SFA.DAS.EmployerDemand.Web.csproj" />
     </ItemGroup>
 
 </Project>
