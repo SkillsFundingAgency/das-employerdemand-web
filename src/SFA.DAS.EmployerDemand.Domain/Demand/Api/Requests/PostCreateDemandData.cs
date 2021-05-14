@@ -32,6 +32,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
         public LocationItem LocationItem => BuildCourseLocation();
 
         public TrainingCourse TrainingCourse => BuildTrainingCourse();
+        
+        public string EncodedId { get ; set ; }
 
         private LocationItem BuildCourseLocation()
         {

@@ -113,7 +113,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/check-answers", Name = RouteNames.PostConfirmRegisterDemand)]
         public async Task<IActionResult> PostConfirmRegisterDemand(int id, Guid createDemandId)
         {
-            await _mediator.Send(new CreateCourseDemandCommand {Id = createDemandId});
+            await _mediator.Send(new CreateCourseDemandCommand
+            {
+                Id = createDemandId,
+                EncodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
+                    System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")))
+            });
 
             return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, new {Id = id, CreateDemandId = createDemandId});
         }

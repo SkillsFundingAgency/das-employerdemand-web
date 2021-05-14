@@ -16,6 +16,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
         [Test, MoqAutoData]
         public async Task Then_The_Cache_Is_Read_And_Api_Is_Called(
             Guid id,
+            string encodedId,
             CourseDemandRequest demand,
             [Frozen] Mock<ICacheStorageService> cacheStorageService,
             [Frozen] Mock<IApiClient> apiClient,
@@ -26,11 +27,12 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
                 .Setup(x => x.RetrieveFromCache<CourseDemandRequest>(id.ToString()))
                 .ReturnsAsync(demand);
             
-            await service.CreateCourseDemand(id);
+            await service.CreateCourseDemand(id, encodedId);
             
             apiClient.Verify(x=>x.Post<Guid,PostCreateDemandData>(It.Is<PostCreateDemandRequest>(c=>
                 c.Data.Id.Equals(demand.Id)
                 && c.Data.ContactEmailAddress.Equals(demand.ContactEmailAddress)
+                && c.Data.EncodedId.Equals(encodedId)
                 )));
         }
         
