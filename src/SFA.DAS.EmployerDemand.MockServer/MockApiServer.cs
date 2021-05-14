@@ -88,6 +88,13 @@ namespace SFA.DAS.EmployerDemand.MockServer
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("provider-employer-demand-details-location.json"));
 
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/providerinterest/create$"))
+                    .UsingPost())
+                .RespondWith(Response.Create()
+                    .WithStatusCode(HttpStatusCode.Created)
+                    .WithBody($"'{1234}'")
+                );
+
             return server;
         }
         
