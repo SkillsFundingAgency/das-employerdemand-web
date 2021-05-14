@@ -6,6 +6,5 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
     {
         Task<TResponse> Get<TResponse>(IGetApiRequest request);
         Task<TResponse> Post<TResponse, TPostData>(IPostApiRequest<TPostData> request);
-        Task<TResponse> Post<TResponse>(IPostApiRequest request);
     }
 }

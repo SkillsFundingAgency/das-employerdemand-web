@@ -23,7 +23,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
         {
             //Arrange
             apiClient.Setup(x =>
-                x.Post<VerifyEmployerCourseDemandResponse>(
+                x.Post<VerifyEmployerCourseDemandResponse, object>(
                     It.Is<PostVerifyEmployerCourseDemandRequest>(c => c.PostUrl.Contains($"demand/{id}/verify"))))
                 .ReturnsAsync(response);
             
@@ -42,7 +42,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
         {
             //Arrange
             apiClient.Setup(x =>
-                    x.Post<VerifyEmployerCourseDemandResponse>(
+                    x.Post<VerifyEmployerCourseDemandResponse, object>(
                         It.Is<PostVerifyEmployerCourseDemandRequest>(c => c.PostUrl.Contains($"demand/{id}/verify"))))
                 .ReturnsAsync((VerifyEmployerCourseDemandResponse) null);
             

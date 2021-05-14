@@ -102,7 +102,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
         public async Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id)
         {
             var result =
-                await _apiClient.Post<VerifyEmployerCourseDemandResponse>(
+                await _apiClient.Post<VerifyEmployerCourseDemandResponse,object>(
                     new PostVerifyEmployerCourseDemandRequest(id));
 
             return result;
