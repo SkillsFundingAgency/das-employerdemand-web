@@ -10,6 +10,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public Guid Id { get; set; }
         [JsonProperty("contactEmail")]
         public string ContactEmail { get; set; }
+        [JsonProperty("numberOfApprentices")]
+        public int NumberOfApprentices { get; set; }
         [JsonProperty("trainingCourse")]
         public TrainingCourse Course { get; set; }
         [JsonProperty("location")]

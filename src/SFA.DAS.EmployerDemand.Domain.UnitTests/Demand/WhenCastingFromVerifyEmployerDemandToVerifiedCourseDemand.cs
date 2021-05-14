@@ -20,5 +20,15 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand
             actual.Location.LocationPoint.Should().BeEquivalentTo(response.Location.LocationPoint.GeoPoint);
 
         }
+
+        [Test]
+        public void Then_If_Null_Then_Null_Is_Returned()
+        {
+            //Act
+            var actual = (VerifiedCourseDemand) (VerifyEmployerCourseDemandResponse) null;
+            
+            //Assert
+            actual.Should().BeNull();
+        }
     }
 }
