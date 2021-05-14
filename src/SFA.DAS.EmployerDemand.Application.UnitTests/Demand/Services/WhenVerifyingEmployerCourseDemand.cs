@@ -33,5 +33,24 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             //Assert
             actual.Should().BeEquivalentTo(response, options=> options.Excluding(x=>x.Location));
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_Null_Then_Null_Returned(
+            Guid id,
+            [Frozen] Mock<IApiClient> apiClient,
+            DemandService service)
+        {
+            //Arrange
+            apiClient.Setup(x =>
+                    x.Post<VerifyEmployerCourseDemandResponse>(
+                        It.Is<PostVerifyEmployerCourseDemandRequest>(c => c.PostUrl.Contains($"demand/{id}/verify"))))
+                .ReturnsAsync((VerifyEmployerCourseDemandResponse) null);
+            
+            //Act
+            var actual = await service.VerifyEmployerCourseDemand(id);
+            
+            //Assert
+            actual.Should().BeNull();
+        }
     }
 }

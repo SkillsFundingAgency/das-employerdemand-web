@@ -17,5 +17,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         Task CreateCachedProviderInterest(IProviderDemandInterest item);
         Task<IProviderDemandInterest> GetCachedProviderInterest(Guid itemKey);
         Task<CourseDemand> GetUnverifiedEmployerCourseDemand(Guid id);
+        Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id);
     }
 }
