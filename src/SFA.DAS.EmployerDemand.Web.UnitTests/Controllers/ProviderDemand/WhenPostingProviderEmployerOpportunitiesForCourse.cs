@@ -73,7 +73,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                             && c.Course.Id.Equals(request.CourseId)
                             && c.Course.Level.Equals(request.CourseLevel)
                             && c.Course.Title.Equals(request.CourseTitle)
-                            && c.Course.Sector.Equals(request.CourseSector)
+                            && c.Course.Route.Equals(request.CourseSector)
                             && c.EmployerDemandIds.Count().Equals(request.EmployerDemandIds.Count)),
                     It.IsAny<CancellationToken>())).ReturnsAsync(result);
             

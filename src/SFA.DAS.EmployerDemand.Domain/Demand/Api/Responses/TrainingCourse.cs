@@ -5,6 +5,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public int Id { get; set; }
         public string Title { get; set; }
         public int Level { get; set; }
-        public string Sector { get; set; }
+        public string Route { get; set; }
     }
 }

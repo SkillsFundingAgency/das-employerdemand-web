@@ -54,7 +54,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
                 Id = Course.Id,
                 Level = Course.Level,
                 Title = Course.Title,
-                Sector = Course.Sector
+                Route = Course.Route
             };
         }
     }
