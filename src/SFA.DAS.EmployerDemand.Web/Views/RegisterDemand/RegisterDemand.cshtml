@@ -2,6 +2,7 @@
 @using SFA.DAS.EmployerDemand.Web.Models
 @model SFA.DAS.EmployerDemand.Web.Models.RegisterCourseDemandViewModel
 @{
+    Layout = "_LayoutEmployer";
     ViewData["Title"] = $"{(ViewData.ModelState.IsValid ? "" : "Error: ")}Enter the apprenticeship training and contact details";
     ViewData["Description"] = $"Share your interest in {Model.TrainingCourse.TitleAndLevel} with training providers.";
 	ViewData["CustomErrorKeys"] = new Dictionary<string, string> {{"Location", "search-location"}};
