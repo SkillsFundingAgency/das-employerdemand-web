@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
@@ -18,6 +17,8 @@ using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.AppStart;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
+using SFA.DAS.Provider.Shared.UI;
+using SFA.DAS.Provider.Shared.UI.Startup;
 
 namespace SFA.DAS.EmployerDemand.Web
 {
@@ -88,7 +89,10 @@ namespace SFA.DAS.EmployerDemand.Web
             {
                 options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
-            
+
+            services.AddMvc()
+                .SetDefaultNavigationSection(NavigationSection.Home);
+
             if (_configuration.IsDev() || _configuration.IsLocal())
             {
                 services.AddDistributedMemoryCache();
@@ -150,7 +154,7 @@ namespace SFA.DAS.EmployerDemand.Web
 
                 context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
 
-                await next();
+                    await next();
 
                 if (context.Response.StatusCode == 404 && !context.Response.HasStarted)
                 {
