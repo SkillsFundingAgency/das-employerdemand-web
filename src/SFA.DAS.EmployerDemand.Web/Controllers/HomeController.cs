@@ -1,20 +1,19 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest;
 using Microsoft.Extensions.Options;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.UpdateCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
 using SFA.DAS.EmployerDemand.Domain.Demand;
+using SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
@@ -233,6 +232,23 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}", Name = RouteNames.PostCreateProviderInterest)]
+        public async Task<IActionResult> PostCreateProviderInterest(CreateProviderInterestRequest request)
+        {
+            await _mediator.Send((CreateProviderInterestCommand)request);
+
+            return RedirectToRoute(
+                RouteNames.CreateProviderInterestCompleted, 
+                new
+                {
+                    request.Ukprn,
+                    request.CourseId,
+                    request.Id
+                });
+        }
+
 
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
             int ukprn,
