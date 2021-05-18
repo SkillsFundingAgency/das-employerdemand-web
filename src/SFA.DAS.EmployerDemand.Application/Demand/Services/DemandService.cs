@@ -94,7 +94,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
                 return null;
             }
 
-            cachedResultTask.Result.EmailVerified =  apiResultTask.Result.EmployerCourseDemand.EmailVerified;
+            cachedResultTask.Result.EmailVerified =  apiResultTask.Result.EmailVerified;
             
             return cachedResultTask.Result;
         }

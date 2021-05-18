@@ -26,7 +26,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
         {
             //Arrange
             item.EmailVerified = false;
-            apiResponse.EmployerCourseDemand.EmailVerified = true;
+            apiResponse.EmailVerified = true;
             cacheStorageService.Setup(x => x.RetrieveFromCache<CourseDemand>(employerDemandKey.ToString()))
                 .ReturnsAsync(item);
             apiClient.Setup(x =>
@@ -38,7 +38,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
 
             //Assert
             actual.Should().BeEquivalentTo(item);
-            actual.EmailVerified.Should().Be(apiResponse.EmployerCourseDemand.EmailVerified);
+            actual.EmailVerified.Should().Be(apiResponse.EmailVerified);
 
         }
         
