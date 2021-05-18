@@ -62,7 +62,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
                     && c.Course.Id.Equals(response.Course.Id)
                     && c.Course.Level.Equals(response.Course.Level)
                     && c.Course.Title.Equals(response.Course.Title)
-                    && c.EmployerDemandIds.Count() == response.EmployerDemandIds.Count()
+                    && c.EmployerDemands.Count() == response.EmployerDemands.Count()
                 ))
                 , Times.Once);
             actual.Id.Should().Be(command.Id);

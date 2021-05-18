@@ -32,7 +32,7 @@
             <p class="govuk-!-margin-top-6">
                 <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Edit contact details</a>
             </p>
-            <form>
+            <form asp-route="@RouteNames.ReviewProviderDetails" asp-all-route-data="@Model.RouteDictionary">
                 <button class="govuk-button" data-module="govuk-button">Continue</button>
             </form>
         </div>

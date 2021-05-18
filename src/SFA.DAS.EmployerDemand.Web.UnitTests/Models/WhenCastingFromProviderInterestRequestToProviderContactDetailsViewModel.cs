@@ -19,7 +19,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             actual.Course.Should().BeEquivalentTo(source.Course);
             actual.Should().BeEquivalentTo(source, options=> options
                 .Excluding(c=>c.Course)
-                .Excluding(c=>c.EmployerDemandIds)
+                .Excluding(c=>c.EmployerDemands)
             );
             actual.RouteDictionary.Count.Should().Be(3);
             actual.RouteDictionary["ukprn"].Should().Be(source.Ukprn.ToString());

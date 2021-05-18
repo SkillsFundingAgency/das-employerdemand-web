@@ -10,7 +10,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public int Ukprn { get; set; }
         [FromRoute]
         public int CourseId { get; set; }
-        public List<Guid> EmployerDemandIds { get; set; }
+        public List<string> EmployerDemands { get; set; }
         public string Location { get; set; }
         public string Radius { get; set; }
         public string ProviderEmail { get; set; }
@@ -19,5 +19,6 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public int CourseLevel { get; set; }
         public string CourseTitle { get; set; }
         public string CourseSector { get; set; }
+        public Guid? Id { get; set; }
     }
 }

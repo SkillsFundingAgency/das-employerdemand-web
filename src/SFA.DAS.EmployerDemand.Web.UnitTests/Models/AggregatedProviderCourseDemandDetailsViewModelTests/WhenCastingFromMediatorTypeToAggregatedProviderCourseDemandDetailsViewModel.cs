@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoFixture.NUnit3;
 using FluentAssertions;
@@ -24,6 +26,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             actual.CourseDemandDetailsList.Should().BeEquivalentTo(source.CourseDemandDetailsList.Select(details => (ProviderCourseDemandDetailsViewModel)details));
             actual.ShowFilterOptions.Should().BeFalse();
             actual.SelectedRadius.Should().Be("5");
+            actual.SelectedEmployerDemandIds.Should().BeEquivalentTo(source.EmployerDemandIds);
         }
 
         [Test, AutoData]
@@ -91,6 +94,34 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             actual.ProviderEmail.Should().BeEmpty();
             actual.ProviderTelephoneNumber.Should().BeEmpty();
             actual.ProviderWebsite.Should().BeEmpty();
+        }
+
+        [Test, AutoData]
+        public void Then_If_The_EmployerDemandIds_Are_Null_Then_Empty_Is_Set(
+            GetProviderEmployerDemandDetailsQueryResult source)
+        {
+            //Arrange
+            source.EmployerDemandIds = null;
+
+            //Act
+            var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
+
+            //Assert
+            actual.SelectedEmployerDemandIds.Should().BeEquivalentTo(new List<Guid>());
+        }
+
+        [Test, AutoData]
+        public void Then_If_Id_Is_Null_Then_Empty_Set(
+            GetProviderEmployerDemandDetailsQueryResult source)
+        {
+            //Arrange
+            source.Id = null;
+
+            //Act
+            var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
+
+            //Assert
+            actual.Id.Should().BeEmpty();
         }
     }
 }
