@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Tracing;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +18,7 @@ using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
+using EmployerDemands = SFA.DAS.EmployerDemand.Domain.Demand.EmployerDemands;
 
 namespace SFA.DAS.EmployerDemand.Web.Controllers
 {
@@ -61,15 +65,18 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int ukprn, 
             int courseId, 
             [FromQuery]string location, 
-            [FromQuery]string radius)
+            [FromQuery]string radius,
+            Guid? id = null)
         {
             var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
                 ukprn,
                 courseId,
                 location,
-                radius);
-            
+                radius,
+                id);
+
             return View(model);
+
         }
 
         [HttpPost]
@@ -81,11 +88,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 var result = await _mediator.Send(new CreateCachedProviderInterestCommand
                 {
                     Ukprn = request.Ukprn,
-                    EmployerDemandIds = request.EmployerDemandIds,
-                    Id = Guid.NewGuid(),
+                    Id = request.Id ?? Guid.NewGuid(),
                     Website = request.ProviderWebsite,
                     EmailAddress = request.ProviderEmail,
                     PhoneNumber = request.ProviderTelephoneNumber,
+                    EmployerDemands = BuildEmployerDemands(request.EmployerDemands),
                     Course = new Course
                     {
                         Id = request.CourseId,
@@ -119,8 +126,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     request.Ukprn,
                     request.CourseId,
                     request.Location,
-                    request.Radius,
-                    request.EmployerDemandIds);
+                    request.Radius);
                 
                 return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
@@ -210,25 +216,64 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             
         }
 
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}/review", Name = RouteNames.ReviewProviderDetails)]
+        public async Task<IActionResult> ReviewProviderDetails(int ukprn, int courseId, Guid id)
+        {
+            var result = await _mediator.Send(new GetCachedProviderInterestQuery
+            {
+                Id = id
+            });
+
+            if (result.ProviderInterest == null)
+            {
+                return RedirectToRoute(RouteNames.ProviderDemandDetails, new { ukprn, courseId });
+            }
+
+            var model = (ReviewProviderDetailsViewModel) result.ProviderInterest;
+
+            return View(model);
+        }
+
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
             int ukprn,
             int courseId,
             string location,
             string radius,
-            IReadOnlyList<Guid> selectedEmployerDemandIds = null)
+            Guid? cachedObjectId = null)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
             {
                 Ukprn = ukprn,
                 CourseId = courseId,
                 Location = location,
-                LocationRadius = radius
+                LocationRadius = radius,
+                Id = cachedObjectId
             });
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
-            model.SelectedEmployerDemandIds = selectedEmployerDemandIds ?? new List<Guid>();
-
+            
             return model;
+        }
+
+        private IEnumerable<EmployerDemands> BuildEmployerDemands(IReadOnlyCollection<string> source)
+        {
+            var returnList = new List<EmployerDemands>();
+            if (source == null || source.Count == 0)
+            {
+                return returnList;
+            }
+            foreach (var employerDemand in source)
+            {
+                var demand = employerDemand.Split('|');
+                returnList.Add(new EmployerDemands
+                {
+                    EmployerDemandId = Guid.Parse(demand[0]),
+                    NumberOfApprentices = int.Parse(demand[1]),
+                    LocationName = demand[2]
+                });
+            }
+
+            return returnList;
         }
     }
 }

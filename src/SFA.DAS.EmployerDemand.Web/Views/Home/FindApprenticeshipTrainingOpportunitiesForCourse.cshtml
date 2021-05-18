@@ -21,7 +21,7 @@
             </h1>
 
             <div class="das-highlight govuk-!-padding-bottom-0">
-                <form asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" method="GET">
+                <form asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" asp-route-id="@Model.Id" method="GET">
                     <fieldset class="govuk-fieldset">
                         <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Filter employers by location</legend>
                         <div class="govuk-grid-row">
@@ -77,20 +77,20 @@
                 <input type="hidden" asp-for="ProviderWebsite"/>
                 <input type="hidden" asp-for="ProviderTelephoneNumber"/>
                 
-                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("EmployerDemandIds") && ViewData.ModelState["EmployerDemandIds"].Errors.Any()? "govuk-form-group--error" : "")">
+                <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("EmployerDemands") && ViewData.ModelState["EmployerDemands"].Errors.Any()? "govuk-form-group--error" : "")">
                     <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
                         <p class="govuk-body">Select all employers that apply.</p>
-                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("EmployerDemandIds"))
+                        @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("EmployerDemands"))
                         {
                             <span id="demandids-error" class="govuk-error-message">
-                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["EmployerDemandIds"].Errors.First().ErrorMessage
+                                <span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState["EmployerDemands"].Errors.First().ErrorMessage
                             </span>
                         }
                         <div class="govuk-checkboxes">
                             @foreach (var employerDemand in Model.CourseDemandDetailsList)
                             {
                                 <div class="govuk-checkboxes__item">
-                                    <input class="govuk-checkboxes__input" id="EmployerDemandIds-@employerDemand.DemandId" name="EmployerDemandIds" type="checkbox" value="@employerDemand.DemandId" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
+                                    <input class="govuk-checkboxes__input" id="EmployerDemandIds-@employerDemand.DemandId" name="EmployerDemands" type="checkbox" value="@employerDemand.DemandId|@employerDemand.NumberOfApprentices|@employerDemand.Location.Name" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
                                     <label class="govuk-label govuk-checkboxes__label" for="EmployerDemandIds-@employerDemand.DemandId">
                                         <span class="govuk-!-font-weight-bold">Employer</span>
                                         <br/>
@@ -104,7 +104,7 @@
 
                     </fieldset>
                 </div>
-                <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+                <button id="continue" type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
             </form>
             }
         </div>
