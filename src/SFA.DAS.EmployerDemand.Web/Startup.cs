@@ -86,12 +86,12 @@ namespace SFA.DAS.EmployerDemand.Web
             {
                 options.LowercaseUrls = true;
             }).AddMvc(options =>
-            {
-                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                {
+                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                })
+                .SetDefaultNavigationSection(NavigationSection.Home)
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-            services.AddMvc()
-                .SetDefaultNavigationSection(NavigationSection.Home);
 
             if (_configuration.IsDev() || _configuration.IsLocal())
             {
