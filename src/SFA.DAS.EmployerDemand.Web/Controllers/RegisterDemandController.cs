@@ -179,7 +179,10 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model.Verified)
             {
-                return RedirectToRoute(RouteNames.RegisterDemandCompleted, new {Id = id});
+                var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
+                    System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
+                
+                return RedirectToRoute(RouteNames.RegisterDemandCompleted, new {Id = id, demandId = encodedId});
             }
 
             return View(model);
