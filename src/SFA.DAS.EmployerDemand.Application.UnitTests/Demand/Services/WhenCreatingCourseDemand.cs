@@ -1,12 +1,16 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Services;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
+using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
@@ -17,6 +21,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
         public async Task Then_The_Cache_Is_Read_And_Api_Is_Called(
             Guid id,
             CourseDemandRequest demand,
+            string demandUrl,
             [Frozen] Mock<ICacheStorageService> cacheStorageService,
             [Frozen] Mock<IApiClient> apiClient,
             DemandService service)
@@ -26,11 +31,12 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
                 .Setup(x => x.RetrieveFromCache<CourseDemandRequest>(id.ToString()))
                 .ReturnsAsync(demand);
             
-            await service.CreateCourseDemand(id);
+            await service.CreateCourseDemand(id, demandUrl);
             
             apiClient.Verify(x=>x.Post<Guid,PostCreateDemandData>(It.Is<PostCreateDemandRequest>(c=>
                 c.Data.Id.Equals(demand.Id)
                 && c.Data.ContactEmailAddress.Equals(demand.ContactEmailAddress)
+                && c.Data.ResponseUrl.Equals(demandUrl)
                 )));
         }
         

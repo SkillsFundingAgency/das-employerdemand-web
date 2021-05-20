@@ -71,7 +71,7 @@
                 <input type="hidden" name="courseId" value="@Model.Course.Id"/>
                 <input type="hidden" name="courseLevel" value="@Model.Course.Level"/>
                 <input type="hidden" name="courseTitle" value="@Model.Course.Title"/>
-                <input type="hidden" name="courseSector" value="@Model.Course.Sector"/>
+                <input type="hidden" name="courseSector" value="@Model.Course.Route"/>
                 <input type="hidden" asp-for="ProviderEmail"/>
                 <input type="hidden" asp-for="ProviderWebsite"/>
                 <input type="hidden" asp-for="ProviderTelephoneNumber"/>
@@ -103,7 +103,7 @@
 
                     </fieldset>
                 </div>
-                <button type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
+                <button id="continue" type="submit" class="govuk-button" data-module="govuk-button">Continue</button>
             </form>
             }
         </div>

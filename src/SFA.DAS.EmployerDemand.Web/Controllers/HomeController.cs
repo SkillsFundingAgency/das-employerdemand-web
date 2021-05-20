@@ -94,7 +94,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     {
                         Id = request.CourseId,
                         Level = request.CourseLevel,
-                        Sector = request.CourseSector,
+                        Route = request.CourseSector,
                         Title = request.CourseTitle
                     }
                 });

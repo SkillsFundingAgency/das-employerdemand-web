@@ -151,7 +151,7 @@
                                     </h2>
                                     <dl class="das-definition-list das-definition-list--meta govuk-!-margin-bottom-2">
                                         <dt class="das-definition-list__title">Apprenticeship category</dt>
-                                        <dd class="das-definition-list__definition govuk-!-margin-bottom-1">@courseDemand.Course.Sector</dd>
+                                        <dd class="das-definition-list__definition govuk-!-margin-bottom-1">@courseDemand.Course.Route</dd>
                                         <dt class="das-definition-list__title">Apprentices</dt>
                                         <dd class="das-definition-list__definition govuk-!-margin-bottom-1">@courseDemand.NumberOfApprentices</dd>
                                         <dt class="das-definition-list__title">Employers</dt>
@@ -159,7 +159,7 @@
                                     </dl>
                                 </div>
                                 <div class="govuk-grid-column-one-third das-!-text-align-right--from-tablet">
-                                    <a asp-route="@RouteNames.ProviderDemandDetails" asp-all-route-data="detailsRouteData" class="govuk-link govuk-link--no-visited-state govuk-body">View employers <span class="govuk-visually-hidden">looking for training providers for @courseDemand.Course.Title</span></a>
+                                    <a id="view-@courseDemand.Course.Id" asp-route="@RouteNames.ProviderDemandDetails" asp-all-route-data="detailsRouteData" class="govuk-link govuk-link--no-visited-state govuk-body">View employers <span class="govuk-visually-hidden">looking for training providers for @courseDemand.Course.Title</span></a>
                                 </div>
                             </div>
                         </li>

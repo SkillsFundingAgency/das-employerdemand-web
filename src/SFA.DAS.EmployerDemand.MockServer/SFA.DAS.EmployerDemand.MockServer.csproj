@@ -10,6 +10,9 @@
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.4.0" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="get-verified-demand.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="provider-employer-demand-details.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -29,6 +32,9 @@
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="provider-employer-demand.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="get-unverified-demand.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>

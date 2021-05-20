@@ -7,7 +7,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand
         public int Id { get ; set ; }
         public string Title { get ; set ; }
         public int Level { get ; set ; }
-        public string Sector { get; set; }
+        public string Route { get; set; }
 
         public static implicit operator Course(TrainingCourse source)
         {
@@ -16,7 +16,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand
                 Id = source.Id,
                 Title = source.Title,
                 Level = source.Level,
-                Sector = source.Sector
+                Route = source.Route
             };
         }
     }

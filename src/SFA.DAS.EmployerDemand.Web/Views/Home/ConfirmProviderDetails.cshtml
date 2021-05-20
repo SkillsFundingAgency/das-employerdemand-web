@@ -18,14 +18,21 @@
 				<span class="govuk-!-font-weight-bold">@Model.PhoneNumber</span>
 			</p>
             <p>
-				Website <br />
-				<span class="govuk-!-font-weight-bold">@Model.Website</span>
-			</p>
+                Website <br />
+                @if (!string.IsNullOrEmpty(Model.Website))
+                {
+                    <span class="govuk-!-font-weight-bold">@Model.Website</span>
+                }
+                else
+                {
+                    <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Add website</a>
+                }
+            </p>
             <p class="govuk-!-margin-top-6">
                 <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Edit contact details</a>
             </p>
             <form asp-route="@RouteNames.ReviewProviderDetails" asp-all-route-data="@Model.RouteDictionary">
-                <button class="govuk-button" data-module="govuk-button">Continue</button>
+                <button id="continue" class="govuk-button" data-module="govuk-button">Continue</button>
             </form>
         </div>
     </div>

@@ -38,12 +38,15 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             return result;
         }
 
-        public async Task CreateCourseDemand(Guid id)
+        public async Task CreateCourseDemand(Guid id, string responseUrl)
         {
             var item = await _cacheStorageService.RetrieveFromCache<CourseDemandRequest>(id.ToString());
 
-            var data = new PostCreateDemandData(item);
-            
+            var data = new PostCreateDemandData(item)
+            {
+                ResponseUrl = responseUrl
+            };
+
             await _apiClient.Post<Guid, PostCreateDemandData>(new PostCreateDemandRequest(data));
 
         }
@@ -75,6 +78,32 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
         public async Task<IProviderDemandInterest> GetCachedProviderInterest(Guid itemKey)
         {
             var result = await _cacheStorageService.RetrieveFromCache<ProviderInterestRequest>(itemKey.ToString());
+
+            return result;
+        }
+
+        public async Task<CourseDemand> GetUnverifiedEmployerCourseDemand(Guid id)
+        {
+            var cachedResultTask = _cacheStorageService.RetrieveFromCache<CourseDemand>(id.ToString());
+            var apiResultTask = _apiClient.Get<GetCourseDemandResponse>(new GetEmployerDemandRequest(id));
+
+            await Task.WhenAll(cachedResultTask, apiResultTask);
+
+            if (cachedResultTask.Result == null || apiResultTask.Result == null)
+            {
+                return null;
+            }
+
+            cachedResultTask.Result.EmailVerified =  apiResultTask.Result.EmailVerified;
+            
+            return cachedResultTask.Result;
+        }
+
+        public async Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id)
+        {
+            var result =
+                await _apiClient.Post<VerifyEmployerCourseDemandResponse,object>(
+                    new PostVerifyEmployerCourseDemandRequest(id));
 
             return result;
         }
