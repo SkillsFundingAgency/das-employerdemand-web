@@ -8,7 +8,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string Title { get ; set ; }
         public string TitleAndLevel { get; private set; }
         public int Level { get ; set; }
-        public string Sector { get; set; }
+        public string Route { get; set; }
         public static implicit operator TrainingCourseViewModel(Course course)
         {
             if (course == null)
@@ -22,7 +22,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Title = course.Title,
                 TitleAndLevel = $"{course.Title} (level {course.Level})",
                 Level = course.Level,
-                Sector = course.Sector
+                Route = course.Route
             };
         }
     }

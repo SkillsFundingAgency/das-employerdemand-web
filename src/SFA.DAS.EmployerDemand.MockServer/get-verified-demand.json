@@ -1,4 +1,7 @@
 {
+  "id": "8F81280B-036E-42AB-96A8-B2886D343897",
+  "contactEmail": "test@test.com",
+  "numberOfApprentices": 2,
   "trainingCourse": {
     "id": 14,
     "title": "Laboratory technician",

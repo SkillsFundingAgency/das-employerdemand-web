@@ -1,13 +1,20 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using MediatR;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.VerifyEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetUnverifiedEmployerCourseDemand;
+using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
 
@@ -17,12 +24,20 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
     public class RegisterDemandController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly ILogger<RegisterDemandController> _logger;
         private readonly Domain.Configuration.EmployerDemand _config;
+        private readonly IDataProtector _employerDemandDataProtector;
 
-        public RegisterDemandController (IMediator mediator, IOptions<Domain.Configuration.EmployerDemand> config)
+        public RegisterDemandController (
+            IMediator mediator, 
+            IOptions<Domain.Configuration.EmployerDemand> config,
+            IDataProtectionProvider provider,
+            ILogger<RegisterDemandController> logger)
         {
             _mediator = mediator;
+            _logger = logger;
             _config = config.Value;
+            _employerDemandDataProtector = provider.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName);
         }
         
         [HttpGet]
@@ -98,30 +113,81 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/check-answers", Name = RouteNames.PostConfirmRegisterDemand)]
         public async Task<IActionResult> PostConfirmRegisterDemand(int id, Guid createDemandId)
         {
-            await _mediator.Send(new CreateCourseDemandCommand {Id = createDemandId});
+            var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
+                System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
 
-            return RedirectToRoute(RouteNames.RegisterDemandCompleted, new {Id = id, CreateDemandId = createDemandId});
+            var url = Url.RouteUrl(RouteNames.RegisterDemandCompleted, new
+            {
+                id = id,
+                demandId = encodedId
+            }, Request.Scheme, Request.Host.Host);
+                
+            await _mediator.Send(new CreateCourseDemandCommand
+            {
+                Id = createDemandId,
+                ResponseUrl = url
+            });
+
+#if DEBUG
+            _logger.LogInformation($"confirm page at {url}");
+#endif
+            
+            return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, new {Id = id, CreateDemandId = createDemandId});
         }
 
         [HttpGet]
-        [Route("course/{id}/shared-interest", Name = RouteNames.RegisterDemandCompleted)]
-        public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] Guid createDemandId)
+        [Route("course/{id}/complete", Name = RouteNames.RegisterDemandCompleted)]
+        public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] string demandId)
         {
-            var result = await _mediator.Send(new GetCachedCreateCourseDemandQuery {Id = createDemandId});
+            var decodedDemandId = GetEncodedDemandId(demandId);
+
+            if (!decodedDemandId.HasValue)
+            {
+                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+            }
             
-            var model = (CompletedCourseDemandViewModel) result.CourseDemand;
+            var result = await _mediator.Send(new VerifyEmployerCourseDemandCommand {Id = decodedDemandId.Value});
+            
+            var model = (CompletedCourseDemandViewModel) result.EmployerDemand;
 
             if (model == null)
             {
                 return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
             }
 
+
             model.FindApprenticeshipTrainingCourseUrl = _config.FindApprenticeshipTrainingUrl + "/courses";
            
             return View(model);
         }
-        
-        
+
+        [HttpGet]
+        [Route("course/{id}/verify-email", Name= RouteNames.ConfirmEmployerDemandEmail)]
+        public async Task<IActionResult> VerifyEmployerDemandEmail(int id, [FromQuery] Guid createDemandId)
+        {
+            var result = await _mediator.Send(new GetUnverifiedEmployerCourseDemandQuery
+            {
+                Id = createDemandId
+            });
+
+            var model = (VerifyEmployerCourseDemandViewModel) result.CourseDemand;
+
+            if (model == null)
+            {
+                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+            }
+
+            if (model.Verified)
+            {
+                var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
+                    System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
+                
+                return RedirectToRoute(RouteNames.RegisterDemandCompleted, new {Id = id, demandId = encodedId});
+            }
+
+            return View(model);
+        }
+
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
             RegisterDemandRequest request)
         {
@@ -130,6 +196,27 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = request.TrainingCourseId});
             model.TrainingCourse = result.CourseDemand.Course;
             return model;
+        }
+        
+        private Guid? GetEncodedDemandId(string encodedId)
+        {
+            try
+            {
+                var base64EncodedBytes = WebEncoders.Base64UrlDecode(encodedId);
+                var encodedDemandId = System.Text.Encoding.UTF8.GetString(_employerDemandDataProtector.Unprotect(base64EncodedBytes));
+                var result = Guid.TryParse(encodedDemandId, out var demandId);
+                return result ? demandId : (Guid?) null;
+            }
+            catch (FormatException e)
+            {
+                _logger.LogInformation(e,"Unable to decode employer demand id from request");
+            }
+            catch (CryptographicException e)
+            {
+                _logger.LogInformation(e, "Unable to decode employer demand id from request");
+            }
+
+            return null;
         }
     }
 }

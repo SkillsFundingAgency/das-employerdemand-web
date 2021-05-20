@@ -32,6 +32,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
         public LocationItem LocationItem => BuildCourseLocation();
 
         public TrainingCourse TrainingCourse => BuildTrainingCourse();
+        
+        public string ResponseUrl { get ; set ; }
 
         private LocationItem BuildCourseLocation()
         {
@@ -52,7 +54,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
                 Id = Course.Id,
                 Level = Course.Level,
                 Title = Course.Title,
-                Sector = Course.Sector
+                Route = Course.Route
             };
         }
     }

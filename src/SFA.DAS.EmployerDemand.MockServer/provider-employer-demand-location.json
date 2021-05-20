@@ -5,7 +5,7 @@
         "id": 2,
         "title": "Software developer",
         "level": 4,
-        "sector": "Digital"
+        "route": "Digital"
       },
       "apprenticesCount": 10,
       "employersCount": 2
@@ -15,7 +15,7 @@
         "id": 8,
         "title": "Financial services administrator",
         "level": 2,
-        "sector": "Business and administration"
+        "route": "Business and administration"
       },
       "apprenticesCount": 20,
       "employersCount": 12
@@ -25,7 +25,7 @@
         "id": 9,
         "title": "Control / technical support engineer (degree)",
         "level": 6,
-        "sector": "Engineering and manufacturing"
+        "route": "Engineering and manufacturing"
       },
       "apprenticesCount": 3,
       "employersCount": 1

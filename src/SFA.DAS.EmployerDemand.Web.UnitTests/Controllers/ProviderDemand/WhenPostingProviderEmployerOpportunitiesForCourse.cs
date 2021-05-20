@@ -81,7 +81,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                         && c.Course.Id.Equals(request.CourseId)
                         && c.Course.Level.Equals(request.CourseLevel)
                         && c.Course.Title.Equals(request.CourseTitle)
-                        && c.Course.Sector.Equals(request.CourseSector)
+                        && c.Course.Route.Equals(request.CourseSector)
                         && !c.EmployerDemands.Any()),
                     It.IsAny<CancellationToken>())).ReturnsAsync(result);
             
@@ -126,7 +126,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                             && c.Course.Id.Equals(request.CourseId)
                             && c.Course.Level.Equals(request.CourseLevel)
                             && c.Course.Title.Equals(request.CourseTitle)
-                            && c.Course.Sector.Equals(request.CourseSector)
+                            && c.Course.Route.Equals(request.CourseSector)
                             && c.EmployerDemands.ToList().TrueForAll(y=>y.LocationName.Equals(demandLocation))
                             && c.EmployerDemands.ToList().TrueForAll(y=>y.NumberOfApprentices.Equals(numberOfApprentices))
                             && c.EmployerDemands.ToList().TrueForAll(y=>y.EmployerDemandId.Equals(demandId))
