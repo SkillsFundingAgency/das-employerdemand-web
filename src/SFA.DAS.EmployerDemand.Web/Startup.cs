@@ -70,6 +70,8 @@ namespace SFA.DAS.EmployerDemand.Web
             
             services.AddServiceRegistration();
 
+            services.AddProviderUiServiceRegistration(_configuration);
+            
             services.AddMediatR(typeof(GetCreateCourseDemandQuery).Assembly);
             services.AddMediatRValidation();
 

@@ -1,7 +1,6 @@
 @using SFA.DAS.EmployerDemand.Web.Infrastructure
 @model SFA.DAS.EmployerDemand.Web.Models.AggregatedProviderCourseDemandDetailsViewModel
 @{
-    Layout = "_LayoutProvider";
     var title = $"{Model.Course.TitleAndLevel} opportunities";
     if (!ViewData.ModelState.IsValid)
     {
