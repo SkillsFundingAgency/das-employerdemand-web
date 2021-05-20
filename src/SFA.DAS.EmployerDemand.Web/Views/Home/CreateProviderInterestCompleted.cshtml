@@ -1,0 +1,57 @@
+﻿@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@using SFA.DAS.EmployerDemand.Web.Models
+@model SFA.DAS.EmployerDemand.Web.Models.ReviewProviderDetailsViewModel
+@{
+    Layout = "_LayoutProvider";
+    ViewData["Title"] = "todo";
+    ViewData["Description"] = "todo.";
+    ViewData["ShowJSBackLink"] = false;//todo
+}
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+        
+            <div class="govuk-panel govuk-panel--confirmation">
+                <h1 class="govuk-panel__title">
+                    We’ve shared your contact details with employers
+                </h1>
+            </div>
+            
+            <p class="govuk-body">
+                Apprenticeship training course <br>
+                <span class="govuk-!-font-weight-bold">@Model.Course.TitleAndLevel</span>
+            </p>
+
+            <p class="govuk-body">
+                Email address <br>
+                <span class="govuk-!-font-weight-bold">@Model.EmailAddress</span>
+            </p>
+            
+            <p class="govuk-body">
+                Telephone number <br>
+                <span class="govuk-!-font-weight-bold">@Model.PhoneNumber</span>
+            </p>
+            
+            @if (!string.IsNullOrEmpty(Model.Website))
+            {
+                <p class="govuk-body">
+                    Website <br>
+                    <span class="govuk-!-font-weight-bold">@Model.Website</span>
+                </p>    
+            }
+            
+            <h2 class="govuk-heading-m">What happens next</h2>
+
+            <p class="govuk-body">We’ve shared your contact details with the employers you showed interest in.</p>
+                
+            <p class="govuk-body">We’ve removed these employers from your account.</p>
+            
+            <h2 class="govuk-heading-m">Publish to the course directory</h2>
+            
+            <p class="govuk-body">TODO: stuff about course directory</p>
+
+            <a asp-route="@RouteNames.ProviderDashboard" class="govuk-button">View other employers</a>
+        </div>
+    </div>
+</main>
+
