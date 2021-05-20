@@ -15,6 +15,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string SelectedRadius { get ; set ; }
         public string CountDescription => BuildCountDescription();
         public IReadOnlyList<Guid> SelectedEmployerDemandIds { get; set; }
+        public string ProviderName { get; set; }
+        public bool ProviderOffersThisCourse { get; set; }
         public string ProviderEmail { get ; set ; }
         public string ProviderTelephoneNumber { get ; set ; }
         public string ProviderWebsite { get ; set ; }
@@ -29,6 +31,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 CourseDemandDetailsList = source.CourseDemandDetailsList.Select(c=>(ProviderCourseDemandDetailsViewModel)c).ToList(),
                 Location = source.SelectedLocation?.Name,
                 SelectedRadius = source.SelectedRadius != null && locationList.ContainsKey(source.SelectedRadius) ? source.SelectedRadius : locationList.First().Key,
+                ProviderName = source.ProviderName,
+                ProviderOffersThisCourse = source.ProviderContactDetails != null,
                 ProviderEmail = source.ProviderContactDetails?.EmailAddress ?? string.Empty,
                 ProviderWebsite = source.ProviderContactDetails?.Website ?? string.Empty,
                 ProviderTelephoneNumber = source.ProviderContactDetails?.PhoneNumber ?? string.Empty,

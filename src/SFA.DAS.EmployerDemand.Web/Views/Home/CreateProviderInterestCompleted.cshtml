@@ -3,8 +3,8 @@
 @model SFA.DAS.EmployerDemand.Web.Models.ReviewProviderDetailsViewModel
 @{
     Layout = "_LayoutProvider";
-    ViewData["Title"] = "todo";
-    ViewData["Description"] = "todo.";
+    ViewData["Title"] = "We’ve shared your contact details with employers";
+    ViewData["Description"] = "We’ve shared your contact details with employers";
     ViewData["ShowJSBackLink"] = false;//todo
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
@@ -46,9 +46,18 @@
                 
             <p class="govuk-body">We’ve removed these employers from your account.</p>
             
-            <h2 class="govuk-heading-m">Publish to the course directory</h2>
+            @if (true)//(!Model.Provider.OffersThisCourse)
+            {
+                <h2 class="govuk-heading-m">Publish to the course directory</h2>
             
-            <p class="govuk-body">TODO: stuff about course directory</p>
+                <p class="govuk-body">@Model todo is not on the course directory for @Model.Course.TitleAndLevel. 
+                    <a>Publish to the course directory</a>, so that employers can find you in the search results for this course on <a>find apprenticeship training</a>.</p>
+            }
+            else
+            {
+                <p class="govuk-body">We’ve also shared a link to your organisation on <a>find apprenticeship training</a>. 
+                    You can <a>publish to the course directory</a> to update your courses.</p>
+            }
 
             <a asp-route="@RouteNames.ProviderDashboard" class="govuk-button">View other employers</a>
         </div>

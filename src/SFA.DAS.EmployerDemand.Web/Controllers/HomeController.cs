@@ -249,6 +249,24 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 });
         }
 
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}", Name = RouteNames.CreateProviderInterestCompleted)]
+        public async Task<IActionResult> CreateProviderInterestCompleted(int ukprn, int courseId, Guid id)
+        {
+            var result = await _mediator.Send(new GetCachedProviderInterestQuery
+            {
+                Id = id
+            });
+
+            if (result.ProviderInterest == null)
+            {
+                return RedirectToRoute(RouteNames.ProviderDemandDetails, new { ukprn, courseId });
+            }
+
+            var model = (ReviewProviderDetailsViewModel) result.ProviderInterest;
+
+            return View(model);
+        }
+
 
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
             int ukprn,

@@ -76,6 +76,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
             
             //Assert
+            actual.ProviderName.Should().Be(source.ProviderName);
+            actual.ProviderOffersThisCourse.Should().BeTrue();
             actual.ProviderEmail.Should().Be(source.ProviderContactDetails.EmailAddress);
             actual.ProviderTelephoneNumber.Should().Be(source.ProviderContactDetails.PhoneNumber);
             actual.ProviderWebsite.Should().Be(source.ProviderContactDetails.Website);
@@ -91,6 +93,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
             
             //Assert
+            actual.ProviderName.Should().Be(source.ProviderName);
+            actual.ProviderOffersThisCourse.Should().BeFalse();
             actual.ProviderEmail.Should().BeEmpty();
             actual.ProviderTelephoneNumber.Should().BeEmpty();
             actual.ProviderWebsite.Should().BeEmpty();

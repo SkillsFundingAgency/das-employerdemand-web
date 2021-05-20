@@ -16,6 +16,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
 
         [JsonProperty("providerContactDetails")]
         public ProviderContactDetails ProviderContactDetails { get ; set ; }
+        [JsonProperty("providerName")]
+        public string ProviderName { get; set; }
     }
 
     public class ProviderEmployerDemandDetailsItem
