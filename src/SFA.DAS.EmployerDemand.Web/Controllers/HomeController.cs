@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.Tracing;
-using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,6 +15,7 @@ using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
+using SFA.DAS.Provider.Shared.UI.Models;
 using EmployerDemands = SFA.DAS.EmployerDemand.Domain.Demand.EmployerDemands;
 
 namespace SFA.DAS.EmployerDemand.Web.Controllers
@@ -26,9 +24,9 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly Domain.Configuration.EmployerDemand _config;
+        private readonly ProviderSharedUIConfiguration _config;
 
-        public HomeController (IMediator mediator, IOptions<Domain.Configuration.EmployerDemand> config)
+        public HomeController (IMediator mediator, IOptions<ProviderSharedUIConfiguration> config)
         {
             _mediator = mediator;
             _config = config.Value;
@@ -56,7 +54,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             });
 
             var model = (AggregatedProviderCourseDemandViewModel) result;
-            ViewData["ProviderDashboard"] = _config.ProviderPortalUrl;
+            ViewData["ProviderDashboard"] = _config.DashboardUrl + "account";
             return View(model);
         }
 

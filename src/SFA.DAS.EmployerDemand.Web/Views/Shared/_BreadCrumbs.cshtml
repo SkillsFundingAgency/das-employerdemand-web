@@ -1,0 +1,38 @@
+
+@using Microsoft.AspNetCore.Routing
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@{
+    Dictionary<string, string> backRouteData = null;
+    if (ViewData.TryGetValue("BackRouteData", out var tempBackRouteData))
+    {
+        backRouteData = tempBackRouteData as Dictionary<string, string>;
+    }
+}
+
+@if (Context.GetRouteData().Values["Controller"].Equals("Home") && Context.GetRouteData().Values["Action"].Equals("FindApprenticeshipTrainingOpportunities"))
+{
+    <div class="govuk-breadcrumbs">
+        <ol class="govuk-breadcrumbs__list">
+            <li class="govuk-breadcrumbs__list-item">
+                <a id="home-breadcrumb" class="govuk-breadcrumbs__link" href="@ViewData["ProviderDashboard"]">Home</a>
+            </li>
+        </ol>
+    </div>
+}
+else if (Context.GetRouteData().Values["Controller"].Equals("Error"))
+{
+    <a class="govuk-link govuk-link--no-visited-state"
+       asp-route="@RouteNames.ServiceStart"
+       asp-all-route-data="@backRouteData">Home</a>
+}
+else if (ViewData["ShowJSBackLink"] != null) 
+{
+    <div class="das-js-back-link"></div>
+}
+else
+{
+    <div class="das-js-back-link"></div>
+}
+
+
+
