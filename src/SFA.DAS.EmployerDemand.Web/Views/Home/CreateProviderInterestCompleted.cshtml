@@ -58,7 +58,7 @@
                     You can <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">publish to the course directory</a> to update your courses.</p>
             }
 
-            <a asp-route="@RouteNames.ProviderDashboard" class="govuk-button">View other employers</a>
+            <a asp-route="@RouteNames.ProviderDashboard" asp-route-ukprn="@Model.Ukprn" class="govuk-button">View other employers</a>
         </div>
     </div>
 </main>

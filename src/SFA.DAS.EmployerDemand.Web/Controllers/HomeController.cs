@@ -232,7 +232,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpPost]
-        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}", Name = RouteNames.PostCreateProviderInterest)]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/complete/{id}", Name = RouteNames.PostCreateProviderInterest)]
         public async Task<IActionResult> PostCreateProviderInterest(CreateProviderInterestRequest request)
         {
             await _mediator.Send((CreateProviderInterestCommand)request);
@@ -247,7 +247,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 });
         }
 
-        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}", Name = RouteNames.CreateProviderInterestCompleted)]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/complete/{id}", Name = RouteNames.CreateProviderInterestCompleted)]
         public async Task<IActionResult> CreateProviderInterestCompleted(int ukprn, int courseId, Guid id)
         {
             var result = await _mediator.Send(new GetCachedProviderInterestQuery
