@@ -37,36 +37,5 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             actual.RouteValues["courseId"].Should().Be(request.CourseId);
             actual.RouteValues["id"].Should().Be(request.Id);
         }
-
-        /*[Test, MoqAutoData]
-        public async Task And_No_Model_From_Mediator_Then_Redirect_To_ProviderDemandDetails(
-            CreateProviderInterestRequest request,
-            [Frozen] Mock<IMediator> mockMediator,
-            [Greedy] HomeController controller)
-        {
-            //Arrange
-            mockMediator
-                .Setup(mediator => mediator.Send(
-                    It.IsAny<CreateProviderInterestCommand>(),
-                    It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new );
-
-            //Act
-            var actual = await controller.PostCreateProviderInterest(request) as RedirectToRouteResult;
-            
-            //Assert
-            mockMediator.Verify(mediator =>
-                    mediator.Send(
-                        It.Is<CreateProviderInterestCommand>(command => command.Id == request.Id),
-                        It.IsAny<CancellationToken>()), 
-                Times.Once);
-            
-            actual!.RouteName.Should().Be(RouteNames.CreateProviderInterestCompleted);
-            actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
-            actual.RouteValues["courseId"].Should().Be(request.CourseId);
-            actual.RouteValues["id"].Should().Be(request.Id);
-        }
-
-        //todo and no cache found return to start of flow*/
     }
 }

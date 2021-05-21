@@ -74,7 +74,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 id);
 
             return View(model);
-
         }
 
         [HttpPost]
@@ -213,7 +212,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 
                 return View("EditProviderDetails", model);
             }
-            
         }
 
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}/review", Name = RouteNames.ReviewProviderDetails)]

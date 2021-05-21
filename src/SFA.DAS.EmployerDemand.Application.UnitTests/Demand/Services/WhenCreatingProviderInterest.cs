@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
-using FluentAssertions.Common;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Services;
