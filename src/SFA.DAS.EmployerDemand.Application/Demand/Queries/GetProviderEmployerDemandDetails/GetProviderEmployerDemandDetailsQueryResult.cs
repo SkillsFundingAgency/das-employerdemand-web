@@ -14,6 +14,5 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public ProviderContactDetails ProviderContactDetails { get ; set ; }
         public IEnumerable<Guid> EmployerDemandIds { get; set; }
         public Guid? Id { get; set; }
-        public string ProviderName { get; set; }
     }
 }

@@ -13,7 +13,6 @@ using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedProviderInteres
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemandDetails;
 using SFA.DAS.EmployerDemand.Domain.Demand;
-using SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
