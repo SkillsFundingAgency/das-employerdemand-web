@@ -27,17 +27,17 @@
         <p>We'll share these with the employers you're showing interest in, so they can contact you about @Model.Course.TitleAndLevel.</p>
         <p>
 			Email address <br />
-			<span class="govuk-!-font-weight-bold">@Model.EmailAddress</span>
+			<span class="govuk-!-font-weight-bold das-breakable">@Model.EmailAddress</span>
 		</p>
         <p>
 			Telephone number <br />
-			<span class="govuk-!-font-weight-bold">@Model.PhoneNumber</span>
+			<span class="govuk-!-font-weight-bold das-breakable">@Model.PhoneNumber</span>
 		</p>
         <p>
             Website <br />
             @if (!string.IsNullOrEmpty(Model.Website))
             {
-                <span class="govuk-!-font-weight-bold">@Model.Website</span>
+                <span class="govuk-!-font-weight-bold das-breakable">@Model.Website</span>
             }
             else
             {
