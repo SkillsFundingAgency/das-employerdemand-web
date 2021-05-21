@@ -40,6 +40,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             actual.SelectedLocation.Should().BeEquivalentTo((Location)response.Location);
             actual.SelectedRadius.Should().Be(query.LocationRadius);
             actual.ProviderContactDetails.Should().BeEquivalentTo(response.ProviderContactDetails);
+            actual.ProviderName.Should().Be(response.ProviderName);
         }
 
         [Test, MoqAutoData]

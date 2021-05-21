@@ -13,7 +13,10 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             var actual = (ReviewProviderDetailsViewModel) source;
 
-            actual.Should().BeEquivalentTo(source);
+            actual.Should().BeEquivalentTo(source, options => options
+                .Excluding(request => request.ProviderName)
+                .Excluding(request => request.ProviderOffersThisCourse)
+            );
             actual.RouteDictionary["ukprn"].Should().Be(source.Ukprn.ToString());
             actual.RouteDictionary["courseId"].Should().Be(source.Course.Id.ToString());
             actual.RouteDictionary["id"].Should().Be(source.Id.ToString());

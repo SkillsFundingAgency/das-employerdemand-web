@@ -88,6 +88,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 {
                     Ukprn = request.Ukprn,
                     Id = request.Id ?? Guid.NewGuid(),
+                    ProviderName = request.ProviderName,
+                    ProviderOffersThisCourse = request.ProviderOffersThisCourse,
                     Website = request.ProviderWebsite,
                     EmailAddress = request.ProviderEmail,
                     PhoneNumber = request.ProviderTelephoneNumber,

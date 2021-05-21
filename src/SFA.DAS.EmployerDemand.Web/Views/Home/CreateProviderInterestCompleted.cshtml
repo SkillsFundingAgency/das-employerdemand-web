@@ -51,12 +51,12 @@
                 <h2 class="govuk-heading-m">Publish to the course directory</h2>
             
                 <p class="govuk-body">@Model todo is not on the course directory for @Model.Course.TitleAndLevel. 
-                    <a>Publish to the course directory</a>, so that employers can find you in the search results for this course on <a>find apprenticeship training</a>.</p>
+                    <a class="govuk-link govuk-link--no-visited-state">Publish to the course directory</a>, so that employers can find you in the search results for this course on <a class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>.</p>
             }
             else
             {
-                <p class="govuk-body">We’ve also shared a link to your organisation on <a>find apprenticeship training</a>. 
-                    You can <a>publish to the course directory</a> to update your courses.</p>
+                <p class="govuk-body">We’ve also shared a link to your organisation on <a class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>. 
+                    You can <a class="govuk-link govuk-link--no-visited-state">publish to the course directory</a> to update your courses.</p>
             }
 
             <a asp-route="@RouteNames.ProviderDashboard" class="govuk-button">View other employers</a>

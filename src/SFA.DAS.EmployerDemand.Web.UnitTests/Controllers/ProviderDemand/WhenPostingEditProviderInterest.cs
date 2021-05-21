@@ -53,6 +53,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                 .Excluding(c=>c.PhoneNumber)
                 .Excluding(c=>c.EmailAddress)
                 .Excluding(c=>c.EmployerDemands)
+                .Excluding(c => c.ProviderName)
+                .Excluding(c => c.ProviderOffersThisCourse)
             );
             actualModel.Website.Should().Be(request.Website);
             actualModel.PhoneNumber.Should().Be(request.PhoneNumber);
