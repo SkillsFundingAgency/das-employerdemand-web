@@ -66,7 +66,7 @@
                 }
             </dl>
             <p class="govuk-body">We'll share some information about you with the employers you're showing interest in. </p>
-            <form>
+            <form asp-route="@RouteNames.PostCreateProviderInterest" asp-all-route-data="@Model.RouteDictionary">
                 <button id="continue" class="govuk-button" data-module="govuk-button">Confirm</button>
             </form>
         </div>

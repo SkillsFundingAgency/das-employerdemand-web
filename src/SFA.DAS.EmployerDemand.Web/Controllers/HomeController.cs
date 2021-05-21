@@ -263,7 +263,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 return RedirectToRoute(RouteNames.ProviderDemandDetails, new { ukprn, courseId });
             }
 
-            var model = (ReviewProviderDetailsViewModel) result.ProviderInterest;
+            var model = (CreateProviderInterestCompletedViewModel) result.ProviderInterest;
+            model.FindApprenticeshipTrainingUrl = _config.FindApprenticeshipTrainingUrl;
 
             return View(model);
         }

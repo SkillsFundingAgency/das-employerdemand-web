@@ -1,11 +1,10 @@
 ﻿@using SFA.DAS.EmployerDemand.Web.Infrastructure
-@using SFA.DAS.EmployerDemand.Web.Models
-@model SFA.DAS.EmployerDemand.Web.Models.ReviewProviderDetailsViewModel
+@model SFA.DAS.EmployerDemand.Web.Models.CreateProviderInterestCompletedViewModel
 @{
     Layout = "_LayoutProvider";
     ViewData["Title"] = "We’ve shared your contact details with employers";
     ViewData["Description"] = "We’ve shared your contact details with employers";
-    ViewData["ShowJSBackLink"] = false;//todo
+    ViewData["ShowJSBackLink"] = false;
 }
 <main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
     <div class="govuk-grid-row">
@@ -46,17 +45,17 @@
                 
             <p class="govuk-body">We’ve removed these employers from your account.</p>
             
-            @if (true)//(!Model.Provider.OffersThisCourse)
+            @if (!Model.ProviderOffersThisCourse)
             {
                 <h2 class="govuk-heading-m">Publish to the course directory</h2>
             
-                <p class="govuk-body">@Model todo is not on the course directory for @Model.Course.TitleAndLevel. 
-                    <a class="govuk-link govuk-link--no-visited-state">Publish to the course directory</a>, so that employers can find you in the search results for this course on <a class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>.</p>
+                <p class="govuk-body">@Context.User.Identity.Name is not on the course directory for @Model.Course.TitleAndLevel. 
+                    <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">Publish to the course directory</a>, so that employers can find you in the search results for this course on <a href="@Model.FindApprenticeshipTrainingUrl" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>.</p>
             }
             else
             {
-                <p class="govuk-body">We’ve also shared a link to your organisation on <a class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>. 
-                    You can <a class="govuk-link govuk-link--no-visited-state">publish to the course directory</a> to update your courses.</p>
+                <p class="govuk-body">We’ve also shared a link to your organisation on <a href="@Model.FindApprenticeshipTrainingUrl" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>. 
+                    You can <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">publish to the course directory</a> to update your courses.</p>
             }
 
             <a asp-route="@RouteNames.ProviderDashboard" class="govuk-button">View other employers</a>
