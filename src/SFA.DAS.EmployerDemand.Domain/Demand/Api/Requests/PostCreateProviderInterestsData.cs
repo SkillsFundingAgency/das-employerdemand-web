@@ -12,9 +12,11 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Website { get; set; }
+        public Guid Id { get ; set ; }
 
         public PostCreateProviderInterestsData(IProviderDemandInterest interest)
         {
+            Id = interest.Id;
             EmployerDemandIds = interest.EmployerDemands.Select(demands => demands.EmployerDemandId);
             Ukprn = interest.Ukprn;
             Email = interest.EmailAddress;

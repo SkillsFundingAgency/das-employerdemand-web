@@ -13,7 +13,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
         {
             var request = new PostCreateProviderInterestsRequest(data);
 
-            request.PostUrl.Should().Be("providerinterest/create");
+            request.PostUrl.Should().Be($"providerinterest");
             request.Data.Should().Be(data);
         }
     }
