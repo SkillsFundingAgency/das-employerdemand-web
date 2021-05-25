@@ -25,11 +25,13 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly Domain.Configuration.EmployerDemand _demandConfig;
         private readonly ProviderSharedUIConfiguration _config;
 
-        public HomeController (IMediator mediator, IOptions<ProviderSharedUIConfiguration> config)
+        public HomeController (IMediator mediator, IOptions<ProviderSharedUIConfiguration> config, IOptions<Domain.Configuration.EmployerDemand> demandConfig)
         {
             _mediator = mediator;
+            _demandConfig = demandConfig.Value;
             _config = config.Value;
         }
         
@@ -262,7 +264,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             }
 
             var model = (CreateProviderInterestCompletedViewModel) result.ProviderInterest;
-            model.FindApprenticeshipTrainingUrl = _config.FindApprenticeshipTrainingUrl;
+            model.FindApprenticeshipTrainingUrl = _demandConfig.FindApprenticeshipTrainingUrl;
 
             return View(model);
         }
