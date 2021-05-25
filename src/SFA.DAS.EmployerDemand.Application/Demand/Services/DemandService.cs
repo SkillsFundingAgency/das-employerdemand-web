@@ -114,7 +114,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             var data = new PostCreateProviderInterestsData(item);
             
-            await _apiClient.Post<int, PostCreateProviderInterestsData>(new PostCreateProviderInterestsRequest(data));
+            await _apiClient.Post<Guid, PostCreateProviderInterestsData>(new PostCreateProviderInterestsRequest(data));
         }
     }
 }

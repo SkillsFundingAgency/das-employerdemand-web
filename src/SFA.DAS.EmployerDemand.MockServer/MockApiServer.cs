@@ -92,7 +92,7 @@ namespace SFA.DAS.EmployerDemand.MockServer
                     .UsingPost())
                 .RespondWith(Response.Create()
                     .WithStatusCode(HttpStatusCode.Created)
-                    .WithBody($"'{1234}'")
+                    .WithBody($"'{Guid.NewGuid()}'")
                 );
 
             return server;

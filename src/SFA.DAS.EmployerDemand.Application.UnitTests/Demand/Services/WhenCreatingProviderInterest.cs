@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Services;
@@ -28,8 +29,8 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
 
             await service.CreateProviderInterest(id);
 
-            apiClient.Verify(x => x.Post<int, PostCreateProviderInterestsData>(
-                It.Is<PostCreateProviderInterestsRequest>(request => request.Data.Ukprn == interest.Ukprn)));
+            apiClient.Verify(x => x.Post<Guid, PostCreateProviderInterestsData>(
+                It.Is<PostCreateProviderInterestsRequest>(request => request.Data.Ukprn == interest.Ukprn && request.Data.Id.Equals(interest.Id))));
         }
     }
 }
