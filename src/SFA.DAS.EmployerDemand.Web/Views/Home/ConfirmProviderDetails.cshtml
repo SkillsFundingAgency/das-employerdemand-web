@@ -1,40 +1,54 @@
 @using SFA.DAS.EmployerDemand.Web.Infrastructure
 @model SFA.DAS.EmployerDemand.Web.Models.ProviderContactDetailsViewModel
 @{
-    Layout = "_LayoutProvider";
     ViewData["Title"] = "Confirm contact details";
     ViewData["Description"] = "Confirm the training provider’s email address, telephone number or website.";
 }
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-            <h1 class="govuk-heading-xl">Confirm @Context.User.Identity.Name's contact details</h1>
-            <p>We'll share these with the employers you're showing interest in, so they can contact you about @Model.Course.TitleAndLevel.</p>
-            <p>
-				Email address <br />
-				<span class="govuk-!-font-weight-bold">@Model.EmailAddress</span>
-			</p>
-            <p>
-				Telephone number <br />
-				<span class="govuk-!-font-weight-bold">@Model.PhoneNumber</span>
-			</p>
-            <p>
-                Website <br />
-                @if (!string.IsNullOrEmpty(Model.Website))
-                {
-                    <span class="govuk-!-font-weight-bold">@Model.Website</span>
-                }
-                else
-                {
-                    <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Add website</a>
-                }
-            </p>
-            <p class="govuk-!-margin-top-6">
-                <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Edit contact details</a>
-            </p>
-            <form asp-route="@RouteNames.ReviewProviderDetails" asp-all-route-data="@Model.RouteDictionary">
-                <button id="continue" class="govuk-button" data-module="govuk-button">Continue</button>
-            </form>
-        </div>
+
+@* ReSharper disable once Razor.SectionNotResolved - in shared provider layout *@
+@section breadcrumb {
+    <partial name="_BreadCrumbs" />
+}
+
+@* ReSharper disable once Razor.SectionNotResolved - in shared provider layout *@
+@section Styles {
+    <link href="/css/app.css" rel="stylesheet" no-cdn />    
+}
+
+@* ReSharper disable once Razor.SectionNotResolved - in shared provider layout *@
+@section Scripts {
+    <script src="/js/site.js" no-cdn></script>
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+        <h1 class="govuk-heading-xl">Confirm @Context.User.Identity.Name's contact details</h1>
+        <p>We'll share these with the employers you're showing interest in, so they can contact you about @Model.Course.TitleAndLevel.</p>
+        <p>
+			Email address <br />
+			<span class="govuk-!-font-weight-bold">@Model.EmailAddress</span>
+		</p>
+        <p>
+			Telephone number <br />
+			<span class="govuk-!-font-weight-bold">@Model.PhoneNumber</span>
+		</p>
+        <p>
+            Website <br />
+            @if (!string.IsNullOrEmpty(Model.Website))
+            {
+                <span class="govuk-!-font-weight-bold">@Model.Website</span>
+            }
+            else
+            {
+                <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Add website</a>
+            }
+        </p>
+        <p class="govuk-!-margin-top-6">
+            <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Edit contact details</a>
+        </p>
+        <form asp-route="@RouteNames.ReviewProviderDetails" asp-all-route-data="@Model.RouteDictionary">
+            <button id="continue" class="govuk-button" data-module="govuk-button">Continue</button>
+        </form>
     </div>
-</main>
+</div>

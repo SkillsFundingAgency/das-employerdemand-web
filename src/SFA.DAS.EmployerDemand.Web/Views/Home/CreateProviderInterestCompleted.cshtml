@@ -1,65 +1,80 @@
 ﻿@using SFA.DAS.EmployerDemand.Web.Infrastructure
 @model SFA.DAS.EmployerDemand.Web.Models.CreateProviderInterestCompletedViewModel
 @{
-    Layout = "_LayoutProvider";
     ViewData["Title"] = "We’ve shared your contact details with employers";
     ViewData["Description"] = "We’ve shared your contact details with employers";
     ViewData["ShowJSBackLink"] = false;
 }
-<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
-    <div class="govuk-grid-row">
-        <div class="govuk-grid-column-two-thirds">
-        
-            <div class="govuk-panel govuk-panel--confirmation">
-                <h1 class="govuk-panel__title">
-                    We’ve shared your contact details with employers
-                </h1>
-            </div>
-            
-            <p class="govuk-body">
-                Apprenticeship training course <br>
-                <span class="govuk-!-font-weight-bold">@Model.Course.TitleAndLevel</span>
-            </p>
 
-            <p class="govuk-body">
-                Email address <br>
-                <span class="govuk-!-font-weight-bold">@Model.EmailAddress</span>
-            </p>
-            
-            <p class="govuk-body">
-                Telephone number <br>
-                <span class="govuk-!-font-weight-bold">@Model.PhoneNumber</span>
-            </p>
-            
-            @if (!string.IsNullOrEmpty(Model.Website))
-            {
-                <p class="govuk-body">
-                    Website <br>
-                    <span class="govuk-!-font-weight-bold">@Model.Website</span>
-                </p>    
-            }
-            
-            <h2 class="govuk-heading-m">What happens next</h2>
+@* ReSharper disable once Razor.SectionNotResolved - in shared provider layout *@
+@section breadcrumb {
+    <partial name="_BreadCrumbs" />
+}
 
-            <p class="govuk-body">We’ve shared your contact details with the employers you showed interest in.</p>
-                
-            <p class="govuk-body">We’ve removed these employers from your account.</p>
-            
-            @if (!Model.ProviderOffersThisCourse)
-            {
-                <h2 class="govuk-heading-m">Publish to the course directory</h2>
-            
-                <p class="govuk-body">@Context.User.Identity.Name is not on the course directory for @Model.Course.TitleAndLevel. 
-                    <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">Publish to the course directory</a>, so that employers can find you in the search results for this course on <a href="@Model.FindApprenticeshipTrainingUrl" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>.</p>
-            }
-            else
-            {
-                <p class="govuk-body">We’ve also shared a link to your organisation on <a href="@Model.FindApprenticeshipTrainingUrl" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>. 
-                    You can <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">publish to the course directory</a> to update your courses.</p>
-            }
+@* ReSharper disable once Razor.SectionNotResolved - in shared provider layout *@
+@section Styles {
+    <link href="/css/app.css" rel="stylesheet" no-cdn />    
+}
 
-            <a asp-route="@RouteNames.ProviderDashboard" asp-route-ukprn="@Model.Ukprn" class="govuk-button">View other employers</a>
+@* ReSharper disable once Razor.SectionNotResolved - in shared provider layout *@
+@section Scripts {
+    <script src="/js/site.js" no-cdn></script>
+}
+
+
+<div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+    
+        <div class="govuk-panel govuk-panel--confirmation">
+            <h1 class="govuk-panel__title">
+                We’ve shared your contact details with employers
+            </h1>
         </div>
+        
+        <p class="govuk-body">
+            Apprenticeship training course <br>
+            <span class="govuk-!-font-weight-bold">@Model.Course.TitleAndLevel</span>
+        </p>
+
+        <p class="govuk-body">
+            Email address <br>
+            <span class="govuk-!-font-weight-bold">@Model.EmailAddress</span>
+        </p>
+        
+        <p class="govuk-body">
+            Telephone number <br>
+            <span class="govuk-!-font-weight-bold">@Model.PhoneNumber</span>
+        </p>
+        
+        @if (!string.IsNullOrEmpty(Model.Website))
+        {
+            <p class="govuk-body">
+                Website <br>
+                <span class="govuk-!-font-weight-bold">@Model.Website</span>
+            </p>    
+        }
+        
+        <h2 class="govuk-heading-m">What happens next</h2>
+
+        <p class="govuk-body">We’ve shared your contact details with the employers you showed interest in.</p>
+            
+        <p class="govuk-body">We’ve removed these employers from your account.</p>
+        
+        @if (!Model.ProviderOffersThisCourse)
+        {
+            <h2 class="govuk-heading-m">Publish to the course directory</h2>
+        
+            <p class="govuk-body">@Context.User.Identity.Name is not on the course directory for @Model.Course.TitleAndLevel. 
+                <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">Publish to the course directory</a>, so that employers can find you in the search results for this course on <a href="@Model.FindApprenticeshipTrainingUrl" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>.</p>
+        }
+        else
+        {
+            <p class="govuk-body">We’ve also shared a link to your organisation on <a href="@Model.FindApprenticeshipTrainingUrl" target="_blank" class="govuk-link govuk-link--no-visited-state">find apprenticeship training</a>. 
+                You can <a href="https://coursedirectory.nationalcareersservice.org.uk/" target="_blank" class="govuk-link govuk-link--no-visited-state">publish to the course directory</a> to update your courses.</p>
+        }
+
+        <a asp-route="@RouteNames.ProviderDashboard" asp-route-ukprn="@Model.Ukprn" class="govuk-button">View other employers</a>
     </div>
-</main>
+</div>
+
 

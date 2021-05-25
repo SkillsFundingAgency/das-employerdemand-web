@@ -11,6 +11,7 @@ using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
 using SFA.DAS.EmployerDemand.Web.Controllers;
 using SFA.DAS.EmployerDemand.Web.Models;
+using SFA.DAS.Provider.Shared.UI.Models;
 using SFA.DAS.Testing.AutoFixture;
 
 namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
@@ -22,12 +23,12 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             FindApprenticeshipTrainingOpportunitiesRequest request,
             string portalUrl,
             GetProviderEmployerDemandQueryResult mediatorResult,
-            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
+            [Frozen] Mock<IOptions<ProviderSharedUIConfiguration>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] HomeController controller)
         {
             //Arrange
-            config.Object.Value.ProviderPortalUrl = portalUrl;
+            config.Object.Value.DashboardUrl = portalUrl;
             mediator.Setup(x =>
                 x.Send(It.Is<GetProviderEmployerDemandQuery>(c =>
                     c.Ukprn.Equals(request.Ukprn) 
@@ -46,7 +47,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             Assert.IsNotNull(actualModel);
             actualModel.Courses.Should().BeEquivalentTo(mediatorResult.Courses);
             actualModel.CourseDemands.Should().BeEquivalentTo(mediatorResult.CourseDemands);
-            actual.ViewData["ProviderDashboard"].Should().Be(portalUrl);
+            actual.ViewData["ProviderDashboard"].Should().Be(portalUrl + "account");
         }
     }
 }
