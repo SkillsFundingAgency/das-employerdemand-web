@@ -12,6 +12,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProvide
         public IEnumerable<EmployerDemands> EmployerDemands { get; set; }
         public Guid Id { get; set; }
         public bool ProviderOffersThisCourse { get; set; }
+        public string ProviderName { get; set; }
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Website { get; set; }

@@ -15,6 +15,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
 
             actual.Should().BeEquivalentTo(source, options => options
                 .Excluding(request => request.ProviderOffersThisCourse)
+                .Excluding(request => request.ProviderName)
             );
             actual.RouteDictionary["ukprn"].Should().Be(source.Ukprn.ToString());
             actual.RouteDictionary["courseId"].Should().Be(source.Course.Id.ToString());

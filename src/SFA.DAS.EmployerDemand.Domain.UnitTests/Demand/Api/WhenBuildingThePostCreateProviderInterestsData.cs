@@ -14,10 +14,12 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
         {
             var data = new PostCreateProviderInterestsData(interest);
 
+            data.Id.Should().Be(interest.Id);
             data.EmployerDemandIds.Should()
                 .BeEquivalentTo(interest.EmployerDemands
                     .Select(demands => demands.EmployerDemandId));
             data.Ukprn.Should().Be(interest.Ukprn);
+            data.ProviderName.Should().Be(interest.ProviderName);
             data.Email.Should().Be(interest.EmailAddress);
             data.Phone.Should().Be(interest.PhoneNumber);
             data.Website.Should().Be(interest.Website);

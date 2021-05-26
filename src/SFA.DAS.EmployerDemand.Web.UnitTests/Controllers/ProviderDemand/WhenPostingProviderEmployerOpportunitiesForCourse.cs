@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using NUnit.Framework;
@@ -29,6 +32,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             [Greedy] HomeController controller)
         {
             //Arrange
+            ArrangeControllerContext(controller);
             request.EmployerDemands = new List<string>();
             mockMediator
                 .Setup(x => x.Send(
@@ -67,6 +71,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             [Greedy] HomeController controller)
         {
             //Arrange
+            ArrangeControllerContext(controller);
             request.Id = null;
             request.EmployerDemands = null;
 
@@ -107,6 +112,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             [Greedy] HomeController controller)
         {
             //Arrange
+            ArrangeControllerContext(controller);
             request.Id = null;
             request.EmployerDemands = new List<string>
             {
@@ -121,6 +127,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                             c.Id != Guid.Empty
                             && c.Ukprn.Equals(request.Ukprn)
                             && c.ProviderOffersThisCourse.Equals(request.ProviderOffersThisCourse)
+                            && c.ProviderName.Equals(controller.User.Identity.Name)
                             && c.Website.Equals(request.ProviderWebsite)
                             && c.EmailAddress.Equals(request.ProviderEmail)
                             && c.PhoneNumber.Equals(request.ProviderTelephoneNumber)
@@ -154,6 +161,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             [Greedy] HomeController controller)
         {
             //Arrange
+            ArrangeControllerContext(controller);
             request.EmployerDemands = new List<string>();
             mockMediator
                 .Setup(x => x.Send(
@@ -179,6 +187,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             [Greedy] HomeController controller)
         {
             //Arrange
+            ArrangeControllerContext(controller);
             request.ProviderEmail = string.Empty;
             request.EmployerDemands = new List<string>
             {
@@ -215,6 +224,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             [Greedy] HomeController controller)
         {
             //Arrange
+            ArrangeControllerContext(controller);
             request.ProviderTelephoneNumber = string.Empty;
             request.EmployerDemands = new List<string>
             {
@@ -239,6 +249,19 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             actual.RouteValues["id"].Should().Be(result.Id);
             actual.RouteValues["ukprn"].Should().Be(request.Ukprn);
             actual.RouteValues["courseId"].Should().Be(request.CourseId);
+        }
+
+        private void ArrangeControllerContext(ControllerBase controller)
+        {
+            var principal = new ClaimsPrincipal(new ClaimsIdentity(new[]
+            {
+                new Claim(ClaimTypes.Name, "example name"),
+                new Claim(ClaimTypes.NameIdentifier, "1")
+            }, "mock"));
+            controller.ControllerContext = new ControllerContext
+            {
+                HttpContext = new DefaultHttpContext {User = principal}
+            };
         }
     }
 }

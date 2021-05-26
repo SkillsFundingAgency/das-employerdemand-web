@@ -9,6 +9,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
     {
         public IEnumerable<Guid> EmployerDemandIds { get; set; }
         public int Ukprn { get; set; }
+        public string ProviderName { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Website { get; set; }
@@ -19,6 +20,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
             Id = interest.Id;
             EmployerDemandIds = interest.EmployerDemands.Select(demands => demands.EmployerDemandId);
             Ukprn = interest.Ukprn;
+            ProviderName = interest.ProviderName;
             Email = interest.EmailAddress;
             Phone = interest.PhoneNumber;
             Website = interest.Website;

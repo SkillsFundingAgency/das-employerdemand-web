@@ -21,6 +21,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
                 .Excluding(c=>c.Course)
                 .Excluding(c=>c.EmployerDemands)
                 .Excluding(c=>c.ProviderOffersThisCourse)
+                .Excluding(c=>c.ProviderName)
             );
             actual.RouteDictionary.Count.Should().Be(3);
             actual.RouteDictionary["ukprn"].Should().Be(source.Ukprn.ToString());
