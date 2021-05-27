@@ -1,3 +1,4 @@
+using System;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
@@ -9,6 +10,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string TitleAndLevel { get; private set; }
         public int Level { get ; set; }
         public string Route { get; set; }
+        public DateTime? LastStartDate { get; set; }
         public static implicit operator TrainingCourseViewModel(Course course)
         {
             if (course == null)
@@ -22,7 +24,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Title = course.Title,
                 TitleAndLevel = $"{course.Title} (level {course.Level})",
                 Level = course.Level,
-                Route = course.Route
+                Route = course.Route,
+                LastStartDate = course.LastStartDate
             };
         }
     }

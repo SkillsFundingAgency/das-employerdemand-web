@@ -1,3 +1,4 @@
+using System;
 using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 
 namespace SFA.DAS.EmployerDemand.Domain.Demand
@@ -8,6 +9,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand
         public string Title { get ; set ; }
         public int Level { get ; set ; }
         public string Route { get; set; }
+        public DateTime? LastStartDate { get; set; }
 
         public static implicit operator Course(TrainingCourse source)
         {
@@ -16,7 +18,8 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand
                 Id = source.Id,
                 Title = source.Title,
                 Level = source.Level,
-                Route = source.Route
+                Route = source.Route,
+                LastStartDate = source.LastStartDate
             };
         }
     }
