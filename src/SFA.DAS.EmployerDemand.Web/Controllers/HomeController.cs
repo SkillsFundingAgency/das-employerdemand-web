@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedProviderInterest;
 using Microsoft.Extensions.Options;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.UpdateCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedProviderInterest;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerDemand;
@@ -24,11 +25,13 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
+        private readonly Domain.Configuration.EmployerDemand _demandConfig;
         private readonly ProviderSharedUIConfiguration _config;
 
-        public HomeController (IMediator mediator, IOptions<ProviderSharedUIConfiguration> config)
+        public HomeController (IMediator mediator, IOptions<ProviderSharedUIConfiguration> config, IOptions<Domain.Configuration.EmployerDemand> demandConfig)
         {
             _mediator = mediator;
+            _demandConfig = demandConfig.Value;
             _config = config.Value;
         }
         
@@ -74,7 +77,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 id);
 
             return View(model);
-
         }
 
         [HttpPost]
@@ -87,6 +89,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 {
                     Ukprn = request.Ukprn,
                     Id = request.Id ?? Guid.NewGuid(),
+                    ProviderOffersThisCourse = request.ProviderOffersThisCourse,
                     Website = request.ProviderWebsite,
                     EmailAddress = request.ProviderEmail,
                     PhoneNumber = request.ProviderTelephoneNumber,
@@ -211,7 +214,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 
                 return View("EditProviderDetails", model);
             }
-            
         }
 
         [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/confirm/{id}/review", Name = RouteNames.ReviewProviderDetails)]
@@ -231,6 +233,42 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/shared-contact-details/{id}", Name = RouteNames.PostCreateProviderInterest)]
+        public async Task<IActionResult> PostCreateProviderInterest(CreateProviderInterestRequest request)
+        {
+            await _mediator.Send((CreateProviderInterestCommand)request);
+
+            return RedirectToRoute(
+                RouteNames.CreateProviderInterestCompleted, 
+                new
+                {
+                    request.Ukprn,
+                    request.CourseId,
+                    request.Id
+                });
+        }
+
+        [Route("{ukprn}/find-apprenticeship-opportunities/{courseId}/shared-contact-details/{id}", Name = RouteNames.CreateProviderInterestCompleted)]
+        public async Task<IActionResult> CreateProviderInterestCompleted(int ukprn, int courseId, Guid id)
+        {
+            var result = await _mediator.Send(new GetCachedProviderInterestQuery
+            {
+                Id = id
+            });
+
+            if (result.ProviderInterest == null)
+            {
+                return RedirectToRoute(RouteNames.ProviderDemandDetails, new { ukprn, courseId });
+            }
+
+            var model = (CreateProviderInterestCompletedViewModel) result.ProviderInterest;
+            model.FindApprenticeshipTrainingUrl = _demandConfig.FindApprenticeshipTrainingUrl;
+
+            return View(model);
+        }
+
 
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
             int ukprn,

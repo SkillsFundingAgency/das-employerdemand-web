@@ -87,6 +87,7 @@
             <input type="hidden" name="courseLevel" value="@Model.Course.Level"/>
             <input type="hidden" name="courseTitle" value="@Model.Course.Title"/>
             <input type="hidden" name="courseSector" value="@Model.Course.Route"/>
+            <input type="hidden" asp-for="ProviderOffersThisCourse"/>
             <input type="hidden" asp-for="ProviderEmail"/>
             <input type="hidden" asp-for="ProviderWebsite"/>
             <input type="hidden" asp-for="ProviderTelephoneNumber"/>
@@ -102,6 +103,7 @@
                     }
                     <div class="govuk-checkboxes">
                         @foreach (var employerDemand in Model.CourseDemandDetailsList)
+                
                         {
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input" id="EmployerDemandIds-@employerDemand.DemandId" name="EmployerDemands" type="checkbox" value="@employerDemand.DemandId|@employerDemand.NumberOfApprentices|@employerDemand.Location.Name" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>

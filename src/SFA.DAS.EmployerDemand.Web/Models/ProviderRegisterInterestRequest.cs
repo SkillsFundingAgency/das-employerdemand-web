@@ -13,6 +13,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public List<string> EmployerDemands { get; set; }
         public string Location { get; set; }
         public string Radius { get; set; }
+        public bool ProviderOffersThisCourse { get; set; }
         public string ProviderEmail { get; set; }
         public string ProviderWebsite { get; set; }
         public string ProviderTelephoneNumber { get; set; }
