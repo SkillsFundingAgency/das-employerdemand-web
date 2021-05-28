@@ -107,5 +107,14 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             return result;
         }
+
+        public async Task CreateProviderInterest(Guid id)
+        {
+            var item = await _cacheStorageService.RetrieveFromCache<ProviderInterestRequest>(id.ToString());
+
+            var data = new PostCreateProviderInterestsData(item);
+            
+            await _apiClient.Post<Guid, PostCreateProviderInterestsData>(new PostCreateProviderInterestsRequest(data));
+        }
     }
 }

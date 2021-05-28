@@ -9,6 +9,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand
         public Guid Id { get; set; }
         public int Ukprn { get; set; }
         public IEnumerable<EmployerDemands> EmployerDemands { get; set; }
+        public bool ProviderOffersThisCourse { get; set; }
         public string EmailAddress { get; set; }
         public string PhoneNumber { get; set; }
         public string Website { get; set; }

@@ -9,6 +9,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         Guid Id { get; set; }
         int Ukprn { get; set; }
         IEnumerable<EmployerDemands> EmployerDemands { get; set; }
+        bool ProviderOffersThisCourse { get; set; }
         string EmailAddress { get; set; }
         string PhoneNumber { get; set; }
         string Website { get; set; }

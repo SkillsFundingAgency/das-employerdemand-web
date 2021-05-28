@@ -120,6 +120,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                     It.Is<CreateCachedProviderInterestCommand>(c =>
                             c.Id != Guid.Empty
                             && c.Ukprn.Equals(request.Ukprn)
+                            && c.ProviderOffersThisCourse.Equals(request.ProviderOffersThisCourse)
                             && c.Website.Equals(request.ProviderWebsite)
                             && c.EmailAddress.Equals(request.ProviderEmail)
                             && c.PhoneNumber.Equals(request.ProviderTelephoneNumber)
