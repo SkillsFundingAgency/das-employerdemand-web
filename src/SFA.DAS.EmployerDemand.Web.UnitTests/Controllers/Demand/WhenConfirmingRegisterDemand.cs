@@ -97,7 +97,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
 
             //Assert
             Assert.IsNotNull(actual);
-            actual.Url.Should().Be($"{baseUrl}/courses/{mediatorResult.CourseDemand.Course.Id}");
+            actual.Url.Should().Be($"{baseUrl}courses/{mediatorResult.CourseDemand.Course.Id}");
             actual.Permanent.Should().BeFalse();
             actual.PreserveMethod.Should().BeTrue();
         }
