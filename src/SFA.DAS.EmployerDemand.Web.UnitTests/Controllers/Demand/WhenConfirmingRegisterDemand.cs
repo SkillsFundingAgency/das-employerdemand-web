@@ -85,7 +85,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         {
             //Arrange
             config.Object.Value.FindApprenticeshipTrainingUrl = baseUrl;
-            mediatorResult.CourseDemand.Course.LastStartDate = DateTime.Today.AddDays(-1);
+            mediatorResult.CourseDemand.Course.LastStartDate = DateTime.Today.AddDays(-1).AddHours(23).AddMinutes(59).AddSeconds(59);
             mediator.Setup(x =>
                     x.Send(It.Is<GetCachedCreateCourseDemandQuery>(c =>
                             c.Id.Equals(demandId))
