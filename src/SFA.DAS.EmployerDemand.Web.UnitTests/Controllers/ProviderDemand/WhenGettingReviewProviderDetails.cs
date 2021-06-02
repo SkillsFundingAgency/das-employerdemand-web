@@ -5,6 +5,7 @@ using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedProviderInterest;
@@ -22,25 +23,27 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             Guid id,
             int ukprn,
             int courseId,
+            string baseUrl,
             GetCachedProviderInterestQueryResult result,
+            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] HomeController controller)
         {
             //Arrange
+            config.Object.Value.FindApprenticeshipTrainingUrl = baseUrl;
             mockMediator
                 .Setup(x => x.Send(
                     It.Is<GetCachedProviderInterestQuery>(c =>
                         c.Id == id),
                     It.IsAny<CancellationToken>())).ReturnsAsync(result);
-
             //Act
             var actual = await controller.ReviewProviderDetails(ukprn, courseId, id) as ViewResult;
-
             //Assert
             Assert.IsNotNull(actual);
             var actualModel = actual.Model as ReviewProviderDetailsViewModel;
             Assert.IsNotNull(actualModel);
             actualModel.Id.Should().Be(result.ProviderInterest.Id);
+            actualModel.FindApprenticeshipTrainingCourseUrl.Should().Be($"{baseUrl}/courses/{courseId}/providers/{ukprn}");
         }
 
         [Test, MoqAutoData]
@@ -69,5 +72,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             actual.RouteValues["ukprn"].Should().Be(ukprn);
             actual.RouteValues["courseId"].Should().Be(courseId);
         }
+
+
     }
 }

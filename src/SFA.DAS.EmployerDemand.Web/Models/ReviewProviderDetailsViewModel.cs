@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Domain.Demand;
+using SFA.DAS.EmployerDemand.Web.Controllers;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {
@@ -15,6 +18,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public TrainingCourseViewModel Course { get; set; }
         public List<EmployerDemands> EmployerDemands { get; set; }
         public Dictionary<string, string> RouteDictionary { get; set; }
+        public bool ProviderOffersThisCourse { get; set; }
+        public string FindApprenticeshipTrainingCourseUrl { get; set; }
 
         public static implicit operator ReviewProviderDetailsViewModel(ProviderInterestRequest source)
         {
@@ -26,8 +31,10 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Website = source.Website,
                 EmailAddress = source.EmailAddress,
                 PhoneNumber = source.PhoneNumber,
+                ProviderOffersThisCourse = source.ProviderOffersThisCourse,
                 EmployerDemands = source.EmployerDemands.Select(c => (EmployerDemands)c).ToList(),
                 RouteDictionary = new Dictionary<string, string>
+
                 {
                     {"ukprn", source.Ukprn.ToString()},
                     {"id", source.Id.ToString()},
@@ -35,5 +42,6 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 }
             };
         }
+
     }
 }
