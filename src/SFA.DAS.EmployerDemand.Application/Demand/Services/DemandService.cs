@@ -12,11 +12,16 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
     {
         private readonly IApiClient _apiClient;
         private readonly ICacheStorageService _cacheStorageService;
+        private readonly IFatUrlBuilder _fatUrlBuilder;
 
-        public DemandService (IApiClient apiClient, ICacheStorageService cacheStorageService)
+        public DemandService (
+            IApiClient apiClient, 
+            ICacheStorageService cacheStorageService,
+            IFatUrlBuilder fatUrlBuilder)
         {
             _apiClient = apiClient;
             _cacheStorageService = cacheStorageService;
+            _fatUrlBuilder = fatUrlBuilder;
         }
         public async Task<GetCreateCourseDemandResponse> GetCreateCourseDemand(int trainingCourseId, string locationName)
         {
@@ -112,7 +117,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
         {
             var item = await _cacheStorageService.RetrieveFromCache<ProviderInterestRequest>(id.ToString());
 
-            var data = new PostCreateProviderInterestsData(item);
+            var data = new PostCreateProviderInterestsData(item, _fatUrlBuilder.BuildFatUrl);
             
             await _apiClient.Post<Guid, PostCreateProviderInterestsData>(new PostCreateProviderInterestsRequest(data));
         }

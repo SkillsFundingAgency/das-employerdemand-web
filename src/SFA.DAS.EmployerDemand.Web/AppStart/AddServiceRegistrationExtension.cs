@@ -15,6 +15,7 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
             
             services.AddHttpClient<IApiClient, ApiClient>();
             services.AddTransient<IDemandService, DemandService>();
+            services.AddTransient<IFatUrlBuilder, FatUrlBuilderService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<ICacheStorageService, CacheStorageService>();
         }
