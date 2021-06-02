@@ -232,6 +232,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             var model = (ReviewProviderDetailsViewModel) result.ProviderInterest;
 
+            model.FindApprenticeshipTrainingCourseUrl =$"{_demandConfig.FindApprenticeshipTrainingUrl}/courses/{courseId}/providers/{ukprn}";
+
             return View(model);
         }
 
