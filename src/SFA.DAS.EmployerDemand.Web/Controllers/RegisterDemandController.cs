@@ -124,7 +124,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
 
-            if (model.TrainingCourse.LastStartDate != null && model.TrainingCourse.LastStartDate < DateTime.Now)
+            if (model.TrainingCourse.LastStartDate != null && model.TrainingCourse.LastStartDate < DateTime.Today)
             {
                 return new RedirectResult($"{_config.FindApprenticeshipTrainingUrl}courses/{model.TrainingCourse.Id}", false, true);
             }
