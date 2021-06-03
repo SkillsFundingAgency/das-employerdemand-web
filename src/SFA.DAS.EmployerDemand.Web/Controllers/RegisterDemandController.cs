@@ -189,10 +189,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpGet]
-        [Route("stopped-interest/{createDemandId}", Name = RouteNames.StoppedInterest)]
-        public async Task<IActionResult> StoppedInterest(Guid createDemandId)
+        [Route("stopped-interest/{encodedDemandId}", Name = RouteNames.StoppedInterest)]
+        public async Task<IActionResult> StoppedInterest(string encodedDemandId)
         {
-            return View(model);
+            var decodedDemandId = GetEncodedDemandId(encodedDemandId);
+            return View();
         }
 
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
