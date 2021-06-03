@@ -116,20 +116,27 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
                 System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
 
-            var url = Url.RouteUrl(RouteNames.RegisterDemandCompleted, new
+            var verifyUrl = Url.RouteUrl(RouteNames.RegisterDemandCompleted, new
             {
                 id = id,
                 demandId = encodedId
+            }, Request.Scheme, Request.Host.Host);
+
+            var stopSharingUrl = Url.RouteUrl(RouteNames.StoppedInterest, new
+            {
+                encodedDemandId = encodedId
             }, Request.Scheme, Request.Host.Host);
                 
             await _mediator.Send(new CreateCourseDemandCommand
             {
                 Id = createDemandId,
-                ResponseUrl = url
+                ResponseUrl = verifyUrl,
+                StopSharingUrl = stopSharingUrl
             });
 
 #if DEBUG
-            _logger.LogInformation($"confirm page at {url}");
+            _logger.LogInformation($"confirm page at {verifyUrl}");
+            _logger.LogInformation($"stop sharing page at {stopSharingUrl}");
 #endif
             
             return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, new {Id = id, CreateDemandId = createDemandId});
