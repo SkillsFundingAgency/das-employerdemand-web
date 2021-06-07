@@ -5,11 +5,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
-    <ItemGroup>
-      <None Remove="stop-demand.json" />
-    </ItemGroup>
-
-    <ItemGroup>
+  <ItemGroup>
         <PackageReference Include="WireMock.Net.StandAlone" Version="1.2.17" />
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.4.0" />
     </ItemGroup>
