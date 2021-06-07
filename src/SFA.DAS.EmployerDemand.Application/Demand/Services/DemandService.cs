@@ -124,7 +124,10 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
         public async Task<StoppedCourseDemand> StopEmployerCourseDemand(Guid id)
         {
-            throw new NotImplementedException();
+            var result = await _apiClient.Post<StopEmployerCourseDemandResponse, object>(
+                new PostStopEmployerCourseDemandRequest(id));
+
+            return (StoppedCourseDemand)result;
         }
     }
 }
