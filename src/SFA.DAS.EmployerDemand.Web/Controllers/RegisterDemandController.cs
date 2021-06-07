@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.StopEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.VerifyEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
@@ -146,7 +147,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/complete", Name = RouteNames.RegisterDemandCompleted)]
         public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] string demandId)
         {
-            var decodedDemandId = GetEncodedDemandId(demandId);
+            var decodedDemandId = DecodeDemandId(demandId);
 
             if (!decodedDemandId.HasValue)
             {
@@ -199,8 +200,24 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("stopped-interest/{encodedDemandId}", Name = RouteNames.StoppedInterest)]
         public async Task<IActionResult> StoppedInterest(string encodedDemandId)
         {
-            var decodedDemandId = GetEncodedDemandId(encodedDemandId);
-            return View();
+            var decodedDemandId = DecodeDemandId(encodedDemandId);
+
+            if (!decodedDemandId.HasValue)
+            {
+                return Redirect(_config.FindApprenticeshipTrainingUrl);
+            }
+
+            var result = await _mediator.Send(new StopEmployerCourseDemandCommand
+            {
+                EmployerDemandId = decodedDemandId.Value
+            });
+
+            var model = new StoppedInterestViewModel
+            {
+                EmployerEmail = result.EmployerEmail,
+                FatUrl = _config.FindApprenticeshipTrainingUrl
+            };
+            return View(model);
         }
 
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
@@ -213,7 +230,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             return model;
         }
         
-        private Guid? GetEncodedDemandId(string encodedId)
+        private Guid? DecodeDemandId(string encodedId)
         {
             try
             {
