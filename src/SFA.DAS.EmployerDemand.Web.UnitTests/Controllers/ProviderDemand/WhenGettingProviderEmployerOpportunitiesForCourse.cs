@@ -46,5 +46,41 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             actualModel.Should().BeEquivalentTo((AggregatedProviderCourseDemandDetailsViewModel)mediatorResult, options => 
                 options.Excluding(model => model.SelectedEmployerDemandIds));
         }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_There_Are_Provider_Details_Passed_They_Are_Persisted(
+            int ukprn,
+            int courseId,
+            string location,
+            string radius,
+            string emailAddress,
+            string phoneNumber,
+            string website,
+            GetProviderEmployerDemandDetailsQueryResult mediatorResult,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] HomeController controller)
+        {
+            //Arrange
+            mediator
+                .Setup(x => x.Send(
+                    It.Is<GetProviderEmployerDemandDetailsQuery>(c =>
+                        c.Ukprn.Equals(ukprn)
+                        && c.CourseId.Equals(courseId)
+                        && c.Location.Equals(location)
+                        && c.LocationRadius.Equals(radius)),
+                    CancellationToken.None))
+                .ReturnsAsync(mediatorResult);
+
+            //Act
+            var actual = await controller.FindApprenticeshipTrainingOpportunitiesForCourse(ukprn, courseId, location, radius, null, emailAddress, phoneNumber, website) as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as AggregatedProviderCourseDemandDetailsViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.ProviderEmail.Should().Be(emailAddress);
+            actualModel.ProviderTelephoneNumber.Should().Be(phoneNumber);
+            actualModel.ProviderWebsite.Should().Be(website);
+        }
     }
 }

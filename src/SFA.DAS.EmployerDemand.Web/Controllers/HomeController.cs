@@ -67,14 +67,20 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int courseId, 
             [FromQuery]string location, 
             [FromQuery]string radius,
-            Guid? id = null)
+            Guid? id = null,
+            string emailAddress = null,
+            string phoneNumber = null,
+            string website = null)
         {
             var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
                 ukprn,
                 courseId,
                 location,
                 radius,
-                id);
+                id,
+                emailAddress,
+                phoneNumber,
+                website);
 
             return View(model);
         }
@@ -278,7 +284,10 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int courseId,
             string location,
             string radius,
-            Guid? cachedObjectId = null)
+            Guid? cachedObjectId = null,
+            string emailAddress = null,
+            string phoneNumber = null,
+            string website = null)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
             {
@@ -288,6 +297,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 LocationRadius = radius,
                 Id = cachedObjectId
             });
+
+            result = SetExistingProviderDetails(result, emailAddress, phoneNumber, website);
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
             
@@ -313,6 +324,30 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             }
 
             return returnList;
+        }
+
+        private GetProviderEmployerDemandDetailsQueryResult SetExistingProviderDetails(
+            GetProviderEmployerDemandDetailsQueryResult result,
+            string emailAddress = null,
+            string phoneNumber = null,
+            string website = null)
+        {
+            if (emailAddress != null && !string.IsNullOrEmpty(emailAddress))
+            {
+                result.ProviderContactDetails.EmailAddress = emailAddress;
+            }
+
+            if (phoneNumber != null && !string.IsNullOrEmpty(phoneNumber))
+            {
+                result.ProviderContactDetails.PhoneNumber = phoneNumber;
+            }
+
+            if (website != null && !string.IsNullOrEmpty(website))
+            {
+                result.ProviderContactDetails.Website = website;
+            }
+
+            return result;
         }
     }
 }
