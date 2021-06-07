@@ -87,10 +87,10 @@
             <input type="hidden" name="courseLevel" value="@Model.Course.Level"/>
             <input type="hidden" name="courseTitle" value="@Model.Course.Title"/>
             <input type="hidden" name="courseSector" value="@Model.Course.Route"/>
-            <input type="hidden" asp-for="ProviderOffersThisCourse"/>
-            <input type="hidden" asp-for="ProviderEmail"/>
-            <input type="hidden" asp-for="ProviderWebsite"/>
-            <input type="hidden" asp-for="ProviderTelephoneNumber"/>
+            <input type="hidden" name="providerOffersThisCourse" value="@Model.ProviderOffersThisCourse"/>
+            <input type="hidden" name="providerEmail" vaule="@Model.ProviderEmail"/>
+            <input type="hidden" name="providerWebsite" value="@Model.ProviderWebsite"/>
+            <input type="hidden" name="providerTelephoneNumber" value="@Model.ProviderTelephoneNumber"/>
             
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("EmployerDemands") && ViewData.ModelState["EmployerDemands"].Errors.Any()? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
