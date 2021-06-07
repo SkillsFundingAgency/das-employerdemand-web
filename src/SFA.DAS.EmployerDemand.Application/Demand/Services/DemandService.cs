@@ -121,5 +121,10 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             
             await _apiClient.Post<Guid, PostCreateProviderInterestsData>(new PostCreateProviderInterestsRequest(data));
         }
+
+        public async Task<StoppedCourseDemand> StopEmployerCourseDemand(Guid id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
