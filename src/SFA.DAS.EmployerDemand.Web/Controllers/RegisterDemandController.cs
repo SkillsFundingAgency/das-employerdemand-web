@@ -13,6 +13,7 @@ using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.VerifyEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetStartCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetUnverifiedEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
@@ -39,7 +40,21 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             _config = config.Value;
             _employerDemandDataProtector = provider.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName);
         }
-        
+
+        [HttpGet]
+        [Route("course/{id}/share-interest", Name = RouteNames.StartRegisterDemand)]
+        public async Task<IActionResult> StartRegisterDemand(int id)
+        {
+            var result = await _mediator.Send(new GetStartCourseDemandQuery
+            {
+                TrainingCourseId = id
+            });
+
+            var model = (StartRegisterCourseDemandViewModel) result;
+
+            return View(model);
+        }
+
         [HttpGet]
         [Route("course/{id}/enter-apprenticeship-details/", Name = RouteNames.RegisterDemand)]
         public async Task<IActionResult> RegisterDemand(int id, [FromQuery] Guid? createDemandId)
@@ -197,7 +212,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             model.TrainingCourse = result.CourseDemand.Course;
             return model;
         }
-        
+
+
         private Guid? GetEncodedDemandId(string encodedId)
         {
             try
