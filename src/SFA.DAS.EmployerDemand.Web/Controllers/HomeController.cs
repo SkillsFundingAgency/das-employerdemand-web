@@ -35,8 +35,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             _config = config.Value;
         }
         
-        [Route("", Name = RouteNames.ServiceStartDefault, Order = 0)]
-        [Route("start", Name = RouteNames.ServiceStart, Order = 1)]
+        [Route("", Name = RouteNames.ProviderServiceStartDefault, Order = 0)]
+        [Route("start", Name = RouteNames.ProviderServiceStart, Order = 1)]
         public IActionResult Index()
         {
             var ukprn = HttpContext.User.FindFirst(c => c.Type.Equals(ProviderClaims.ProviderUkprn)).Value;
