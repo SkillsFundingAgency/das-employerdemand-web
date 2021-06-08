@@ -197,10 +197,10 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
         [HttpGet]
-        [Route("stopped-interest/{encodedDemandId}", Name = RouteNames.StoppedInterest)]
-        public async Task<IActionResult> StoppedInterest(string encodedDemandId)
+        [Route("stopped-interest/", Name = RouteNames.StoppedInterest)]
+        public async Task<IActionResult> StoppedInterest([FromQuery] string demandId)
         {
-            var decodedDemandId = DecodeDemandId(encodedDemandId);
+            var decodedDemandId = DecodeDemandId(demandId);
 
             if (!decodedDemandId.HasValue)
             {
