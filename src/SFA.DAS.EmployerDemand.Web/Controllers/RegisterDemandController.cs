@@ -125,7 +125,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             var stopSharingUrl = Url.RouteUrl(RouteNames.StoppedInterest, new
             {
-                encodedDemandId = encodedId
+                demandId = encodedId
             }, Request.Scheme, Request.Host.Host);
                 
             await _mediator.Send(new CreateCourseDemandCommand

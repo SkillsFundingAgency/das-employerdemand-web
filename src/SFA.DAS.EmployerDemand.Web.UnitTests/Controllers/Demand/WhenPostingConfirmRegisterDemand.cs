@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,7 +26,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task Then_Mediator_Is_Called_With_Id_And_Encoded_Id_And_Redirected_To_ConfirmEmail(
             Guid demandId,
             int trainingCourseId,
-            string encodedDemand,
             string verifyUrl,
             string stopSharingUrl,
             [Frozen] Mock<IDataProtector> protector,
@@ -89,7 +87,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             });
             stopSharingRouteValues.Values.Should().BeEquivalentTo(new
             {
-                encodedDemandId = WebEncoders.Base64UrlEncode(toEncode)
+                demandId = WebEncoders.Base64UrlEncode(toEncode)
             });
         }
     }
