@@ -58,7 +58,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
 
 
         [Test, MoqAutoData]
-        public async Task Then_If_The_Command_Result_Is_Null_Then_Redirect_To_EnterApprenticeshipDetails(
+        public async Task Then_If_The_Command_Result_Is_Null_Then_Redirect_To_Start_Demand(
             int courseId,
             Guid demandId,
             [Frozen] Mock<IDataProtector> protector,
@@ -85,13 +85,13 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Assert
             Assert.IsNotNull(actual);
             
-            actual.RouteName.Should().Be(RouteNames.RegisterDemand);
+            actual.RouteName.Should().Be(RouteNames.StartRegisterDemand);
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(courseId);
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_The_Id_Is_Not_A_Guid_Then_Redirect_To_EnterApprenticeshipDetails(
+        public async Task Then_If_The_Id_Is_Not_A_Guid_Then_Redirect_To_StartRegisterDemand(
             int courseId,
             string demandId,
             [Frozen] Mock<IDataProtector> protector,
@@ -109,13 +109,13 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Assert
             Assert.IsNotNull(actual);
             
-            actual.RouteName.Should().Be(RouteNames.RegisterDemand);
+            actual.RouteName.Should().Be(RouteNames.StartRegisterDemand);
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(courseId);
         }
         
         [Test, MoqAutoData]
-        public async Task Then_If_The_Id_Can_Not_Be_Decoded_Then_Redirect_To_EnterApprenticeshipDetails(
+        public async Task Then_If_The_Id_Can_Not_Be_Decoded_Then_Redirect_To_StartRegisterDemand(
             int courseId,
             string demandId,
             [Frozen] Mock<IDataProtector> protector,
@@ -133,7 +133,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Assert
             Assert.IsNotNull(actual);
             
-            actual.RouteName.Should().Be(RouteNames.RegisterDemand);
+            actual.RouteName.Should().Be(RouteNames.StartRegisterDemand);
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(courseId);
         }

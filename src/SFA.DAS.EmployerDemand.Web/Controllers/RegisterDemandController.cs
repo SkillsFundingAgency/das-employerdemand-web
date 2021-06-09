@@ -118,7 +118,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model == null)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
            
             return View(model);
@@ -158,7 +158,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (!decodedDemandId.HasValue)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
             
             var result = await _mediator.Send(new VerifyEmployerCourseDemandCommand {Id = decodedDemandId.Value});
@@ -167,7 +167,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model == null)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
 
 
@@ -189,7 +189,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model == null)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
 
             if (model.Verified)
