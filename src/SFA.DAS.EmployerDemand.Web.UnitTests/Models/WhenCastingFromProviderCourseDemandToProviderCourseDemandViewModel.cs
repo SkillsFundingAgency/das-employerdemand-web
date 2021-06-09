@@ -19,7 +19,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         }
 
         [Test]
-        [InlineAutoData(0, "Unknown number")]
+        [InlineAutoData(0, "Apprentice numbers unknown")]
         [InlineAutoData(1, "1 apprentice")]
         [InlineAutoData(4, "4 apprentices")]
         public void Then_The_Total_Apprentices_Text_Is_Correctly_Built(int totalApprentices, string expectedText, ProviderCourseDemand source)

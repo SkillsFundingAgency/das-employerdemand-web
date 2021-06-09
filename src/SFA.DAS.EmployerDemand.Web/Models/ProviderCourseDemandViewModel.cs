@@ -16,7 +16,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 NumberOfApprentices = source.NumberOfApprentices,
                 NumberOfEmployers = source.NumberOfEmployers,
                 Course = source.Course,
-                NumberOfApprenticesTotalMessage = source.NumberOfApprentices == 0 ? "Unknown number" 
+                NumberOfApprenticesTotalMessage = source.NumberOfApprentices == 0 ? "Apprentice numbers unknown" 
                     : source.NumberOfApprentices > 1 
                         ? $"{source.NumberOfApprentices} apprentices" : $"{source.NumberOfApprentices} apprentice"
             };
