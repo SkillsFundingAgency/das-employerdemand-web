@@ -5,6 +5,7 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         public const string ServiceStartDefault = "default";
         public const string ServiceStart = "service-start";
         
+        public const string StartRegisterDemand= "start-register-demand";
         public const string RegisterDemand = "register-demand";
         public const string PostRegisterDemand = "register-demand";
         public const string ConfirmRegisterDemand = "confirm-register-demand";
@@ -23,5 +24,6 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         public const string ReviewProviderDetails = "review-provider-details";
         public const string PostCreateProviderInterest = "post-create-provider-interest";
         public const string CreateProviderInterestCompleted = "create-provider-interest-completed";
+        
     }
 }
