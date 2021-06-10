@@ -17,5 +17,21 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             //Assert
             actual.Should().BeEquivalentTo(source, options => options.ExcludingMissingMembers());
         }
+
+        [Test]
+        [InlineAutoData(0, "Apprentice numbers unknown")]
+        [InlineAutoData(1, "1 apprentice")]
+        [InlineAutoData(4, "4 apprentices")]
+        public void Then_The_Total_Apprentices_Text_Is_Correctly_Built(int totalApprentices, string expectedText, ProviderCourseDemand source)
+        {
+            //Arrange
+            source.NumberOfApprentices = totalApprentices;
+            
+            //Act
+            var actual = (ProviderCourseDemandViewModel) source;
+            
+            //Assert
+            actual.NumberOfApprenticesTotalMessage.Should().Be(expectedText);
+        }
     }
 }
