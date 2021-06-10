@@ -22,7 +22,6 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             [Frozen] Mock<IApiClient> apiClient,
             DemandService service)
         {
-            PostCreateProviderInterestsRequest actualApiRequest = null;
             cacheStorageService
                 .Setup(x => x.RetrieveFromCache<ProviderInterestRequest>(id.ToString()))
                 .ReturnsAsync(interest);
