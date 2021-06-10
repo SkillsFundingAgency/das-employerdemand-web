@@ -16,12 +16,15 @@ using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.EmployerDemand.Web.Models;
+using SFA.DAS.Provider.Shared.UI;
+using SFA.DAS.Provider.Shared.UI.Attributes;
 using SFA.DAS.Provider.Shared.UI.Models;
 using EmployerDemands = SFA.DAS.EmployerDemand.Domain.Demand.EmployerDemands;
 
 namespace SFA.DAS.EmployerDemand.Web.Controllers
 {
     [Authorize(Policy = nameof(PolicyNames.HasProviderAccount))]
+    [SetNavigationSection(NavigationSection.EmployerDemand)]
     public class HomeController : Controller
     {
         private readonly IMediator _mediator;
