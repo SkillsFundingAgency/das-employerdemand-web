@@ -2,8 +2,8 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
 {
     public static class RouteNames
     {
-        public const string ServiceStartDefault = "default";
-        public const string ServiceStart = "service-start";
+        public const string ProviderServiceStartDefault = "default";
+        public const string ProviderServiceStart = "service-start";
         
         public const string StartRegisterDemand= "start-register-demand";
         public const string RegisterDemand = "register-demand";
