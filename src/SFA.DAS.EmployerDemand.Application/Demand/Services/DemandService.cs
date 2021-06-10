@@ -23,6 +23,14 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             _cacheStorageService = cacheStorageService;
             _fatUrlBuilder = fatUrlBuilder;
         }
+
+        public async Task<GetStartCourseDemandResponse> GetStartCourseDemand(int trainingCourseId)
+        {
+            var result =
+                await _apiClient.Get<GetStartCourseDemandResponse>(new GetStartCourseDemandRequest(trainingCourseId));
+            return result;
+        }
+        
         public async Task<GetCreateCourseDemandResponse> GetCreateCourseDemand(int trainingCourseId, string locationName)
         {
             var result =

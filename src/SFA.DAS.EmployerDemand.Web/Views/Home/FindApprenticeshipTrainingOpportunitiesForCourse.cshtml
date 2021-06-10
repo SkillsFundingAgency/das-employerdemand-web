@@ -114,7 +114,15 @@
                                     <br/>
                                     @employerDemand.Location.Name
                                     <br/>
-                                    @employerDemand.NumberOfApprentices apprentice@(employerDemand.NumberOfApprentices != 1 ? "s":"")
+                                    @if (employerDemand.NumberOfApprentices != 0)
+                                    {
+                                        @(employerDemand.NumberOfApprentices) @:apprentice@(employerDemand.NumberOfApprentices != 1 ? "s":"")    
+                                    }
+                                    else
+                                    {
+                                        @:Apprentice number unknown
+                                    }
+                                    
                                 </label>
                             </div>
                         }
