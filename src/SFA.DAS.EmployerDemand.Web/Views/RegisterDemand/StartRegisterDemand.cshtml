@@ -1,0 +1,24 @@
+@using SFA.DAS.EmployerDemand.Web.Infrastructure
+@model SFA.DAS.EmployerDemand.Web.Models.StartRegisterCourseDemandViewModel
+@{
+    Layout = "_LayoutEmployer";
+    ViewData["Title"] = "Share your interest with training providers";
+    ViewData["Description"] = "Share your interest in apprenticeship training with training providers.";
+}
+
+<main class="govuk-main-wrapper govuk-main-wrapper--auto-spacing" id="main-content">
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+            <h1 class="govuk-heading-xl">
+                Share your interest with training providers
+		    </h1>
+
+		    <p class="govuk-body">We will share your interest in @Model.TrainingCourse.TitleAndLevel with all training providers.</p>
+            <p class="govuk-body">If a training provider can offer you training, we will send you their contact details.</p>
+            <p class="govuk-body">
+                <a asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" class="govuk-button">Start now</a>
+            </p>
+
+        </div>
+    </div>
+</main>
