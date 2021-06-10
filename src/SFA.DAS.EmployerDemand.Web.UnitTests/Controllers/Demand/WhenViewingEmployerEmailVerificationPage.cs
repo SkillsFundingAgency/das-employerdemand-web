@@ -86,7 +86,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_The_Interest_Does_Not_Exist_Then_Redirected_To_Create_Interest(
+        public async Task Then_If_The_Interest_Does_Not_Exist_Then_Redirected_To_Start_Create_Interest(
             int courseId,
             Guid demandId,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
@@ -106,7 +106,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Assert
             Assert.IsNotNull(actual);
             
-            actual.RouteName.Should().Be(RouteNames.RegisterDemand);
+            actual.RouteName.Should().Be(RouteNames.StartRegisterDemand);
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(courseId);
         }
