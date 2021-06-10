@@ -68,9 +68,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             [FromQuery]string location, 
             [FromQuery]string radius,
             Guid? id = null,
-            string emailAddress = null,
-            string phoneNumber = null,
-            string website = null)
+            bool fromLocation = false)
         {
             var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
                 ukprn,
@@ -78,9 +76,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 location,
                 radius,
                 id,
-                emailAddress,
-                phoneNumber,
-                website);
+                fromLocation);
 
             return View(model);
         }
@@ -285,9 +281,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             string location,
             string radius,
             Guid? cachedObjectId = null,
-            string emailAddress = null,
-            string phoneNumber = null,
-            string website = null)
+            bool fromLocation = false)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
             {
@@ -295,10 +289,9 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 CourseId = courseId,
                 Location = location,
                 LocationRadius = radius,
-                Id = cachedObjectId
+                Id = cachedObjectId,
+                FromLocation = fromLocation
             });
-
-            result = SetExistingProviderDetails(result, emailAddress, phoneNumber, website);
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
             
@@ -324,30 +317,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             }
 
             return returnList;
-        }
-
-        private GetProviderEmployerDemandDetailsQueryResult SetExistingProviderDetails(
-            GetProviderEmployerDemandDetailsQueryResult result,
-            string emailAddress = null,
-            string phoneNumber = null,
-            string website = null)
-        {
-            if (emailAddress != null && !string.IsNullOrEmpty(emailAddress))
-            {
-                result.ProviderContactDetails.EmailAddress = emailAddress;
-            }
-
-            if (phoneNumber != null && !string.IsNullOrEmpty(phoneNumber))
-            {
-                result.ProviderContactDetails.PhoneNumber = phoneNumber;
-            }
-
-            if (website != null && !string.IsNullOrEmpty(website))
-            {
-                result.ProviderContactDetails.Website = website;
-            }
-
-            return result;
         }
     }
 }

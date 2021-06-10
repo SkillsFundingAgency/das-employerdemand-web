@@ -35,7 +35,7 @@
         </h1>
 
         <div class="das-highlight govuk-!-padding-bottom-0">
-            <form asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" asp-route-id="@Model.Id" asp-route-providerEmail="@Model.ProviderEmail" asp-route-providerTelephoneNumber="@Model.ProviderTelephoneNumber" asp-route-providerWebsite="@Model.ProviderWebsite" method="GET">
+            <form asp-route="@RouteNames.ProviderDemandDetails" asp-route-courseid="@Model.Course.Id" asp-route-id="@Model.Id" method="GET">
                 <fieldset class="govuk-fieldset">
                     <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">Filter employers by location</legend>
                     <div class="govuk-grid-row">
@@ -59,6 +59,8 @@
                                 </label>
                                 <div class="das-search-form__group">
                                     <input type="search" id="search-location" name="location" title="Search" class="govuk-input das-search-form__input" data-submit-on-selection="true" data-default-value="@Model.Location">
+                                    <input type="hidden" name="id" value="@Model.Id"/>
+                                    <input type="hidden" name="fromLocation" value="true"/>
                                     <div class="das-search-form__button-wrap">
                                         <button class="govuk-button das-search-form__button" type="submit">
                                             Apply filters
@@ -87,10 +89,10 @@
             <input type="hidden" name="courseLevel" value="@Model.Course.Level"/>
             <input type="hidden" name="courseTitle" value="@Model.Course.Title"/>
             <input type="hidden" name="courseSector" value="@Model.Course.Route"/>
-            <input type="hidden" name="providerOffersThisCourse" value="@Model.ProviderOffersThisCourse"/>
-            <input type="hidden" name="providerEmail" vaule="@Model.ProviderEmail"/>
-            <input type="hidden" name="providerWebsite" value="@Model.ProviderWebsite"/>
-            <input type="hidden" name="providerTelephoneNumber" value="@Model.ProviderTelephoneNumber"/>
+            <input type="hidden" asp-for="ProviderOffersThisCourse"/>
+            <input type="hidden" asp-for="ProviderEmail"/>
+            <input type="hidden" asp-for="ProviderWebsite"/>
+            <input type="hidden" asp-for="ProviderTelephoneNumber"/>
             
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("EmployerDemands") && ViewData.ModelState["EmployerDemands"].Errors.Any()? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
