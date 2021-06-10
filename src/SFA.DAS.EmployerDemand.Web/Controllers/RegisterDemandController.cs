@@ -14,6 +14,7 @@ using SFA.DAS.EmployerDemand.Application.Demand.Commands.StopEmployerCourseDeman
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.VerifyEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetStartCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetUnverifiedEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
@@ -40,7 +41,21 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             _config = config.Value;
             _employerDemandDataProtector = provider.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName);
         }
-        
+
+        [HttpGet]
+        [Route("course/{id}/share-interest", Name = RouteNames.StartRegisterDemand)]
+        public async Task<IActionResult> StartRegisterDemand(int id)
+        {
+            var result = await _mediator.Send(new GetStartCourseDemandQuery
+            {
+                TrainingCourseId = id
+            });
+
+            var model = (StartRegisterCourseDemandViewModel) result;
+
+            return View(model);
+        }
+
         [HttpGet]
         [Route("course/{id}/enter-apprenticeship-details/", Name = RouteNames.RegisterDemand)]
         public async Task<IActionResult> RegisterDemand(int id, [FromQuery] Guid? createDemandId)
@@ -104,7 +119,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model == null)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
            
             return View(model);
@@ -151,7 +166,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (!decodedDemandId.HasValue)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
             
             var result = await _mediator.Send(new VerifyEmployerCourseDemandCommand {Id = decodedDemandId.Value});
@@ -160,7 +175,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model == null)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
 
 
@@ -182,7 +197,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model == null)
             {
-                return RedirectToRoute(RouteNames.RegisterDemand, new {Id = id});
+                return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
 
             if (model.Verified)
@@ -229,7 +244,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             model.TrainingCourse = result.CourseDemand.Course;
             return model;
         }
-        
+
+
         private Guid? DecodeDemandId(string encodedId)
         {
             try

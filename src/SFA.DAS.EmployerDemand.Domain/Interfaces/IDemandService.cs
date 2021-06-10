@@ -20,5 +20,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         Task CreateProviderInterest(Guid id);
         Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id);
         Task<StoppedCourseDemand> StopEmployerCourseDemand(Guid id);
+        Task<GetStartCourseDemandResponse> GetStartCourseDemand(int trainingCourseId);
     }
 }

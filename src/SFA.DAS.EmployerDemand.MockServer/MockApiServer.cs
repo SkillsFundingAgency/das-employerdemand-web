@@ -38,6 +38,13 @@ namespace SFA.DAS.EmployerDemand.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("get-verified-demand.json"));
             
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/start/\\d+"))
+                    .UsingGet())
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("start-demand.json"));
+            
             server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/create"))
                 .UsingGet())
                 .RespondWith(Response.Create()
