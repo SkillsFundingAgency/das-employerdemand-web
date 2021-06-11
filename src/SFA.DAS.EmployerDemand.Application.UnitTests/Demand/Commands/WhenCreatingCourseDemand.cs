@@ -19,7 +19,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         {
             await handler.Handle(command, CancellationToken.None);
             
-            service.Verify(x=>x.CreateCourseDemand(command.Id, command.ResponseUrl), Times.Once);
+            service.Verify(x=>x.CreateCourseDemand(command.Id, command.ResponseUrl, command.StopSharingUrl), Times.Once);
         }
     }
 }

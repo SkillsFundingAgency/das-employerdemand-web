@@ -66,6 +66,13 @@ namespace SFA.DAS.EmployerDemand.MockServer
                     .WithStatusCode(HttpStatusCode.Created)
                     .WithBody($"'{Guid.NewGuid().ToString()}'")
                 );
+
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/[0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12}/stop"))
+                    .UsingPost())
+                .RespondWith(Response.Create()
+                    .WithStatusCode(HttpStatusCode.OK)
+                    .WithBodyFromFile("stop-demand.json")
+                );
                 
             server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/locations"))
                 .UsingGet()).RespondWith(Response.Create()

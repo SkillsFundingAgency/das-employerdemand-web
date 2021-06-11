@@ -34,6 +34,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
         public TrainingCourse TrainingCourse => BuildTrainingCourse();
         
         public string ResponseUrl { get ; set ; }
+        public string StopSharingUrl { get ; set ; }
 
         private LocationItem BuildCourseLocation()
         {
