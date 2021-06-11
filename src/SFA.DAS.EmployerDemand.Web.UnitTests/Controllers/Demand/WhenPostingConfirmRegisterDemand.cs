@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,8 +26,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task Then_Mediator_Is_Called_With_Id_And_Encoded_Id_And_Redirected_To_ConfirmEmail(
             Guid demandId,
             int trainingCourseId,
-            string encodedDemand,
-            string demandUrl,
+            string verifyUrl,
+            string stopSharingUrl,
             [Frozen] Mock<IDataProtector> protector,
             [Frozen] Mock<IDataProtectionProvider> provider,
             [Frozen] Mock<IMediator> mediator,
@@ -36,16 +35,27 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            UrlRouteContext routeValues = null;
+            UrlRouteContext verifyRouteValues = null;
+            UrlRouteContext stopSharingRouteValues = null;
             var httpContext = new DefaultHttpContext();
             var toEncode = WebEncoders.Base64UrlDecode(demandId.ToString());
             urlHelper
                 .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c=>
                     c.RouteName.Equals(RouteNames.RegisterDemandCompleted)
                 )))
-                .Returns(demandUrl).Callback<UrlRouteContext>(c =>
+                .Returns(verifyUrl)
+                .Callback<UrlRouteContext>(c =>
                 {
-                    routeValues = c;
+                    verifyRouteValues = c;
+                });
+            urlHelper
+                .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c=>
+                    c.RouteName.Equals(RouteNames.StoppedInterest)
+                )))
+                .Returns(stopSharingUrl)
+                .Callback<UrlRouteContext>(c =>
+                {
+                    stopSharingRouteValues = c;
                 });
             provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
             protector.Setup(c => c.Protect(It.Is<byte[]>(
@@ -63,15 +73,20 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             mediator.Verify(x =>
                 x.Send(It.Is<CreateCourseDemandCommand>(c => 
                         c.Id == demandId
-                        && c.ResponseUrl == demandUrl
+                        && c.ResponseUrl == verifyUrl
+                        && c.StopSharingUrl == stopSharingUrl
                     ), It.IsAny<CancellationToken>()), Times.Once);
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.ConfirmEmployerDemandEmail);
             actual.RouteValues["id"].Should().Be(trainingCourseId);
             actual.RouteValues["createDemandId"].Should().Be(demandId);
-            routeValues.Values.Should().BeEquivalentTo(new
+            verifyRouteValues.Values.Should().BeEquivalentTo(new
             {
                 id = trainingCourseId,
+                demandId = WebEncoders.Base64UrlEncode(toEncode)
+            });
+            stopSharingRouteValues.Values.Should().BeEquivalentTo(new
+            {
                 demandId = WebEncoders.Base64UrlEncode(toEncode)
             });
         }

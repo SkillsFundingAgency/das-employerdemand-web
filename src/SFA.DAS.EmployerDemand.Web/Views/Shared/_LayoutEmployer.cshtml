@@ -132,7 +132,8 @@
            asp-all-route-data="@backRouteData">Home</a>
     }
     else if (Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("RegisterDemandCompleted") ||
-             Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("VerifyEmployerDemandEmail"))
+             Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("VerifyEmployerDemandEmail") ||
+             Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("StoppedInterest"))
     {
         
     }

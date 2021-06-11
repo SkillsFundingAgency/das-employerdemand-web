@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.StopEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.VerifyEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
@@ -131,20 +132,27 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
                 System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
 
-            var url = Url.RouteUrl(RouteNames.RegisterDemandCompleted, new
+            var verifyUrl = Url.RouteUrl(RouteNames.RegisterDemandCompleted, new
             {
                 id = id,
+                demandId = encodedId
+            }, Request.Scheme, Request.Host.Host);
+
+            var stopSharingUrl = Url.RouteUrl(RouteNames.StoppedInterest, new
+            {
                 demandId = encodedId
             }, Request.Scheme, Request.Host.Host);
                 
             await _mediator.Send(new CreateCourseDemandCommand
             {
                 Id = createDemandId,
-                ResponseUrl = url
+                ResponseUrl = verifyUrl,
+                StopSharingUrl = stopSharingUrl
             });
 
 #if DEBUG
-            _logger.LogInformation($"confirm page at {url}");
+            _logger.LogInformation($"confirm page at {verifyUrl}");
+            _logger.LogInformation($"stop sharing page at {stopSharingUrl}");
 #endif
             
             return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, new {Id = id, CreateDemandId = createDemandId});
@@ -154,7 +162,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/complete", Name = RouteNames.RegisterDemandCompleted)]
         public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] string demandId)
         {
-            var decodedDemandId = GetEncodedDemandId(demandId);
+            var decodedDemandId = DecodeDemandId(demandId);
 
             if (!decodedDemandId.HasValue)
             {
@@ -203,6 +211,30 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             return View(model);
         }
 
+        [HttpGet]
+        [Route("stopped-interest/", Name = RouteNames.StoppedInterest)]
+        public async Task<IActionResult> StoppedInterest([FromQuery] string demandId)
+        {
+            var decodedDemandId = DecodeDemandId(demandId);
+
+            if (!decodedDemandId.HasValue)
+            {
+                return Redirect(_config.FindApprenticeshipTrainingUrl);
+            }
+
+            var result = await _mediator.Send(new StopEmployerCourseDemandCommand
+            {
+                EmployerDemandId = decodedDemandId.Value
+            });
+
+            var model = new StoppedInterestViewModel
+            {
+                EmployerEmail = result.EmployerEmail,
+                FatUrl = _config.FindApprenticeshipTrainingUrl
+            };
+            return View(model);
+        }
+
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
             RegisterDemandRequest request)
         {
@@ -214,7 +246,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         }
 
 
-        private Guid? GetEncodedDemandId(string encodedId)
+        private Guid? DecodeDemandId(string encodedId)
         {
             try
             {
