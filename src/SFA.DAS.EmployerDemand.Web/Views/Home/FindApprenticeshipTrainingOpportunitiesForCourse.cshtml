@@ -10,6 +10,8 @@
     ViewData["Description"] = $"Check employer interest in {Model.Course.TitleAndLevel}.";
     ViewData["ShowJSBackLink"] = true;
 }
+<partial name="_ProviderZenDeskViewData"/>
+
 @* ReSharper disable once Razor.SectionNotResolved - in shared provider layout *@
 @section breadcrumb {
     <partial name="_BreadCrumbs" />
