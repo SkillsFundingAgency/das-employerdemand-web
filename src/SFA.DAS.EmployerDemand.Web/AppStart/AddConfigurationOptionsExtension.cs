@@ -17,7 +17,7 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
             services.AddSingleton(cfg => cfg.GetService<IOptions<Domain.Configuration.EmployerDemand>>().Value);
             services.Configure<ProviderIdams>(configuration.GetSection("ProviderIdams"));
             services.AddSingleton(cfg => cfg.GetService<IOptions<ProviderIdams>>().Value);
-            services.Configure<ZenDeskConfiguration>(configuration.GetSection("ZenDeskSettings"));
+            services.Configure<ZenDeskConfiguration>(configuration.GetSection("ProviderZenDeskSettings"));
             services.AddSingleton(cfg => cfg.GetService<IOptions<ZenDeskConfiguration>>().Value);
         }
     }
