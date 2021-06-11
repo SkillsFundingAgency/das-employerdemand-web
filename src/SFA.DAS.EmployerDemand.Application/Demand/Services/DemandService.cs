@@ -51,14 +51,15 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             return result;
         }
 
-        public async Task CreateCourseDemand(Guid id, string responseUrl, string stopSharingUrl)
+        public async Task CreateCourseDemand(Guid id, string responseUrl, string stopSharingUrl, string startSharingUrl)
         {
             var item = await _cacheStorageService.RetrieveFromCache<CourseDemandRequest>(id.ToString());
 
             var data = new PostCreateDemandData(item)
             {
                 ResponseUrl = responseUrl,
-                StopSharingUrl = stopSharingUrl
+                StopSharingUrl = stopSharingUrl,
+                StartSharingUrl = startSharingUrl
             };
 
             await _apiClient.Post<Guid, PostCreateDemandData>(new PostCreateDemandRequest(data));
