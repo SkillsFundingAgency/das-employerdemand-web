@@ -1,0 +1,6 @@
+﻿@using SFA.DAS.Provider.Shared.UI
+@using SFA.DAS.Provider.Shared.UI.Models
+@inject IOptions<ZenDeskConfiguration> ZenDeskConfigOptions
+@{
+    ViewData[ViewDataKeys.ZenDeskConfiguration] = ZenDeskConfigOptions?.Value;
+}
