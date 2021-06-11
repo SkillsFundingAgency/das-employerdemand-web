@@ -142,12 +142,18 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 demandId = encodedId
             }, Request.Scheme, Request.Host.Host);
+
+            var startSharingUrl = Url.RouteUrl(RouteNames.RestartInterest, new
+            {
+                demandId = encodedId
+            });
                 
             await _mediator.Send(new CreateCourseDemandCommand
             {
                 Id = createDemandId,
                 ResponseUrl = verifyUrl,
-                StopSharingUrl = stopSharingUrl
+                StopSharingUrl = stopSharingUrl,
+                StartSharingUrl = startSharingUrl
             });
 
 #if DEBUG
