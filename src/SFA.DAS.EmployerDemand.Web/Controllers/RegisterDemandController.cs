@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.RestartEmployerDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.StopEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.VerifyEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
@@ -159,6 +160,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 #if DEBUG
             _logger.LogInformation($"confirm page at {verifyUrl}");
             _logger.LogInformation($"stop sharing page at {stopSharingUrl}");
+            _logger.LogInformation($"restart sharing page at {startSharingUrl}");
 #endif
             
             return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, new {Id = id, CreateDemandId = createDemandId});
@@ -239,6 +241,35 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 FatUrl = _config.FindApprenticeshipTrainingUrl
             };
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("restart-interest/", Name = RouteNames.RestartInterest)]
+        public async Task<IActionResult> RestartInterest([FromQuery] string demandId)
+        {
+            var decodedDemandId = DecodeDemandId(demandId);
+
+            if (!decodedDemandId.HasValue)
+            {
+                return Redirect(_config.FindApprenticeshipTrainingUrl);
+            }
+
+            var result = await _mediator.Send(new RestartEmployerDemandCommand
+            {
+                EmployerDemandId = decodedDemandId.Value
+            });
+
+            if (result.EmailVerified && result.RestartDemandExists)
+            {
+                return new RedirectToRouteResult(RouteNames.RegisterDemandCompleted, new {id = result.Id});
+            }
+
+            if (result.RestartDemandExists)
+            {
+                return new RedirectToRouteResult(RouteNames.ConfirmEmployerDemandEmail, new {id = result.Id});
+            }
+
+            return new RedirectToRouteResult(RouteNames.ConfirmRegisterDemand, new {id = result.Id});
         }
 
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
