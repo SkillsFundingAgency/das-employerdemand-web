@@ -31,11 +31,17 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         private readonly Domain.Configuration.EmployerDemand _demandConfig;
         private readonly ProviderSharedUIConfiguration _config;
 
-        public HomeController (IMediator mediator, IOptions<ProviderSharedUIConfiguration> config, IOptions<Domain.Configuration.EmployerDemand> demandConfig)
+        public HomeController (
+            IMediator mediator, 
+            IOptions<ProviderSharedUIConfiguration> config, 
+            IOptions<Domain.Configuration.EmployerDemand> demandConfig,
+            IOptions<ZenDeskConfiguration> zenDeskConfig)
         {
             _mediator = mediator;
             _demandConfig = demandConfig.Value;
             _config = config.Value;
+
+            ViewData[ViewDataKeys.ZenDeskConfiguration] = zenDeskConfig?.Value;
         }
         
         [Route("", Name = RouteNames.ProviderServiceStartDefault, Order = 0)]
