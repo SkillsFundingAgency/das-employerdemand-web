@@ -36,7 +36,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             var result = await _apiClient.Get<GetRestartCourseDemandResponse>(new GetRestartCourseDemandRequest(id));
 
 
-            if (!result.RestartDemandExists)
+            if (!result.RestartDemandExists || (result.RestartDemandExists && !result.EmailVerified))
             {
                 var item = new CourseDemand
                 {
@@ -130,19 +130,21 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
         public async Task<CourseDemand> GetUnverifiedEmployerCourseDemand(Guid id)
         {
-            var cachedResultTask = _cacheStorageService.RetrieveFromCache<CourseDemand>(id.ToString());
-            var apiResultTask = _apiClient.Get<GetCourseDemandResponse>(new GetEmployerDemandRequest(id));
+            var apiResult = await _apiClient.Get<GetCourseDemandResponse>(new GetEmployerDemandRequest(id));
 
-            await Task.WhenAll(cachedResultTask, apiResultTask);
-
-            if (cachedResultTask.Result == null || apiResultTask.Result == null)
+            if (apiResult == null)
             {
                 return null;
             }
-
-            cachedResultTask.Result.EmailVerified =  apiResultTask.Result.EmailVerified;
             
-            return cachedResultTask.Result;
+            var demand = new CourseDemand
+            {
+                Id = apiResult.Id,
+                EmailVerified = apiResult.EmailVerified,
+                ContactEmailAddress = apiResult.ContactEmail
+            };
+            
+            return demand;
         }
 
         public async Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id)

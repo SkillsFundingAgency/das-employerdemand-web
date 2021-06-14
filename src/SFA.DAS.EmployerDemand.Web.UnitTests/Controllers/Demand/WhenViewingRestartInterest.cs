@@ -78,9 +78,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             mockProtector
                 .Setup(sut => sut.Unprotect(It.IsAny<byte[]>()))
                 .Returns(encodedData);
-            var toEncode = WebEncoders.Base64UrlDecode(mediatorResult.Id.ToString());
-            mockProtector.Setup(c => c.Protect(It.Is<byte[]>(
-                x => x[0].Equals(Encoding.UTF8.GetBytes($"{mediatorResult.Id}")[0])))).Returns(toEncode);
             mockProvider
                 .Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName))
                 .Returns(mockProtector.Object);
@@ -98,7 +95,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(mediatorResult.TrainingCourseId);
             actual.RouteValues.ContainsKey("CreateDemandId").Should().BeTrue();
-            actual.RouteValues["CreateDemandId"].Should().Be(WebEncoders.Base64UrlEncode(toEncode));
+            actual.RouteValues["CreateDemandId"].Should().Be(mediatorResult.Id);
         }
         
         [Test, MoqAutoData]

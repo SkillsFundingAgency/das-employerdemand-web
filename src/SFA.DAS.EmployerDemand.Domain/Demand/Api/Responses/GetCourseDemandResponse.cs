@@ -9,5 +9,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public Guid Id { get; set; }
         [JsonProperty("emailVerified")]
         public bool EmailVerified { get; set; }
+        [JsonProperty("contactEmail")]
+        public string ContactEmail { get; set; }
     }
 }
