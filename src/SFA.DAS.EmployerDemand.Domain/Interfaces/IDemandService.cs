@@ -21,5 +21,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id);
         Task<StoppedCourseDemand> StopEmployerCourseDemand(Guid id);
         Task<GetStartCourseDemandResponse> GetStartCourseDemand(int trainingCourseId);
+        Task<RestartCourseDemand> GetRestartCourseDemand(Guid id);
     }
 }

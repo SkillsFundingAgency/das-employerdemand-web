@@ -20,5 +20,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses
         public bool RestartDemandExists { get; set; }
         [JsonProperty("emailVerified")]
         public bool EmailVerified { get; set; }
+        [JsonProperty("organisationName")]
+        public string OrganisationName { get ; set ; }
     }
 }

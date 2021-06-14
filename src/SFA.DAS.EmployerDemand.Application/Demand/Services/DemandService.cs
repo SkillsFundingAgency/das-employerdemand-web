@@ -30,7 +30,39 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
                 await _apiClient.Get<GetStartCourseDemandResponse>(new GetStartCourseDemandRequest(trainingCourseId));
             return result;
         }
-        
+
+        public async Task<RestartCourseDemand> GetRestartCourseDemand(Guid id)
+        {
+            var result = await _apiClient.Get<GetRestartCourseDemandResponse>(new GetRestartCourseDemandRequest(id));
+
+
+            if (!result.RestartDemandExists)
+            {
+                var item = new CourseDemand
+                {
+                    Id = result.Id,
+                    Location = result.Location.Name,
+                    Course = result.Course,
+                    EmailVerified = false,
+                    LocationItem = result.Location,
+                    OrganisationName = result.OrganisationName,
+                    ContactEmailAddress = result.ContactEmail,
+                    NumberOfApprentices = result.NumberOfApprentices.ToString(),
+                    TrainingCourseId = result.Course.Id,
+                    NumberOfApprenticesKnown = result.NumberOfApprentices > 0
+                };
+                
+                await _cacheStorageService.SaveToCache(result.Id.ToString(), item, TimeSpan.FromMinutes(30));
+            }
+            
+            return new RestartCourseDemand
+            {
+                Id = result.Id,
+                EmailVerified = result.EmailVerified,
+                RestartDemandExists = result.RestartDemandExists
+            };
+        }
+
         public async Task<GetCreateCourseDemandResponse> GetCreateCourseDemand(int trainingCourseId, string locationName)
         {
             var result =
