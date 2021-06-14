@@ -147,7 +147,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var startSharingUrl = Url.RouteUrl(RouteNames.RestartInterest, new
             {
                 demandId = encodedId
-            });
+            }, Request.Scheme, Request.Host.Host);
                 
             await _mediator.Send(new CreateCourseDemandCommand
             {
@@ -259,17 +259,20 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 EmployerDemandId = decodedDemandId.Value
             });
 
+            var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
+                System.Text.Encoding.UTF8.GetBytes($"{result.Id}")));
+            
             if (result.EmailVerified && result.RestartDemandExists)
             {
-                return new RedirectToRouteResult(RouteNames.RegisterDemandCompleted, new {id = result.Id});
+                return new RedirectToRouteResult(RouteNames.RegisterDemandCompleted, new {id = result.TrainingCourseId, demandId = encodedId});
             }
 
             if (result.RestartDemandExists)
             {
-                return new RedirectToRouteResult(RouteNames.ConfirmEmployerDemandEmail, new {id = result.Id});
+                return new RedirectToRouteResult(RouteNames.ConfirmEmployerDemandEmail, new {id = result.TrainingCourseId, createDemandId = encodedId});
             }
 
-            return new RedirectToRouteResult(RouteNames.ConfirmRegisterDemand, new {id = result.Id});
+            return new RedirectToRouteResult(RouteNames.ConfirmRegisterDemand, new {createDemandId = result.Id, id = result.TrainingCourseId});
         }
 
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
