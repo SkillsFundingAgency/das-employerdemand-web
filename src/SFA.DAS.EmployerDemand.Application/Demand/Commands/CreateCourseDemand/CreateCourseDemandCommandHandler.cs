@@ -15,7 +15,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand
         }
         public async Task<Unit> Handle(CreateCourseDemandCommand request, CancellationToken cancellationToken)
         {
-            await _service.CreateCourseDemand(request.Id, request.ResponseUrl);
+            await _service.CreateCourseDemand(request.Id, request.ResponseUrl, request.StopSharingUrl);
             
             return Unit.Value;
         }
