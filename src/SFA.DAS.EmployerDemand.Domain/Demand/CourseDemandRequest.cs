@@ -15,5 +15,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand
         public Location LocationItem { get; set; }
         public Course Course { get; set; }
         public bool? NumberOfApprenticesKnown { get; set; }
+        public Guid? ExpiredCourseDemandId { get; set; }
     }
 }

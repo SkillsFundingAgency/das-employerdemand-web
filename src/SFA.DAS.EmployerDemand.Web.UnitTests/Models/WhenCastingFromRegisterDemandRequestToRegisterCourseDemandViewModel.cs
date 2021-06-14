@@ -12,7 +12,11 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
         {
             var actual = (RegisterCourseDemandViewModel) source;
             
-            actual.Should().BeEquivalentTo(source, options=>options.Excluding(c=>c.TrainingCourseId));
+            actual.Should().BeEquivalentTo(source, options=>options
+                .Excluding(c=>c.TrainingCourseId)
+                .Excluding(c=>c.ExpiredCourseDemandId)
+            );
+            actual.ExpiredCourseDemandId.Should().BeNull();
         }
     }
 }

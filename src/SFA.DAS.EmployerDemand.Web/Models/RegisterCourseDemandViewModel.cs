@@ -2,7 +2,7 @@ using System;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
-{
+{ 
     public class RegisterCourseDemandViewModel : CourseDemandViewModelBase
     {
         public Guid? CreateDemandId { get ; set ; }
@@ -12,7 +12,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string OrganisationName { get; set; }
         public string ContactEmailAddress { get; set; }
         public string NumberOfApprentices { get; set; }
-        
+        public Guid? ExpiredCourseDemandId { get ; set ; }
+
         public static implicit operator RegisterCourseDemandViewModel(RegisterDemandRequest request)
         {
             return new RegisterCourseDemandViewModel
@@ -22,7 +23,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 Location = request.Location,
                 ContactEmailAddress = request.ContactEmailAddress,
                 NumberOfApprentices = request.NumberOfApprentices,
-                NumberOfApprenticesKnown = request.NumberOfApprenticesKnown
+                NumberOfApprenticesKnown = request.NumberOfApprenticesKnown,
+                ExpiredCourseDemandId = null
             };
         }
 
@@ -36,7 +38,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 ContactEmailAddress = queryResult.ContactEmailAddress,
                 NumberOfApprentices = queryResult.NumberOfApprentices,
                 NumberOfApprenticesKnown = queryResult.NumberOfApprenticesKnown,
-                TrainingCourse = queryResult.Course
+                TrainingCourse = queryResult.Course,
+                ExpiredCourseDemandId = queryResult.ExpiredCourseDemandId
             };
         }
     }
