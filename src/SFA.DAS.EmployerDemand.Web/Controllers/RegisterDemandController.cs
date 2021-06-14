@@ -88,7 +88,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     ContactEmailAddress = request.ContactEmailAddress,
                     NumberOfApprentices = request.NumberOfApprentices,
                     TrainingCourseId = request.TrainingCourseId,
-                    NumberOfApprenticesKnown = request.NumberOfApprenticesKnown
+                    NumberOfApprenticesKnown = request.NumberOfApprenticesKnown,
+                    ExpiredCourseDemandId = request.ExpiredCourseDemandId
                 });
 
                 return RedirectToRoute(RouteNames.ConfirmRegisterDemand, new
