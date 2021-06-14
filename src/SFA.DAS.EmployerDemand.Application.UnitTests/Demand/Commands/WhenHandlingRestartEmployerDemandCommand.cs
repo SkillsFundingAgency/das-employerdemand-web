@@ -30,6 +30,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             actual.Id.Should().Be(serviceResponse.Id);
             actual.EmailVerified.Should().Be(serviceResponse.EmailVerified);
             actual.RestartDemandExists.Should().Be(serviceResponse.RestartDemandExists);
+            actual.TrainingCourseId.Should().Be(serviceResponse.TrainingCourseId);
         }
 
     }

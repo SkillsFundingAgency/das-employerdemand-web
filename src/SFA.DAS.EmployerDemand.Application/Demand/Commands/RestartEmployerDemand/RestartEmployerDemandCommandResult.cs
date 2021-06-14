@@ -7,5 +7,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.RestartEmployerDema
         public Guid Id { get; set; }
         public bool RestartDemandExists { get; set; }
         public bool EmailVerified { get; set; }
+        public int TrainingCourseId { get ; set ; }
     }
 }

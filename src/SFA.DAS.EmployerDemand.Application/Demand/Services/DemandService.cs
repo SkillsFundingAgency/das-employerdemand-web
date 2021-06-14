@@ -58,6 +58,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             return new RestartCourseDemand
             {
                 Id = result.Id,
+                TrainingCourseId = result.Course.Id,
                 EmailVerified = result.EmailVerified,
                 RestartDemandExists = result.RestartDemandExists
             };

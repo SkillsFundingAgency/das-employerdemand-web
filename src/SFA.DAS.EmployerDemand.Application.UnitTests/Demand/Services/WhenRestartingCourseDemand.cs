@@ -38,6 +38,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             actual.Id.Should().Be(apiResponse.Id);
             actual.EmailVerified.Should().Be(apiResponse.EmailVerified);
             actual.RestartDemandExists.Should().Be(apiResponse.RestartDemandExists);
+            actual.TrainingCourseId.Should().Be(apiResponse.Course.Id);
             cacheStorageService.Verify(
                 x => x.SaveToCache(apiResponse.Id.ToString(), It.IsAny<CourseDemand>(),
                     TimeSpan.FromMinutes(30)), Times.Never);
@@ -66,6 +67,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             actual.Id.Should().Be(apiResponse.Id);
             actual.EmailVerified.Should().Be(apiResponse.EmailVerified);
             actual.RestartDemandExists.Should().Be(apiResponse.RestartDemandExists);
+            actual.TrainingCourseId.Should().Be(apiResponse.Course.Id);
             cacheStorageService.Verify(
                 x => x.SaveToCache(apiResponse.Id.ToString(), It.Is<CourseDemand>(c => 
                         c.Id.Equals(apiResponse.Id)
