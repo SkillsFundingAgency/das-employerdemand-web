@@ -23,6 +23,14 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             _cacheStorageService = cacheStorageService;
             _fatUrlBuilder = fatUrlBuilder;
         }
+
+        public async Task<GetStartCourseDemandResponse> GetStartCourseDemand(int trainingCourseId)
+        {
+            var result =
+                await _apiClient.Get<GetStartCourseDemandResponse>(new GetStartCourseDemandRequest(trainingCourseId));
+            return result;
+        }
+        
         public async Task<GetCreateCourseDemandResponse> GetCreateCourseDemand(int trainingCourseId, string locationName)
         {
             var result =
@@ -43,17 +51,17 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             return result;
         }
 
-        public async Task CreateCourseDemand(Guid id, string responseUrl)
+        public async Task CreateCourseDemand(Guid id, string responseUrl, string stopSharingUrl)
         {
             var item = await _cacheStorageService.RetrieveFromCache<CourseDemandRequest>(id.ToString());
 
             var data = new PostCreateDemandData(item)
             {
-                ResponseUrl = responseUrl
+                ResponseUrl = responseUrl,
+                StopSharingUrl = stopSharingUrl
             };
 
             await _apiClient.Post<Guid, PostCreateDemandData>(new PostCreateDemandRequest(data));
-
         }
 
         public async Task<GetProviderEmployerDemandResponse> GetProviderEmployerDemand(    int ukprn, int? courseId,
@@ -120,6 +128,14 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             var data = new PostCreateProviderInterestsData(item, _fatUrlBuilder.BuildFatUrl);
             
             await _apiClient.Post<Guid, PostCreateProviderInterestsData>(new PostCreateProviderInterestsRequest(data));
+        }
+
+        public async Task<StoppedCourseDemand> StopEmployerCourseDemand(Guid id)
+        {
+            var result = await _apiClient.Post<StopEmployerCourseDemandResponse, object>(
+                new PostStopEmployerCourseDemandRequest(id));
+
+            return (StoppedCourseDemand)result;
         }
     }
 }

@@ -5,11 +5,14 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
-    <ItemGroup>
+  <ItemGroup>
         <PackageReference Include="WireMock.Net.StandAlone" Version="1.2.17" />
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.4.0" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="stop-demand.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="get-verified-demand.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
@@ -36,6 +39,9 @@
         </Content>
         <Content Include="get-unverified-demand.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="start-demand.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
 </Project>

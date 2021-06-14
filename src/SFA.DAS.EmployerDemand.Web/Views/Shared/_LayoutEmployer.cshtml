@@ -128,11 +128,12 @@
     @if (Context.GetRouteData().Values["Controller"].Equals("Error"))
     {
         <a class="govuk-back-link"
-           asp-route="@RouteNames.ServiceStart"
+           asp-route="@RouteNames.StartRegisterDemand"
            asp-all-route-data="@backRouteData">Home</a>
     }
     else if (Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("RegisterDemandCompleted") ||
-             Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("VerifyEmployerDemandEmail"))
+             Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("VerifyEmployerDemandEmail") ||
+             Context.GetRouteData().Values["Controller"].Equals("RegisterDemand") && Context.GetRouteData().Values["Action"].Equals("StoppedInterest"))
     {
         
     }
@@ -142,7 +143,7 @@
             <div class="govuk-breadcrumbs">
                 <ol class="govuk-breadcrumbs__list">
                     <li class="govuk-breadcrumbs__list-item">
-                        <a class="govuk-breadcrumbs__link" asp-route="@RouteNames.ServiceStart">Home</a>
+                        <a class="govuk-breadcrumbs__link" href="@config.FindApprenticeshipTrainingUrl">Home</a>
                     </li>
                 </ol>
             </div>

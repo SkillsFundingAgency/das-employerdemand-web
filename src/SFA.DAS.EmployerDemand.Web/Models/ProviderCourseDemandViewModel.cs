@@ -7,6 +7,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public TrainingCourseViewModel Course { get ; set ; }
         public int NumberOfApprentices { get ; set ; }
         public int NumberOfEmployers { get ; set ; }
+        public string NumberOfApprenticesTotalMessage { get ; set ; }
 
         public static implicit operator ProviderCourseDemandViewModel(ProviderCourseDemand source)
         {
@@ -14,7 +15,10 @@ namespace SFA.DAS.EmployerDemand.Web.Models
             {
                 NumberOfApprentices = source.NumberOfApprentices,
                 NumberOfEmployers = source.NumberOfEmployers,
-                Course = source.Course
+                Course = source.Course,
+                NumberOfApprenticesTotalMessage = source.NumberOfApprentices == 0 ? "Apprentice numbers unknown" 
+                    : source.NumberOfApprentices > 1 
+                        ? $"{source.NumberOfApprentices} apprentices" : $"{source.NumberOfApprentices} apprentice"
             };
         }
     }
