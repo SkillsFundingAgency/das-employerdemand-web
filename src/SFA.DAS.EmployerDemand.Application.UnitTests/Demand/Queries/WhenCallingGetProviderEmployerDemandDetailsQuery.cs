@@ -12,7 +12,6 @@ using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 using SFA.DAS.EmployerDemand.Domain.Locations;
 using SFA.DAS.Testing.AutoFixture;
-using ProviderContactDetails = SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses.ProviderContactDetails;
 
 namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
 {
@@ -121,7 +120,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_No_ProviderDetails_Stored_Or_In_Cache_Then_No_ProviderDetails_Returned(
+        public async Task Then_If_No_Email_Stored_Or_In_Cache_Then_No_Email_Returned(
             GetProviderEmployerDemandDetailsQuery query,
             GetProviderEmployerDemandDetailsResponse response,
             ProviderInterestRequest providerInterest,
@@ -129,13 +128,8 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             GetProviderEmployerDemandDetailsQueryHandler handler)
         {
             //Arrange
-            response.ProviderContactDetails = new ProviderContactDetails
-            {
-                EmailAddress = null, PhoneNumber = null, Ukprn = response.ProviderContactDetails.Ukprn, Website = null
-            };
+            response.ProviderContactDetails.EmailAddress = null;
             providerInterest.EmailAddress = null;
-            providerInterest.Website = null;
-            providerInterest.PhoneNumber = null;
 
             service
                 .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
@@ -150,8 +144,6 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
 
             //Assert
             actual.ProviderContactDetails.EmailAddress.Should().Be("");
-            actual.ProviderContactDetails.PhoneNumber.Should().Be("");
-            actual.ProviderContactDetails.Website.Should().Be("");
         }
     }
 }

@@ -32,8 +32,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 {
                     Ukprn = cacheResult.Ukprn !=0 ? cacheResult.Ukprn : result.ProviderContactDetails.Ukprn,
                     EmailAddress = cacheResult.EmailAddress ?? result.ProviderContactDetails.EmailAddress ?? "",
-                    PhoneNumber = cacheResult.PhoneNumber ?? result.ProviderContactDetails.PhoneNumber ?? "",
-                    Website = cacheResult.Website?? result.ProviderContactDetails.Website ?? ""
+                    PhoneNumber = cacheResult.PhoneNumber ?? result.ProviderContactDetails.PhoneNumber,
+                    Website = cacheResult.Website?? result.ProviderContactDetails.Website
                 };
             }
 
