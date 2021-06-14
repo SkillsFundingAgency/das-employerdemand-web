@@ -118,32 +118,5 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             //Assert
             actual.EmployerDemandIds.Should().BeEmpty();
         }
-
-        [Test, MoqAutoData]
-        public async Task Then_If_No_Email_Stored_Or_In_Cache_Then_No_Email_Returned(
-            GetProviderEmployerDemandDetailsQuery query,
-            GetProviderEmployerDemandDetailsResponse response,
-            ProviderInterestRequest providerInterest,
-            [Frozen] Mock<IDemandService> service,
-            GetProviderEmployerDemandDetailsQueryHandler handler)
-        {
-            //Arrange
-            response.ProviderContactDetails.EmailAddress = null;
-            providerInterest.EmailAddress = null;
-
-            service
-                .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
-                .ReturnsAsync(response);
-
-            service
-                .Setup(x => x.GetCachedProviderInterest(It.IsAny<Guid>()))
-                .ReturnsAsync(providerInterest);
-
-            //Act
-            var actual = await handler.Handle(query, CancellationToken.None);
-
-            //Assert
-            actual.ProviderContactDetails.EmailAddress.Should().Be("");
-        }
     }
 }
