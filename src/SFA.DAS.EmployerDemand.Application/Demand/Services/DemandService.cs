@@ -35,12 +35,14 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
         {
             var result = await _apiClient.Get<GetRestartCourseDemandResponse>(new GetRestartCourseDemandRequest(id));
 
+            var demandId = result.Id;
 
             if (!result.RestartDemandExists || (result.RestartDemandExists && !result.EmailVerified))
             {
+                demandId = Guid.NewGuid();
                 var item = new CourseDemand
                 {
-                    Id = result.Id,
+                    Id = demandId,
                     Location = result.Location.Name,
                     Course = result.Course,
                     EmailVerified = false,
@@ -49,15 +51,16 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
                     ContactEmailAddress = result.ContactEmail,
                     NumberOfApprentices = result.NumberOfApprentices.ToString(),
                     TrainingCourseId = result.Course.Id,
-                    NumberOfApprenticesKnown = result.NumberOfApprentices > 0
+                    NumberOfApprenticesKnown = result.NumberOfApprentices > 0,
+                    ExpiredCourseDemandId = result.Id
                 };
                 
-                await _cacheStorageService.SaveToCache(result.Id.ToString(), item, TimeSpan.FromMinutes(30));
+                await _cacheStorageService.SaveToCache(demandId.ToString(), item, TimeSpan.FromMinutes(30));
             }
             
             return new RestartCourseDemand
             {
-                Id = result.Id,
+                Id = demandId,
                 TrainingCourseId = result.Course.Id,
                 EmailVerified = result.EmailVerified,
                 RestartDemandExists = result.RestartDemandExists

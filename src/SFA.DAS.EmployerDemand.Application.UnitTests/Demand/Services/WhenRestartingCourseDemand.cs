@@ -65,13 +65,14 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             var actual = await service.GetRestartCourseDemand(id);
             
             //Assert
-            actual.Id.Should().Be(apiResponse.Id);
+            actual.Id.Should().NotBe(apiResponse.Id);
+            actual.Id.Should().NotBe(Guid.Empty);
             actual.EmailVerified.Should().Be(apiResponse.EmailVerified);
             actual.RestartDemandExists.Should().Be(apiResponse.RestartDemandExists);
             actual.TrainingCourseId.Should().Be(apiResponse.Course.Id);
             cacheStorageService.Verify(
-                x => x.SaveToCache(apiResponse.Id.ToString(), It.Is<CourseDemand>(c => 
-                        c.Id.Equals(apiResponse.Id)
+                x => x.SaveToCache(It.IsAny<string>(), It.Is<CourseDemand>(c => 
+                        c.ExpiredCourseDemandId.Equals(apiResponse.Id)
                         && !c.EmailVerified
                         && c.Location.Equals(apiResponse.Location.Name)
                         && c.OrganisationName.Equals(apiResponse.OrganisationName)
@@ -104,13 +105,14 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             var actual = await service.GetRestartCourseDemand(id);
             
             //Assert
-            actual.Id.Should().Be(apiResponse.Id);
+            actual.Id.Should().NotBe(apiResponse.Id);
+            actual.Id.Should().NotBe(Guid.Empty);
             actual.EmailVerified.Should().Be(apiResponse.EmailVerified);
             actual.RestartDemandExists.Should().Be(apiResponse.RestartDemandExists);
             actual.TrainingCourseId.Should().Be(apiResponse.Course.Id);
             cacheStorageService.Verify(
-                x => x.SaveToCache(apiResponse.Id.ToString(), It.Is<CourseDemand>(c => 
-                        c.Id.Equals(apiResponse.Id)
+                x => x.SaveToCache(It.IsAny<string>(), It.Is<CourseDemand>(c => 
+                        c.ExpiredCourseDemandId.Equals(apiResponse.Id)
                         && !c.EmailVerified
                         && c.Location.Equals(apiResponse.Location.Name)
                         && c.OrganisationName.Equals(apiResponse.OrganisationName)
