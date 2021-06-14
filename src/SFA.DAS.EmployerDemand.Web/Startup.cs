@@ -110,6 +110,7 @@ namespace SFA.DAS.EmployerDemand.Web
                     options.Configuration = configuration.RedisConnectionString;
                 });
                 services.AddHealthChecks();
+                services.AddDataProtection(_configuration);
             }
             
             services.AddSession(options =>
