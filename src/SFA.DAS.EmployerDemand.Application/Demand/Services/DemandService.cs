@@ -37,7 +37,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             var demandId = result.Id;
 
-            if (!result.RestartDemandExists || (result.RestartDemandExists && !result.EmailVerified))
+            if (!result.RestartDemandExists)
             {
                 demandId = Guid.NewGuid();
                 var item = new CourseDemand
