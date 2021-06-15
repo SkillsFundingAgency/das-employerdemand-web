@@ -41,7 +41,11 @@
             }
             else
             {
-                <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Add website</a>
+                <span class="govuk-hint">
+                    You can link to any page on your website about this course. <br />
+                    <a asp-route="@RouteNames.EditProviderDetails" asp-all-route-data="@Model.RouteDictionary" class="govuk-link govuk-link--no-visited-state">Add website</a>
+                </span>
+
             }
         </p>
         <p class="govuk-!-margin-top-6">
