@@ -70,6 +70,39 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             actual.EmployerDemandIds.Should().BeEquivalentTo(expectedDemandIds);
             actual.Id.Should().Be(providerInterest.Id);
         }
+        
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_Cached_Object_With_No_Optional_Populated_And_No_Provider_Data_Then_Populated_From_Cache(
+            GetProviderEmployerDemandDetailsQuery query,
+            GetProviderEmployerDemandDetailsResponse response,
+            ProviderInterestRequest providerInterest,
+            [Frozen] Mock<IDemandService> service,
+            GetProviderEmployerDemandDetailsQueryHandler handler)
+        {
+            //Arrange
+            providerInterest.Website = null;
+            response.ProviderContactDetails = null;
+            var expectedDemandIds = providerInterest.EmployerDemands.Select(c => c.EmployerDemandId);
+
+            query.Id = new Guid();
+            query.FromLocation = false;
+            service.Setup(x => x.GetCachedProviderInterest((Guid)query.Id))
+                .ReturnsAsync(providerInterest);
+
+            service
+                .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
+                .ReturnsAsync(response);
+
+            //Act
+            var actual = await handler.Handle(query, CancellationToken.None);
+
+            //Assert
+            service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Once);
+            actual.EmployerDemandIds.Should().BeEquivalentTo(expectedDemandIds);
+            actual.Id.Should().Be(providerInterest.Id);
+            actual.ProviderContactDetails.Website.Should().BeEmpty();
+        }
 
         [Test, MoqAutoData]
         public async Task Then_If_No_Cached_Object_The_Service_Is_Not_Called_And_No_Data_Returned(
