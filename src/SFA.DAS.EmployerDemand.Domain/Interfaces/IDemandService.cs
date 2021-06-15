@@ -11,7 +11,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         Task<GetCreateCourseDemandResponse> GetCreateCourseDemand(int trainingCourseId, string locationName);
         Task CreateCacheCourseDemand(ICourseDemand item);
         Task<CourseDemandRequest> GetCachedCourseDemand(Guid itemKey);
-        Task CreateCourseDemand(Guid id, string responseUrl);
+        Task CreateCourseDemand(Guid id, string responseUrl, string stopSharingUrl);
         Task<GetProviderEmployerDemandResponse> GetProviderEmployerDemand(    int ukprn, int? courseId, string location, string locationRadius, List<string> selectedRoutes);
         Task<GetProviderEmployerDemandDetailsResponse> GetProviderEmployerDemandDetails( int ukprn, int courseId, string location, string locationRadius);
         Task CreateCachedProviderInterest(IProviderDemandInterest item);
@@ -19,6 +19,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Interfaces
         Task<CourseDemand> GetUnverifiedEmployerCourseDemand(Guid id);
         Task CreateProviderInterest(Guid id);
         Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id);
+        Task<StoppedCourseDemand> StopEmployerCourseDemand(Guid id);
         Task<GetStartCourseDemandResponse> GetStartCourseDemand(int trainingCourseId);
     }
 }

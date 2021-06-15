@@ -12,6 +12,7 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         public const string PostConfirmRegisterDemand = "confirm-register-demand";
         public const string ConfirmEmployerDemandEmail = "confirm-employer-demand-email";
         public const string RegisterDemandCompleted = "register-demand-completed";
+        public const string StoppedInterest = "stopped-interest";
         
         public const string ProviderDashboard = "provider-demand-dashboard";
         public const string ProviderDemandDetails = "provider-demand-details";
