@@ -40,7 +40,14 @@
                         {
             <li>
                 @demand.LocationName<br />
-                @demand.NumberOfApprentices apprentice@(demand.NumberOfApprentices != 1 ? "s":"")
+                @if (demand.NumberOfApprentices != 0)
+                {
+                    @demand.NumberOfApprentices @:apprentice@(demand.NumberOfApprentices != 1 ? "s" : "")
+                }
+                else
+                {
+                    @:Apprentice number unknown
+                }
             </li>}
                     </ul>
                 </dd>
