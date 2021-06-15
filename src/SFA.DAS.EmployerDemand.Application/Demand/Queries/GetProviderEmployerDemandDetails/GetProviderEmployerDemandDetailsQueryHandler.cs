@@ -46,7 +46,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 Course = result.TrainingCourse,
                 CourseDemandDetailsList = result.ProviderEmployerDemandDetailsList.Select(c => (ProviderCourseDemandDetails) c),
                 SelectedLocation = result.Location,
-                SelectedRadius = !string.IsNullOrEmpty(request.LocationRadius) ? request.LocationRadius: "5",
+                SelectedRadius = request.LocationRadius,
                 ProviderContactDetails = result.ProviderContactDetails??new Domain.Demand.ProviderContactDetails(),
                 EmployerDemandIds = !request.FromLocation ? cacheResult?.EmployerDemands?.Select(c => c.EmployerDemandId).ToList():new List<Guid>(),
                 Id = cacheResult?.Id ?? Guid.Empty
