@@ -28,17 +28,13 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
             {
                 cacheResult = (ProviderInterestRequest)await _demandService.GetCachedProviderInterest((Guid)request.Id);
 
-                if (cacheResult != null)
+                result.ProviderContactDetails = new ProviderContactDetails
                 {
-                    result.ProviderContactDetails = new ProviderContactDetails
-                    {
-                        Ukprn = request.Ukprn,
-                        EmailAddress = cacheResult.EmailAddress ?? result.ProviderContactDetails.EmailAddress ?? "",
-                        PhoneNumber = cacheResult.PhoneNumber ?? result.ProviderContactDetails.PhoneNumber ?? "",
-                        Website = cacheResult.Website ?? result.ProviderContactDetails.Website ?? ""
-
-                    };
-                }
+                    Ukprn = request.Ukprn,
+                    EmailAddress = cacheResult.EmailAddress ?? result.ProviderContactDetails.EmailAddress ?? "",
+                    PhoneNumber = cacheResult.PhoneNumber ?? result.ProviderContactDetails.PhoneNumber ?? "",
+                    Website = cacheResult.Website?? result.ProviderContactDetails.Website ?? ""
+                };
             }
 
             return new GetProviderEmployerDemandDetailsQueryResult
