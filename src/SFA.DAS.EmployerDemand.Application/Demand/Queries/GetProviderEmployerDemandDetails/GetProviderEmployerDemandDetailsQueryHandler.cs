@@ -30,7 +30,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
 
                 result.ProviderContactDetails = new ProviderContactDetails
                 {
-                    Ukprn = request.Ukprn,
+                    Ukprn = cacheResult.Ukprn !=0 ? cacheResult.Ukprn : result.ProviderContactDetails.Ukprn,
                     EmailAddress = cacheResult.EmailAddress ?? result.ProviderContactDetails.EmailAddress ?? "",
                     PhoneNumber = cacheResult.PhoneNumber ?? result.ProviderContactDetails.PhoneNumber ?? "",
                     Website = cacheResult.Website?? result.ProviderContactDetails.Website ?? ""
