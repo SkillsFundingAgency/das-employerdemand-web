@@ -18,6 +18,7 @@ using SFA.DAS.EmployerDemand.Web.AppStart;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Infrastructure.Authorization;
 using SFA.DAS.Provider.Shared.UI;
+using SFA.DAS.Provider.Shared.UI.Models;
 using SFA.DAS.Provider.Shared.UI.Startup;
 
 namespace SFA.DAS.EmployerDemand.Web
@@ -71,7 +72,7 @@ namespace SFA.DAS.EmployerDemand.Web
             services.AddServiceRegistration();
 
             services.AddProviderUiServiceRegistration(_configuration);
-            
+
             services.AddMediatR(typeof(GetCreateCourseDemandQuery).Assembly);
             services.AddMediatRValidation();
 
@@ -83,16 +84,17 @@ namespace SFA.DAS.EmployerDemand.Web
             
             services.AddAndConfigureProviderAuthentication(providerConfig);
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
-            
+
             services.Configure<RouteOptions>(options =>
-            {
-                options.LowercaseUrls = true;
-            }).AddMvc(options =>
+                {
+                    options.LowercaseUrls = true;
+                }).AddMvc(options =>
                 {
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 })
                 .SetDefaultNavigationSection(NavigationSection.Home)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
+                .SetZenDeskConfiguration(_configuration.GetSection("ProviderZenDeskSettings").Get<ZenDeskConfiguration>());
 
 
             if (_configuration.IsDev() || _configuration.IsLocal())
