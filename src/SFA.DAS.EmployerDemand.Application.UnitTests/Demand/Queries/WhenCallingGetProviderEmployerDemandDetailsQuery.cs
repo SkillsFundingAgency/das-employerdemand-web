@@ -101,7 +101,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Once);
             actual.EmployerDemandIds.Should().BeEquivalentTo(expectedDemandIds);
             actual.Id.Should().Be(providerInterest.Id);
-            actual.ProviderContactDetails.Website.Should().BeEmpty();
+            actual.ProviderContactDetails.Website.Should().BeNullOrEmpty();
         }
 
         [Test, MoqAutoData]
