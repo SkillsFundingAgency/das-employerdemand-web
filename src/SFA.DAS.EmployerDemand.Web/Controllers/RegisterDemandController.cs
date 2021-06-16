@@ -139,6 +139,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 return new RedirectResult($"{_config.FindApprenticeshipTrainingUrl}courses/{model.TrainingCourse.Id}", false, true);
             }
 
+            if (model.TrainingCourse.LastStartDate != null && model.TrainingCourse.LastStartDate < DateTime.Today)
+            {
+                return new RedirectResult($"{_config.FindApprenticeshipTrainingUrl}courses/{model.TrainingCourse.Id}", false, true);
+            }
+
             return View(model);
         }
 
