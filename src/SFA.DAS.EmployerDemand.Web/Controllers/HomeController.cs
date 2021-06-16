@@ -81,7 +81,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 courseId,
                 location,
                 radius,
-                id,
+                (id.HasValue && id.Value == Guid.Empty) ? null : id,
                 fromLocation);
 
             return View(model);
