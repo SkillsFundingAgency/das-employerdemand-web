@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
@@ -63,12 +64,13 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
         public async Task Then_If_The_Request_Is_Valid_And_Cached_Object_Exists_EmployerDemands_Are_Updated_In_The_Cache(
             CreateCachedProviderInterestCommand command,
             IProviderDemandInterest providerInterest,
+            IProviderDemandInterest expectedCachedObject,
             [Frozen] Mock<IDemandService> service,
             [Frozen] Mock<IValidator<CreateCachedProviderInterestCommand>> validator,
             CreateCachedProviderInterestCommandHandler handler)
         {
             //Arrange
-            var expectedCachedObject = providerInterest;
+            expectedCachedObject = providerInterest;
             expectedCachedObject.EmployerDemands = command.EmployerDemands;
 
             validator

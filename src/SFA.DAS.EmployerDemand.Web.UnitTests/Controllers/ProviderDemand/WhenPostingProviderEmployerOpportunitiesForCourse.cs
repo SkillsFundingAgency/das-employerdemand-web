@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Claims;
-using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
@@ -45,11 +44,10 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                         c.Ukprn.Equals(request.Ukprn) 
                         && c.CourseId.Equals(request.CourseId) 
                         && c.Location.Equals(request.Location)
-                        && c.LocationRadius.Equals(request.Radius)), 
+                        && c.LocationRadius.Equals(request.Radius)
+                        && c.Id.Equals(request.Id)), 
                     CancellationToken.None))
                 .ReturnsAsync(resultForGet);
-
-            var employerDemandIds = resultForGet.EmployerDemandIds.ToList().Take(3);
 
             //Act
             var actual = await controller.PostFindApprenticeshipTrainingOpportunitiesForCourse(request) as ViewResult;
@@ -58,7 +56,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             Assert.IsNotNull(actual);
             actual.ViewName.Should().Be("FindApprenticeshipTrainingOpportunitiesForCourse");
             var model = actual.Model as AggregatedProviderCourseDemandDetailsViewModel;
-            model.SelectedEmployerDemandIds.Should().BeEquivalentTo(employerDemandIds);
+            model.Id.Should().Be(resultForGet.Id);
+            model.SelectedEmployerDemandIds.Should().BeEquivalentTo(new List<Guid>());
             model.Should().BeEquivalentTo((AggregatedProviderCourseDemandDetailsViewModel)resultForGet, options => options.Excluding(viewModel => viewModel.SelectedEmployerDemandIds));
         }
 

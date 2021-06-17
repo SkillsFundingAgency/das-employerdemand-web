@@ -73,14 +73,16 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int courseId, 
             [FromQuery]string location, 
             [FromQuery]string radius,
-            Guid? id = null)
+            Guid? id = null,
+            bool fromLocation = false)
         {
             var model = await BuildAggregatedProviderCourseDemandDetailsViewModel(
                 ukprn,
                 courseId,
                 location,
                 radius,
-                id);
+                (id.HasValue && id.Value == Guid.Empty) ? null : id,
+                fromLocation);
 
             return View(model);
         }
@@ -134,7 +136,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     request.Ukprn,
                     request.CourseId,
                     request.Location,
-                    request.Radius);
+                    request.Radius,
+                    request.Id, false, true);
                 
                 return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
@@ -284,7 +287,9 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             int courseId,
             string location,
             string radius,
-            Guid? cachedObjectId = null)
+            Guid? cachedObjectId = null,
+            bool fromLocation = false,
+            bool validationException = false)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
             {
@@ -292,10 +297,16 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 CourseId = courseId,
                 Location = location,
                 LocationRadius = radius,
-                Id = cachedObjectId
+                Id = cachedObjectId,
+                FromLocation = fromLocation
             });
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
+
+            if (validationException)
+            {
+                model.SelectedEmployerDemandIds = new List<Guid>();
+            }
             
             return model;
         }
