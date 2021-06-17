@@ -13,7 +13,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string NumberOfApprentices { get; set; }
         public string OrganisationName { get; set; }
         public string ContactEmailAddress { get; set; }
-     
+        public Guid? ExpiredCourseDemandId { get ; set ; }
+
         public static Dictionary<string, int> BuildPropertyOrderDictionary()
         {   
             var itemCount = 0;

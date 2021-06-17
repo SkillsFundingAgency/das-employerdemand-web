@@ -17,5 +17,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
         public Location LocationItem { get; set; }
         public Course Course { get; set; }
         public bool? NumberOfApprenticesKnown { get ; set ; }
+        public Guid? ExpiredCourseDemandId { get; set; }
     }
 }

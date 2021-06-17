@@ -10,6 +10,9 @@
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.4.0" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="restart-demand.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="stop-demand.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

@@ -1,0 +1,23 @@
+{
+  "trainingCourse": {
+    "id": 14,
+    "title": "Laboratory technician",
+    "route": "Health and science",
+    "level": 3,
+    "version": 1
+  },
+  "location": {
+    "name":"Camden, Camden",
+    "location": {
+      "geoPoint": [
+        51.289916,
+        -0.773876
+      ]}
+  },
+  "restartDemandExists" : false,
+  "emailVerified" : false,
+  "organisationName" : "test org",
+  "contactEmail" : "test@test.com",
+  "numberOfApprentices" : 2,
+  "id" : "3F88445E-30D2-46A7-A133-347E43AA6E8D"
+}

@@ -10,6 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand;
+using SFA.DAS.EmployerDemand.Application.Demand.Commands.RestartEmployerDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.StopEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.VerifyEmployerCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
@@ -87,7 +88,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     ContactEmailAddress = request.ContactEmailAddress,
                     NumberOfApprentices = request.NumberOfApprentices,
                     TrainingCourseId = request.TrainingCourseId,
-                    NumberOfApprenticesKnown = request.NumberOfApprenticesKnown
+                    NumberOfApprenticesKnown = request.NumberOfApprenticesKnown,
+                    ExpiredCourseDemandId = request.ExpiredCourseDemandId
                 });
 
                 return RedirectToRoute(RouteNames.ConfirmRegisterDemand, new
@@ -142,17 +144,24 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 demandId = encodedId
             }, Request.Scheme, Request.Host.Host);
+
+            var startSharingUrl = Url.RouteUrl(RouteNames.RestartInterest, new
+            {
+                demandId = encodedId
+            }, Request.Scheme, Request.Host.Host);
                 
             await _mediator.Send(new CreateCourseDemandCommand
             {
                 Id = createDemandId,
                 ResponseUrl = verifyUrl,
-                StopSharingUrl = stopSharingUrl
+                StopSharingUrl = stopSharingUrl,
+                StartSharingUrl = startSharingUrl
             });
 
 #if DEBUG
             _logger.LogInformation($"confirm page at {verifyUrl}");
             _logger.LogInformation($"stop sharing page at {stopSharingUrl}");
+            _logger.LogInformation($"restart sharing page at {startSharingUrl}");
 #endif
             
             return RedirectToRoute(RouteNames.ConfirmEmployerDemandEmail, new {Id = id, CreateDemandId = createDemandId});
@@ -233,6 +242,39 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 FatUrl = _config.FindApprenticeshipTrainingUrl
             };
             return View(model);
+        }
+
+        [HttpGet]
+        [Route("restart-interest/", Name = RouteNames.RestartInterest)]
+        public async Task<IActionResult> RestartInterest([FromQuery] string demandId)
+        {
+            var decodedDemandId = DecodeDemandId(demandId);
+
+            if (!decodedDemandId.HasValue)
+            {
+                return Redirect(_config.FindApprenticeshipTrainingUrl);
+            }
+
+            var result = await _mediator.Send(new RestartEmployerDemandCommand
+            {
+                EmployerDemandId = decodedDemandId.Value
+            });
+
+            
+            
+            if (result.EmailVerified && result.RestartDemandExists)
+            {
+                var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
+                    System.Text.Encoding.UTF8.GetBytes($"{result.Id}")));
+                return new RedirectToRouteResult(RouteNames.RegisterDemandCompleted, new {id = result.TrainingCourseId, demandId = encodedId});
+            }
+
+            if (result.RestartDemandExists)
+            {
+                return new RedirectToRouteResult(RouteNames.ConfirmEmployerDemandEmail, new {createDemandId = result.Id, id = result.TrainingCourseId});
+            }
+
+            return new RedirectToRouteResult(RouteNames.ConfirmRegisterDemand, new {createDemandId = result.Id, id = result.TrainingCourseId});
         }
 
         private async Task<RegisterCourseDemandViewModel> BuildRegisterCourseDemandViewModelFromPostRequest(
