@@ -49,7 +49,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                     CancellationToken.None))
                 .ReturnsAsync(resultForGet);
 
-            var employerDemandIds = resultForGet.EmployerDemands.ToList().Take(3);
+            var employerDemandIds = resultForGet.EmployerDemandIds.ToList().Take(3);
 
             //Act
             var actual = await controller.PostFindApprenticeshipTrainingOpportunitiesForCourse(request) as ViewResult;
