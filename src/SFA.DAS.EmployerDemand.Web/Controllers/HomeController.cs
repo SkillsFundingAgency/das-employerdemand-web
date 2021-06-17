@@ -136,7 +136,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     request.Ukprn,
                     request.CourseId,
                     request.Location,
-                    request.Radius);
+                    request.Radius,
+                    request.Id);
                 
                 return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
