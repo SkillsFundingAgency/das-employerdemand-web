@@ -28,6 +28,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             int trainingCourseId,
             string verifyUrl,
             string stopSharingUrl,
+            string startSharingUrl,
             [Frozen] Mock<IDataProtector> protector,
             [Frozen] Mock<IDataProtectionProvider> provider,
             [Frozen] Mock<IMediator> mediator,
@@ -37,6 +38,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             UrlRouteContext verifyRouteValues = null;
             UrlRouteContext stopSharingRouteValues = null;
+            UrlRouteContext startSharingRouteValues = null;
             var httpContext = new DefaultHttpContext();
             var toEncode = WebEncoders.Base64UrlDecode(demandId.ToString());
             urlHelper
@@ -57,6 +59,15 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                 {
                     stopSharingRouteValues = c;
                 });
+            urlHelper
+                .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c=>
+                    c.RouteName.Equals(RouteNames.RestartInterest)
+                )))
+                .Returns(startSharingUrl)
+                .Callback<UrlRouteContext>(c =>
+                {
+                    startSharingRouteValues = c;
+                });
             provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
             protector.Setup(c => c.Protect(It.Is<byte[]>(
                 x => x[0].Equals(Encoding.UTF8.GetBytes($"{demandId}")[0])))).Returns(toEncode);
@@ -75,6 +86,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                         c.Id == demandId
                         && c.ResponseUrl == verifyUrl
                         && c.StopSharingUrl == stopSharingUrl
+                        && c.StartSharingUrl == startSharingUrl
                     ), It.IsAny<CancellationToken>()), Times.Once);
             Assert.IsNotNull(actual);
             actual.RouteName.Should().Be(RouteNames.ConfirmEmployerDemandEmail);
@@ -86,6 +98,10 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                 demandId = WebEncoders.Base64UrlEncode(toEncode)
             });
             stopSharingRouteValues.Values.Should().BeEquivalentTo(new
+            {
+                demandId = WebEncoders.Base64UrlEncode(toEncode)
+            });
+            startSharingRouteValues.Values.Should().BeEquivalentTo(new
             {
                 demandId = WebEncoders.Base64UrlEncode(toEncode)
             });

@@ -18,8 +18,10 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
             Location = item.LocationItem;
             NumberOfApprentices = item.NumberOfApprenticesKnown.HasValue && item.NumberOfApprenticesKnown.Value 
                 ? Convert.ToInt32(item.NumberOfApprentices) : 0;
+            ExpiredCourseDemandId = item.ExpiredCourseDemandId;
         }
 
+        public Guid? ExpiredCourseDemandId { get ; set ; }
         public Guid Id { get; set; }
         public string OrganisationName { get; set; }
         public int NumberOfApprentices { get; set; }
@@ -35,6 +37,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
         
         public string ResponseUrl { get ; set ; }
         public string StopSharingUrl { get ; set ; }
+        public string StartSharingUrl { get ; set ; }
 
         private LocationItem BuildCourseLocation()
         {

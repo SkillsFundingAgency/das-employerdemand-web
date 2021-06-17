@@ -30,7 +30,43 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
                 await _apiClient.Get<GetStartCourseDemandResponse>(new GetStartCourseDemandRequest(trainingCourseId));
             return result;
         }
-        
+
+        public async Task<RestartCourseDemand> GetRestartCourseDemand(Guid id)
+        {
+            var result = await _apiClient.Get<GetRestartCourseDemandResponse>(new GetRestartCourseDemandRequest(id));
+
+            var demandId = result.Id;
+
+            if (!result.RestartDemandExists)
+            {
+                demandId = Guid.NewGuid();
+                var item = new CourseDemand
+                {
+                    Id = demandId,
+                    Location = result.Location.Name,
+                    Course = result.Course,
+                    EmailVerified = false,
+                    LocationItem = result.Location,
+                    OrganisationName = result.OrganisationName,
+                    ContactEmailAddress = result.ContactEmail,
+                    NumberOfApprentices = result.NumberOfApprentices.ToString(),
+                    TrainingCourseId = result.Course.Id,
+                    NumberOfApprenticesKnown = result.NumberOfApprentices > 0,
+                    ExpiredCourseDemandId = result.Id
+                };
+                
+                await _cacheStorageService.SaveToCache(demandId.ToString(), item, TimeSpan.FromMinutes(30));
+            }
+            
+            return new RestartCourseDemand
+            {
+                Id = demandId,
+                TrainingCourseId = result.Course.Id,
+                EmailVerified = result.EmailVerified,
+                RestartDemandExists = result.RestartDemandExists
+            };
+        }
+
         public async Task<GetCreateCourseDemandResponse> GetCreateCourseDemand(int trainingCourseId, string locationName)
         {
             var result =
@@ -51,21 +87,21 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             return result;
         }
 
-        public async Task CreateCourseDemand(Guid id, string responseUrl, string stopSharingUrl)
+        public async Task CreateCourseDemand(Guid id, string responseUrl, string stopSharingUrl, string startSharingUrl)
         {
             var item = await _cacheStorageService.RetrieveFromCache<CourseDemandRequest>(id.ToString());
 
             var data = new PostCreateDemandData(item)
             {
                 ResponseUrl = responseUrl,
-                StopSharingUrl = stopSharingUrl
+                StopSharingUrl = stopSharingUrl,
+                StartSharingUrl = startSharingUrl
             };
 
             await _apiClient.Post<Guid, PostCreateDemandData>(new PostCreateDemandRequest(data));
         }
 
-        public async Task<GetProviderEmployerDemandResponse> GetProviderEmployerDemand(    int ukprn, int? courseId,
-            string location, string locationRadius, List<string> selectedRoutes)
+        public async Task<GetProviderEmployerDemandResponse> GetProviderEmployerDemand(int ukprn, int? courseId, string location, string locationRadius, List<string> selectedRoutes)
         {
             var result =
                 await _apiClient.Get<GetProviderEmployerDemandResponse>(
@@ -97,19 +133,21 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
         public async Task<CourseDemand> GetUnverifiedEmployerCourseDemand(Guid id)
         {
-            var cachedResultTask = _cacheStorageService.RetrieveFromCache<CourseDemand>(id.ToString());
-            var apiResultTask = _apiClient.Get<GetCourseDemandResponse>(new GetEmployerDemandRequest(id));
+            var apiResult = await _apiClient.Get<GetCourseDemandResponse>(new GetEmployerDemandRequest(id));
 
-            await Task.WhenAll(cachedResultTask, apiResultTask);
-
-            if (cachedResultTask.Result == null || apiResultTask.Result == null)
+            if (apiResult == null)
             {
                 return null;
             }
-
-            cachedResultTask.Result.EmailVerified =  apiResultTask.Result.EmailVerified;
             
-            return cachedResultTask.Result;
+            var demand = new CourseDemand
+            {
+                Id = apiResult.Id,
+                EmailVerified = apiResult.EmailVerified,
+                ContactEmailAddress = apiResult.ContactEmail
+            };
+            
+            return demand;
         }
 
         public async Task<VerifiedCourseDemand> VerifyEmployerCourseDemand(Guid id)

@@ -19,6 +19,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             CourseDemandRequest demand,
             string demandUrl,
             string stopSharingUrl,
+            string startSharingUrl,
             [Frozen] Mock<ICacheStorageService> cacheStorageService,
             [Frozen] Mock<IApiClient> apiClient,
             DemandService service)
@@ -28,13 +29,14 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
                 .Setup(x => x.RetrieveFromCache<CourseDemandRequest>(id.ToString()))
                 .ReturnsAsync(demand);
             
-            await service.CreateCourseDemand(id, demandUrl, stopSharingUrl);
+            await service.CreateCourseDemand(id, demandUrl, stopSharingUrl, startSharingUrl);
             
             apiClient.Verify(x=>x.Post<Guid,PostCreateDemandData>(It.Is<PostCreateDemandRequest>(c=>
                 c.Data.Id.Equals(demand.Id)
                 && c.Data.ContactEmailAddress.Equals(demand.ContactEmailAddress)
                 && c.Data.ResponseUrl.Equals(demandUrl)
                 && c.Data.StopSharingUrl.Equals(stopSharingUrl)
+                && c.Data.StartSharingUrl.Equals(startSharingUrl)
                 )));
         }
         

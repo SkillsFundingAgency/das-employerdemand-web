@@ -8,5 +8,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCourseDemand
         public Guid Id { get; set; }
         public string ResponseUrl { get ; set ; }
         public string StopSharingUrl { get ; set ; }
+        public string StartSharingUrl { get ; set ; }
     }
 }
