@@ -44,7 +44,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
                 SelectedLocation = result.Location,
                 SelectedRadius = request.LocationRadius,
                 ProviderContactDetails = result.ProviderContactDetails,
-                EmployerDemandIds = !request.FromLocation ? cacheResult?.EmployerDemands?.Select(c => c.EmployerDemandId).ToList():new List<Guid>(),
+                EmployerDemands = cacheResult.EmployerDemands ?? new List<EmployerDemands>(),
                 Id = cacheResult.Id
             };
         }

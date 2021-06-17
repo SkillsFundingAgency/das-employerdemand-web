@@ -12,7 +12,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public Location SelectedLocation { get; set; }
         public string SelectedRadius { get ; set ; }
         public ProviderContactDetails ProviderContactDetails { get ; set ; }
-        public IEnumerable<Guid> EmployerDemandIds { get; set; }
+        public IEnumerable<EmployerDemands> EmployerDemands { get; set; }
         public Guid? Id { get; set; }
     }
 }

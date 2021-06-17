@@ -51,8 +51,6 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             GetProviderEmployerDemandDetailsQueryHandler handler)
         {
             //Arrange
-            var expectedDemandIds = providerInterest.EmployerDemands.Select(c => c.EmployerDemandId);
-
             query.Id = new Guid();
             query.FromLocation = false;
             service.Setup(x => x.GetCachedProviderInterest((Guid)query.Id))
@@ -67,7 +65,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
 
             //Assert
             service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Once);
-            actual.EmployerDemandIds.Should().BeEquivalentTo(expectedDemandIds);
+            actual.EmployerDemands.Should().BeEquivalentTo(providerInterest.EmployerDemands);
             actual.Id.Should().Be(providerInterest.Id);
         }
         
@@ -83,7 +81,6 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             //Arrange
             providerInterest.Website = null;
             response.ProviderContactDetails = null;
-            var expectedDemandIds = providerInterest.EmployerDemands.Select(c => c.EmployerDemandId);
 
             query.Id = new Guid();
             query.FromLocation = false;
@@ -99,7 +96,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
 
             //Assert
             service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Once);
-            actual.EmployerDemandIds.Should().BeEquivalentTo(expectedDemandIds);
+            actual.EmployerDemands.Should().BeEquivalentTo(providerInterest.EmployerDemands);
             actual.Id.Should().Be(providerInterest.Id);
             actual.ProviderContactDetails.Website.Should().BeNullOrEmpty();
         }
@@ -123,33 +120,9 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
 
             //Assert
             service.Verify(c => c.GetCachedProviderInterest(It.IsAny<Guid>()), Times.Never);
-            actual.EmployerDemandIds.Should().BeEmpty();
+            actual.EmployerDemands.Should().BeEmpty();
             actual.Id.Should().BeEmpty();
         }
 
-        [Test, MoqAutoData]
-        public async Task Then_If_FromLocation_Then_Employer_Demands_Are_Cleared(
-            GetProviderEmployerDemandDetailsQuery query,
-            GetProviderEmployerDemandDetailsResponse response,
-            ProviderInterestRequest providerInterest,
-            [Frozen] Mock<IDemandService> service,
-            GetProviderEmployerDemandDetailsQueryHandler handler)
-        {
-            //Arrange
-            query.Id = new Guid();
-            query.FromLocation = true;
-            service.Setup(x => x.GetCachedProviderInterest((Guid)query.Id))
-                .ReturnsAsync(providerInterest);
-
-            service
-                .Setup(x => x.GetProviderEmployerDemandDetails(query.Ukprn, query.CourseId, query.Location, query.LocationRadius))
-                .ReturnsAsync(response);
-
-            //Act
-            var actual = await handler.Handle(query, CancellationToken.None);
-
-            //Assert
-            actual.EmployerDemandIds.Should().BeEmpty();
-        }
     }
 }
