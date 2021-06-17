@@ -133,17 +133,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
-
-            if (CourseExpired(model.TrainingCourse.LastStartDate))//WIP to remove
-            {
-                return new RedirectResult($"{_config.FindApprenticeshipTrainingUrl}courses/{model.TrainingCourse.Id}", false, true);
-            }
-
-            if (model.TrainingCourse.LastStartDate != null && model.TrainingCourse.LastStartDate < DateTime.Today)
-            {
-                return new RedirectResult($"{_config.FindApprenticeshipTrainingUrl}courses/{model.TrainingCourse.Id}", false, true);
-            }
-
+            
             return View(model);
         }
 
@@ -278,7 +268,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 EmployerDemandId = decodedDemandId.Value
             });
-            //WIP above result needs training course
+
+            if (CourseExpired(result.LastStartDate))
+            {
+                return RedirectToFat(result.TrainingCourseId);
+            }
+
             if (result.EmailVerified && result.RestartDemandExists)
             {
                 var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(

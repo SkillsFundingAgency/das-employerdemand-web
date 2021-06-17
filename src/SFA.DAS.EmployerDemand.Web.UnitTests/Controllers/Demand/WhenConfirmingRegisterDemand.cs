@@ -71,35 +71,5 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(courseId);
         }
-
-        [Test, MoqAutoData]
-        public async Task
-            Then_If_The_Course_LastStartDate_Is_In_The_Past_Then_Redirected_To_FindApprenticeshipTraining_Course_List(
-                int courseId,
-                Guid demandId,
-                string baseUrl,
-                GetCachedCreateCourseDemandQueryResult mediatorResult,
-                [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
-                [Frozen] Mock<IMediator> mediator,
-                [Greedy] RegisterDemandController controller)
-        {
-            //Arrange
-            config.Object.Value.FindApprenticeshipTrainingUrl = baseUrl;
-            mediatorResult.CourseDemand.Course.LastStartDate = DateTime.Today.AddSeconds(-1);
-            mediator.Setup(x =>
-                    x.Send(It.Is<GetCachedCreateCourseDemandQuery>(c =>
-                            c.Id.Equals(demandId))
-                        , It.IsAny<CancellationToken>()))
-                .ReturnsAsync(mediatorResult);
-
-            //Act
-            var actual = await controller.ConfirmRegisterDemand(courseId, demandId) as RedirectResult;
-
-            //Assert
-            Assert.IsNotNull(actual);
-            actual.Url.Should().Be($"{baseUrl}courses/{mediatorResult.CourseDemand.Course.Id}");
-            actual.Permanent.Should().BeFalse();
-            actual.PreserveMethod.Should().BeTrue();
-        }
     }
 }

@@ -35,6 +35,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             mediatorResult.EmailVerified = false;
             mediatorResult.RestartDemandExists = false;
+            mediatorResult.LastStartDate = DateTime.Today.AddDays(1);
             var encodedData = Encoding.UTF8.GetBytes(employerDemandId.ToString());
             var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
             mockProtector
@@ -73,6 +74,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             mediatorResult.EmailVerified = false;
             mediatorResult.RestartDemandExists = true;
+            mediatorResult.LastStartDate = DateTime.Today.AddDays(1);
             var encodedData = Encoding.UTF8.GetBytes(employerDemandId.ToString());
             var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
             mockProtector
@@ -111,6 +113,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Arrange
             mediatorResult.EmailVerified = true;
             mediatorResult.RestartDemandExists = true;
+            mediatorResult.LastStartDate = DateTime.Today.AddDays(1);
             var encodedData = Encoding.UTF8.GetBytes(employerDemandId.ToString());
             var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
             var toEncode = WebEncoders.Base64UrlDecode(mediatorResult.Id.ToString());
@@ -187,6 +190,44 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             
             //Assert
             actual.Url.Should().Be(mockOptions.Object.Value.FindApprenticeshipTrainingUrl);
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Course_Is_Expired_Redirected_To_FAT(
+            Guid employerDemandId,
+            string baseUrl,
+            RestartEmployerDemandCommandResult mediatorResult,
+            [Frozen] Mock<IDataProtector> mockProtector,
+            [Frozen] Mock<IDataProtectionProvider> mockProvider,
+            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Greedy] RegisterDemandController controller)
+        {
+            //Arrange
+            mockOptions.Object.Value.FindApprenticeshipTrainingUrl = baseUrl;
+            mediatorResult.LastStartDate = DateTime.Today.AddDays(-1);
+            var encodedData = Encoding.UTF8.GetBytes(employerDemandId.ToString());
+            var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
+            mockProtector
+                .Setup(sut => sut.Unprotect(It.IsAny<byte[]>()))
+                .Returns(encodedData);
+            mockProvider
+                .Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName))
+                .Returns(mockProtector.Object);
+            mockMediator
+                .Setup(x => x.Send(
+                    It.Is<RestartEmployerDemandCommand>(c => c.EmployerDemandId == employerDemandId)
+                        , It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
+
+            //Act
+            var actual = await controller.RestartInterest(encodedEmployerDemandId) as RedirectResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.Url.Should().Be($"{baseUrl}courses/{mediatorResult.TrainingCourseId}");
+            actual.Permanent.Should().BeFalse();
+            actual.PreserveMethod.Should().BeTrue();
         }
     }
 }

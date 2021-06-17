@@ -25,6 +25,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
+            mediatorResult.CourseDemand.Course.LastStartDate = DateTime.Today.AddDays(1);
             mediator.Setup(x =>
                     x.Send(It.Is<GetCreateCourseDemandQuery>(c => 
                         c.TrainingCourseId.Equals(trainingCourseId)
