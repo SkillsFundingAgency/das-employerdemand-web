@@ -49,8 +49,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
                     CancellationToken.None))
                 .ReturnsAsync(resultForGet);
 
-            var employerDemandIds = resultForGet.EmployerDemandIds.ToList().Take(3);
-
             //Act
             var actual = await controller.PostFindApprenticeshipTrainingOpportunitiesForCourse(request) as ViewResult;
             
@@ -59,7 +57,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             actual.ViewName.Should().Be("FindApprenticeshipTrainingOpportunitiesForCourse");
             var model = actual.Model as AggregatedProviderCourseDemandDetailsViewModel;
             model.Id.Should().Be(resultForGet.Id);
-            model.SelectedEmployerDemandIds.Should().BeEquivalentTo(employerDemandIds);
+            model.SelectedEmployerDemandIds.Should().BeEquivalentTo(new List<Guid>());
             model.Should().BeEquivalentTo((AggregatedProviderCourseDemandDetailsViewModel)resultForGet, options => options.Excluding(viewModel => viewModel.SelectedEmployerDemandIds));
         }
 

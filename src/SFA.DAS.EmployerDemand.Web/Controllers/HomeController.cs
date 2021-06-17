@@ -137,7 +137,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     request.CourseId,
                     request.Location,
                     request.Radius,
-                    request.Id);
+                    request.Id, false, true);
                 
                 return View("FindApprenticeshipTrainingOpportunitiesForCourse", model);
             }
@@ -288,7 +288,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             string location,
             string radius,
             Guid? cachedObjectId = null,
-            bool fromLocation = false)
+            bool fromLocation = false,
+            bool validationException = false)
         {
             var result = await _mediator.Send(new GetProviderEmployerDemandDetailsQuery
             {
@@ -301,6 +302,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             });
 
             var model = (AggregatedProviderCourseDemandDetailsViewModel) result;
+
+            if (validationException)
+            {
+                model.SelectedEmployerDemandIds = new List<Guid>();
+            }
             
             return model;
         }
