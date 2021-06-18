@@ -330,7 +330,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         private RedirectResult RedirectToFat(int id)
         {
-            return new RedirectResult($"{_config.FindApprenticeshipTrainingUrl}courses/{id}", false, true);
+            return new RedirectResult($"{_config.FindApprenticeshipTrainingUrl}/courses/{id}", false, true);
         }
     }
 }
