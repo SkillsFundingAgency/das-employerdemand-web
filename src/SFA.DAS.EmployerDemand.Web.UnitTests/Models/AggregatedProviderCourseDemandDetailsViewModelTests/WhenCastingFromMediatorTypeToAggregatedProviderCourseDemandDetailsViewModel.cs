@@ -113,7 +113,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
         }
 
         [Test, AutoData]
-        public void Then_If_Id_Is_Null_Then_Empty_Set(
+        public void Then_If_Id_Is_Null_Then_Null_Set(
             GetProviderEmployerDemandDetailsQueryResult source)
         {
             //Arrange
@@ -123,7 +123,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
 
             //Assert
-            actual.Id.Should().BeEmpty();
+            actual.Id.Should().BeNull();
         }
     }
 }

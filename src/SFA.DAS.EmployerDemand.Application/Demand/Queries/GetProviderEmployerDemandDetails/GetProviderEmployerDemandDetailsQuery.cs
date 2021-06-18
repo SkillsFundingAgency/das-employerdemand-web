@@ -10,5 +10,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetProviderEmployerD
         public string Location { get ; set ; }
         public string LocationRadius { get ; set ; }
         public Guid? Id { get; set; }
+        public bool FromLocation { get; set; }
     }
 }

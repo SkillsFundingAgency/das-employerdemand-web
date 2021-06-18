@@ -59,6 +59,8 @@
                                 </label>
                                 <div class="das-search-form__group">
                                     <input type="search" id="search-location" name="location" title="Search" class="govuk-input das-search-form__input" data-submit-on-selection="true" data-default-value="@Model.Location">
+                                    <input type="hidden" name="id" value="@Model.Id"/>
+                                    <input type="hidden" name="fromLocation" value="true"/>
                                     <div class="das-search-form__button-wrap">
                                         <button class="govuk-button das-search-form__button" type="submit">
                                             Apply filters

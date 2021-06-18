@@ -1,3 +1,4 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
@@ -38,6 +39,39 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.ProviderDemand
             
             //Act
             var actual = await controller.FindApprenticeshipTrainingOpportunitiesForCourse(ukprn, courseId, location, radius) as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(actual);
+            var actualModel = actual.Model as AggregatedProviderCourseDemandDetailsViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.Should().BeEquivalentTo((AggregatedProviderCourseDemandDetailsViewModel)mediatorResult, options => 
+                options.Excluding(model => model.SelectedEmployerDemandIds));
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Id_Is_Empty_Then_Null_Returned(
+            int ukprn,
+            int courseId,
+            string location,
+            string radius,
+            GetProviderEmployerDemandDetailsQueryResult mediatorResult,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] HomeController controller)
+        {
+            //Arrange
+            mediator
+                .Setup(x => x.Send(
+                    It.Is<GetProviderEmployerDemandDetailsQuery>(c =>
+                        c.Ukprn.Equals(ukprn) 
+                        && c.CourseId.Equals(courseId) 
+                        && c.Location.Equals(location)
+                        && c.LocationRadius.Equals(radius)
+                        && c.Id.Equals(null)), 
+                    CancellationToken.None))
+                .ReturnsAsync(mediatorResult);
+            
+            //Act
+            var actual = await controller.FindApprenticeshipTrainingOpportunitiesForCourse(ukprn, courseId, location, radius, Guid.Empty) as ViewResult;
 
             //Assert
             Assert.IsNotNull(actual);
