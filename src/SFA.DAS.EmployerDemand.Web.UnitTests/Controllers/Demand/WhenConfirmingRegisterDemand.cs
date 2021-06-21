@@ -1,12 +1,10 @@
 using System;
-using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using AutoFixture.NUnit3;
 using FluentAssertions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Moq;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDemand;
@@ -28,7 +26,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            mediatorResult.CourseDemand.Course.LastStartDate = DateTime.Now.AddDays(1);
             mediator.Setup(x =>
                     x.Send(It.Is<GetCachedCreateCourseDemandQuery>(c => 
                             c.Id.Equals(demandId))
