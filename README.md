@@ -109,3 +109,5 @@ Authentication is managed via Azure Managed Identity when not running locally.
 * FluentAssertions
 
 ## 🐛 Known Issues
+
+* Do not run in IISExpress
