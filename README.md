@@ -101,6 +101,7 @@ Authentication is managed via Azure Managed Identity when not running locally.
 ## Technologies
 
 * .NetCore 3.1
+* ASP.NET MVC
 * NLog
 * Azure Table Storage
 * NUnit
