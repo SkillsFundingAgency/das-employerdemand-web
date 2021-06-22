@@ -16,7 +16,7 @@ Employer Demand is a service to connect employers who cannot find appropriate tr
 ## How It Works
 
 Employer Demand web consumes [das-apim-endpoints](https://github.com/skillsfundingagency/das-apim-endpoints). The entry point to the Employer Demand journey is accessed through [das-findapprenticeshiptraining](https://github.com/SkillsFundingAgency/das-findapprenticeshiptraining/).
-It also makes use of [SFA.DAS.Provider.Shared.UI](https://github.com/SkillsFundingAgency/das-shared-packages/tree/master/SFA.DAS.Provider.Shared.UI).
+It also makes use of [SFA.DAS.Provider.Shared.UI](https://github.com/SkillsFundingAgency/das-shared-packages/tree/master/SFA.DAS.Provider.Shared.UI) and has been designed using elements from the [GOV.UK Design System](https://design-system.service.gov.uk/).
 
 ## 🚀 Installation
 
