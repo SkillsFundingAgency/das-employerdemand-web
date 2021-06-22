@@ -22,9 +22,9 @@ It also makes use of [SFA.DAS.Provider.Shared.UI](https://github.com/SkillsFundi
 
 ### Pre-Requisites
 
-*A clone of this repository
-*DotNet Core 3.1 and any supported IDE for DEV running.
-*Azure Storage Emulator if not running in DEV mode
+* A clone of this repository
+* DotNet Core 3.1 and any supported IDE for DEV running.
+* Azure Storage Emulator if not running in DEV mode
 
 ### Config
 
@@ -88,7 +88,7 @@ Employer Demand web comes with a mock server that can be run alongside the web a
 It is important that your BaseUrl in your config is pointed to the MockServer url
 You are able to run the website by doing the following:
 * Run the console app ```SFA.DAS.EmployerDemand.MockServer``` - this will create a mock server on http://localhost:5021
-* Start the web solution ```SFA.DAS.EmployerDemand.Web``
+* Start the web solution ```SFA.DAS.EmployerDemand.Web```
 
 ### Using APIM
 
