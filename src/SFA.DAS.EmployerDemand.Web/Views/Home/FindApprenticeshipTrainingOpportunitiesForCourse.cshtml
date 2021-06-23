@@ -112,11 +112,11 @@
                                 <label class="govuk-label govuk-checkboxes__label" for="EmployerDemandIds-@employerDemand.DemandId">
                                     @if (employerDemand.NumberOfApprentices != 0)
                                     {
-                                        <span class="govuk-!-font-weight-bold">@(employerDemand.NumberOfApprentices) @:apprentice@(employerDemand.NumberOfApprentices != 1 ? "s":"")</span>
+                                        <span class="govuk-!-font-weight-bold">@(employerDemand.NumberOfApprentices) apprentice@(employerDemand.NumberOfApprentices != 1 ? "s":"")</span>
                                     }
                                     else
                                     {
-                                        <span class="govuk-!-font-weight-bold">@:Apprentice number unknown</span>
+                                        <span class="govuk-!-font-weight-bold">Apprentice number unknown</span>
                                     }
                                  <br />
                                     @employerDemand.Location.Name
