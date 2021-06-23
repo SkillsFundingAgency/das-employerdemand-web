@@ -94,9 +94,18 @@ You are able to run the website by doing the following:
 
 Employer Demand web can be run alongside APIM, along with its dependencies, for end to end running.
 
+### Provider Authentication
+
+It is possible to use the Provider stub Authentication handler if you are using the mock server. This can be done by adding the following to your `Appsetting.development.json` file:
+
+```
+"StubProviderAuth": "true",
+```
+This will then automatically authenticate and add the correct claims for your session.
+
 ## 🔗 External Dependencies
 
-Authentication is managed via Azure Managed Identity when not running locally.
+Provider Authentication is managed via Provider IDAMS
 
 ## Technologies
 
