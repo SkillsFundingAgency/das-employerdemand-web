@@ -38,28 +38,49 @@ namespace SFA.DAS.EmployerDemand.MockServer
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("get-verified-demand.json"));
             
-            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/[0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12}/restart"))
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/(?!(?:bd11788e))[0-9A-Fa-f]{8}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{4}[-][0-9A-Fa-f]{12}/restart"))
                     .UsingGet())
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("restart-demand.json"));
+
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/bd11788e-2480-4560-a76e-ffb99e582aa0/restart"))
+                    .UsingGet())
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("restart-demand-expired-course.json"));
             
-            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/start/\\d+"))
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/start/(?!(?:999))\\d+$"))
                     .UsingGet())
                 .RespondWith(Response.Create()
                     .WithStatusCode(200)
                     .WithHeader("Content-Type", "application/json")
                     .WithBodyFromFile("start-demand.json"));
+
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/start/999$"))
+                    .UsingGet())
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("start-demand-expired-course.json"));
             
-            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/create"))
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/create/(?!(?:999))\\d+$"))
                 .UsingGet())
                 .RespondWith(Response.Create()
                 .WithStatusCode(200)
                 .WithHeader("Content-Type", "application/json")
                 .WithBodyFromFile("create-demand.json"));
+
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/create/999$"))
+                    .UsingGet())
+                .RespondWith(Response.Create()
+                    .WithStatusCode(200)
+                    .WithHeader("Content-Type", "application/json")
+                    .WithBodyFromFile("create-demand-expired-course.json"));
             
-            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, @"/demand/create"))
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/demand/create"))
                     .WithParam(MatchLocationParam)
                     .UsingGet())
                 .RespondWith(Response.Create()

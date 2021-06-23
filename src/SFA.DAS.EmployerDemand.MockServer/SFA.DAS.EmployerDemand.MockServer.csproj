@@ -5,12 +5,27 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
     </PropertyGroup>
 
+    <ItemGroup>
+      <None Remove="create-demand-expired-course.json" />
+      <None Remove="restart-demand-expired-course.json" />
+      <None Remove="start-demand-expired-course.json" />
+    </ItemGroup>
+
   <ItemGroup>
         <PackageReference Include="WireMock.Net.StandAlone" Version="1.2.17" />
         <PackageReference Include="Microsoft.CodeAnalysis.Common" Version="3.4.0" />
     </ItemGroup>
     <ItemGroup>
+        <Content Include="create-demand-expired-course.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="restart-demand-expired-course.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
         <Content Include="restart-demand.json">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Include="start-demand-expired-course.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="stop-demand.json">
