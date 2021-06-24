@@ -28,7 +28,7 @@ It also makes use of [SFA.DAS.Provider.Shared.UI](https://github.com/SkillsFundi
 
 ### Config
 
-Appsetting.json file
+appsettings.json file
 ```json
 {
   "Logging": {
@@ -96,7 +96,7 @@ Employer Demand web can be run alongside APIM, along with its dependencies, for 
 
 ### Provider Authentication
 
-It is possible to use the Provider stub Authentication handler if you are using the mock server. This can be done by adding the following to your `Appsetting.development.json` file:
+It is possible to use the Provider stub Authentication handler if you are using the mock server. This can be done by adding the following to your `appsettings.development.json` file:
 
 ```
 "StubProviderAuth": "true",
