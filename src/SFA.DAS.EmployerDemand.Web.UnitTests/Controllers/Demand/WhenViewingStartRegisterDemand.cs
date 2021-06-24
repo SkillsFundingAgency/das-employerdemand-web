@@ -20,6 +20,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         [Test, MoqAutoData]
         public async Task Then_Mediator_Is_Called_And_The_ViewModel_Returned(
             int trainingCourseId,
+            short entryPoint,
             GetStartCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
@@ -33,18 +34,20 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                 .ReturnsAsync(mediatorResult);
             
             //Act
-            var actual = await controller.StartRegisterDemand(trainingCourseId) as ViewResult;
+            var actual = await controller.StartRegisterDemand(trainingCourseId, entryPoint) as ViewResult;
             
             //Assert
             Assert.IsNotNull(actual);
             var actualModel = actual.Model as StartRegisterCourseDemandViewModel;
             Assert.IsNotNull(actualModel);
             actualModel.TrainingCourse.Should().BeEquivalentTo(mediatorResult.Course);
+            actualModel.EntryPoint.Should().Be(mediatorResult.EntryPoint);
         }
 
         [Test, MoqAutoData]
         public async Task Then_If_The_Course_Has_Expired_Redirected_To_FindApprenticeshipTraining(
             int trainingCourseId,
+            short entryPoint,
             string baseUrl,
             GetStartCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
@@ -61,7 +64,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                 .ReturnsAsync(mediatorResult);
 
             //Act
-            var actual = await controller.StartRegisterDemand(trainingCourseId) as RedirectResult;
+            var actual = await controller.StartRegisterDemand(trainingCourseId, entryPoint) as RedirectResult;
 
             //Assert
             Assert.IsNotNull(actual);

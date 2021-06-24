@@ -16,6 +16,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models
             
             //Assert
             actual.TrainingCourse.Should().BeEquivalentTo(source.Course);
+            actual.EntryPoint.Should().Be(source.EntryPoint);
         }
     }
 }

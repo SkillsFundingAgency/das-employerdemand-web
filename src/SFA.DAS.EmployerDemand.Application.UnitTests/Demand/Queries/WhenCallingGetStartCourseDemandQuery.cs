@@ -29,6 +29,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Queries
             
             //Assert
             actual.Course.Should().BeEquivalentTo(response.Course);
+            actual.EntryPoint.Should().Be(query.EntryPoint);
         }
     }
 }

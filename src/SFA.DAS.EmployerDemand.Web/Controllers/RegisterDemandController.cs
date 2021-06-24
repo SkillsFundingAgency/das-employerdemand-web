@@ -45,15 +45,16 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         [HttpGet]
         [Route("course/{id}/share-interest", Name = RouteNames.StartRegisterDemand)]
-        public async Task<IActionResult> StartRegisterDemand(int id)
+        public async Task<IActionResult> StartRegisterDemand(int id, [FromQuery] short? entryPoint)
         {
             var result = await _mediator.Send(new GetStartCourseDemandQuery
             {
-                TrainingCourseId = id
+                TrainingCourseId = id,
+                EntryPoint = entryPoint
             });
 
             var model = (StartRegisterCourseDemandViewModel) result;
-
+            
             if (CourseExpired(model.TrainingCourse.LastStartDate))
             {
                 return RedirectToFat(model.TrainingCourse.Id);
