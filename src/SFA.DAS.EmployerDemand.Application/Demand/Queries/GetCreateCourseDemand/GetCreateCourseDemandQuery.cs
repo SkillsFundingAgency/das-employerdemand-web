@@ -7,5 +7,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDeman
     {
         public int TrainingCourseId { get ; set ; }
         public Guid? CreateDemandId { get ; set ; }
+        public short? EntryPoint { get ; set ; }
     }
 }
