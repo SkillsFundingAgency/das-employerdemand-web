@@ -17,5 +17,18 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand
             //Assert
             actual.Should().BeEquivalentTo(source);
         }
+
+        [Test, AutoData]
+        public void Then_If_No_LastStartDate_Then_Returns_Null(TrainingCourse source)
+        {
+            //Arrange
+            source.LastStartDate = null;
+
+            //Act
+            var actual = (Course) source;
+
+            //Assert
+            actual.LastStartDate.Should().BeNull();
+        }
     }
 }
