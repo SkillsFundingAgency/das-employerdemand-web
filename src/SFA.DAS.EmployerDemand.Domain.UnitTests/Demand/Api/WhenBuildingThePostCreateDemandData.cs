@@ -1,6 +1,7 @@
 using System;
 using AutoFixture.NUnit3;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 using SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests;
@@ -54,7 +55,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             
             var actual = new PostCreateDemandData(source);
             
-            actual.TrainingCourse.Should().BeEquivalentTo(source.Course);
+            actual.TrainingCourse.Should().BeEquivalentTo(source.Course, options => options.Excluding(c => c.LastStartDate));
         }
     }
 }
