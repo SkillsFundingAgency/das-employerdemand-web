@@ -31,7 +31,7 @@
         <partial name="_pageErrorsOverview" />
         <h1 class="govuk-heading-xl">
             <span class="govuk-caption-xl">@Model.Course.Title <span class="das-no-wrap">(level @Model.Course.Level)</span></span>
-            Which employers are you interested in?
+            Select the requests you are interested in
         </h1>
 
         <div class="das-highlight govuk-!-padding-bottom-0">
@@ -96,7 +96,7 @@
             
             <div class="govuk-form-group @(ViewData.ModelState.ContainsKey("EmployerDemands") && ViewData.ModelState["EmployerDemands"].Errors.Any()? "govuk-form-group--error" : "")">
                 <fieldset class="govuk-fieldset" aria-describedby="employers-hint">
-                    <p class="govuk-body">Select all employers that apply.</p>
+                    <p class="govuk-body">Select all that apply.</p>
                     @if (!ViewData.ModelState.IsValid && ViewData.ModelState.ContainsKey("EmployerDemands"))
                     {
                         <span id="demandids-error" class="govuk-error-message">
@@ -110,19 +110,17 @@
                             <div class="govuk-checkboxes__item">
                                 <input class="govuk-checkboxes__input" id="EmployerDemandIds-@employerDemand.DemandId" name="EmployerDemands" type="checkbox" value="@employerDemand.DemandId|@employerDemand.NumberOfApprentices|@employerDemand.Location.Name" @(Model.SelectedEmployerDemandIds.Contains(employerDemand.DemandId) ? "checked" : "")>
                                 <label class="govuk-label govuk-checkboxes__label" for="EmployerDemandIds-@employerDemand.DemandId">
-                                    <span class="govuk-!-font-weight-bold">Employer</span>
-                                    <br/>
-                                    @employerDemand.Location.Name
-                                    <br/>
                                     @if (employerDemand.NumberOfApprentices != 0)
                                     {
-                                        @(employerDemand.NumberOfApprentices) @:apprentice@(employerDemand.NumberOfApprentices != 1 ? "s":"")    
+                                        <span class="govuk-!-font-weight-bold">@(employerDemand.NumberOfApprentices) apprentice@(employerDemand.NumberOfApprentices != 1 ? "s":"")</span>
                                     }
                                     else
                                     {
-                                        @:Apprentice number unknown
+                                        <span class="govuk-!-font-weight-bold">Apprentice number unknown</span>
                                     }
-                                    
+                                 <br />
+                                    @employerDemand.Location.Name
+                                 <br />
                                 </label>
                             </div>
                         }
