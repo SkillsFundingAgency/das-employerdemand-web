@@ -54,6 +54,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             var model = (StartRegisterCourseDemandViewModel) result;
 
+            if (CourseExpired(model.TrainingCourse.LastStartDate))
+            {
+                return RedirectToFat(model.TrainingCourse.Id);
+            }
+
             return View(model);
         }
 
@@ -64,6 +69,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = id, CreateDemandId = createDemandId});
 
             var model = (RegisterCourseDemandViewModel) result.CourseDemand;
+
+            if (CourseExpired(model.TrainingCourse.LastStartDate))
+            {
+                return RedirectToFat(model.TrainingCourse.Id);
+            }
             
             return View(model);
         }
@@ -123,7 +133,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
-           
+            
             return View(model);
         }
 
@@ -186,7 +196,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
-
 
             model.FindApprenticeshipTrainingCourseUrl = _config.FindApprenticeshipTrainingUrl + "/courses";
            
@@ -260,8 +269,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 EmployerDemandId = decodedDemandId.Value
             });
 
-            
-            
+            if (CourseExpired(result.LastStartDate))
+            {
+                return RedirectToFat(result.TrainingCourseId);
+            }
+
             if (result.EmailVerified && result.RestartDemandExists)
             {
                 var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
@@ -307,6 +319,18 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             }
 
             return null;
+        }
+
+        private bool CourseExpired(DateTime? lastStartDate)
+        {
+            if (lastStartDate == null)
+                return false;
+            return lastStartDate < DateTime.Today;
+        }
+
+        private RedirectResult RedirectToFat(int id)
+        {
+            return new RedirectResult($"{_config.FindApprenticeshipTrainingUrl}/courses/{id}", false, true);
         }
     }
 }
