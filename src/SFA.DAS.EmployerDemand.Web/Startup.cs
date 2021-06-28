@@ -81,8 +81,17 @@ namespace SFA.DAS.EmployerDemand.Web
             var providerConfig = _configuration
                 .GetSection(nameof(ProviderIdams))
                 .Get<ProviderIdams>();
+
+            if (_configuration["StubProviderAuth"] != null && _configuration["StubProviderAuth"].Equals("true", StringComparison.CurrentCultureIgnoreCase))
+            {
+                services.AddProviderStubAuthentication();
+            }
+            else
+            {
+                services.AddAndConfigureProviderAuthentication(providerConfig);    
+            }
             
-            services.AddAndConfigureProviderAuthentication(providerConfig);
+            
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
             services.Configure<RouteOptions>(options =>
