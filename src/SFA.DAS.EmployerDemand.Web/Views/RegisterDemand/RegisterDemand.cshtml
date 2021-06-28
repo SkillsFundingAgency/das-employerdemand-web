@@ -138,7 +138,7 @@
 								<span class="govuk-visually-hidden">Error:</span> @ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.First().ErrorMessage
 							</span>
                         }
-				        <input class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.ContactEmailAddress)) && ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.Any()? "govuk-input--error" : "")" asp-for="ContactEmailAddress" type="email" aria-describedby="emailAnswer-hint" autocomplete="email" aria-describedby="emailAnswer-hint" />
+				        <input class="govuk-input @(ViewData.ModelState.ContainsKey(nameof(Model.ContactEmailAddress)) && ViewData.ModelState[nameof(Model.ContactEmailAddress)].Errors.Any()? "govuk-input--error" : "")" asp-for="ContactEmailAddress" type="email" autocomplete="email" aria-describedby="emailAnswer-hint" />
 			        </div>
 				</fieldset>
 
