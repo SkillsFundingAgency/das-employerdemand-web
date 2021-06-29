@@ -13,6 +13,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string ContactEmailAddress { get; set; }
         public string NumberOfApprentices { get; set; }
         public Guid? ExpiredCourseDemandId { get ; set ; }
+        public short? EntryPoint { get ; set ; }
 
         public static implicit operator RegisterCourseDemandViewModel(RegisterDemandRequest request)
         {
@@ -24,7 +25,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 ContactEmailAddress = request.ContactEmailAddress,
                 NumberOfApprentices = request.NumberOfApprentices,
                 NumberOfApprenticesKnown = request.NumberOfApprenticesKnown,
-                ExpiredCourseDemandId = null
+                ExpiredCourseDemandId = null,
+                EntryPoint = request.EntryPoint
             };
         }
 
@@ -39,7 +41,8 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 NumberOfApprentices = queryResult.NumberOfApprentices,
                 NumberOfApprenticesKnown = queryResult.NumberOfApprenticesKnown,
                 TrainingCourse = queryResult.Course,
-                ExpiredCourseDemandId = queryResult.ExpiredCourseDemandId
+                ExpiredCourseDemandId = queryResult.ExpiredCourseDemandId,
+                EntryPoint = queryResult.EntryPoint
             };
         }
     }

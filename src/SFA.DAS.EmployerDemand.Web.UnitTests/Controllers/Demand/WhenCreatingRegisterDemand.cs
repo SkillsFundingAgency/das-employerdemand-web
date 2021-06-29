@@ -37,6 +37,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                             && c.ContactEmailAddress.Equals(request.ContactEmailAddress)
                             && c.NumberOfApprentices.Equals(request.NumberOfApprentices)
                             && c.Id != Guid.Empty
+                            && c.EntryPoint.Equals(request.EntryPoint)
                             )
                         , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);

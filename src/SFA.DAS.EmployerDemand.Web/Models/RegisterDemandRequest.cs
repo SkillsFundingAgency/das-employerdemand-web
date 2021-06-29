@@ -14,6 +14,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
         public string OrganisationName { get; set; }
         public string ContactEmailAddress { get; set; }
         public Guid? ExpiredCourseDemandId { get ; set ; }
+        public short? EntryPoint { get; set; }
 
         public static Dictionary<string, int> BuildPropertyOrderDictionary()
         {   

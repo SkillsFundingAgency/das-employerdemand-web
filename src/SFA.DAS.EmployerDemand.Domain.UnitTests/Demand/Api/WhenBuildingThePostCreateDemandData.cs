@@ -35,6 +35,7 @@ namespace SFA.DAS.EmployerDemand.Domain.UnitTests.Demand.Api
             actual.OrganisationName.Should().Be(source.OrganisationName);
             actual.ContactEmailAddress.Should().Be(source.ContactEmailAddress);
             actual.NumberOfApprentices.Should().Be(Convert.ToInt32(source.NumberOfApprentices));
+            actual.EntryPoint.Should().Be(source.EntryPoint);
         }
         
         [Test, AutoData]

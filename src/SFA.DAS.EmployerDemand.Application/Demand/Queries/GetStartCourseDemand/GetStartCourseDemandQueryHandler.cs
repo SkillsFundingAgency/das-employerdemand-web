@@ -19,7 +19,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Queries.GetStartCourseDemand
 
             return new GetStartCourseDemandQueryResult
             {
-                Course = result.Course
+                Course = result.Course,
+                EntryPoint = request.EntryPoint
             };
         }
     }

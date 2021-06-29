@@ -19,8 +19,10 @@ namespace SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests
             NumberOfApprentices = item.NumberOfApprenticesKnown.HasValue && item.NumberOfApprenticesKnown.Value 
                 ? Convert.ToInt32(item.NumberOfApprentices) : 0;
             ExpiredCourseDemandId = item.ExpiredCourseDemandId;
+            EntryPoint = item.EntryPoint;
         }
 
+        public short? EntryPoint { get ; set ; }
         public Guid? ExpiredCourseDemandId { get ; set ; }
         public Guid Id { get; set; }
         public string OrganisationName { get; set; }

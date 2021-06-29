@@ -45,15 +45,16 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         [HttpGet]
         [Route("course/{id}/share-interest", Name = RouteNames.StartRegisterDemand)]
-        public async Task<IActionResult> StartRegisterDemand(int id)
+        public async Task<IActionResult> StartRegisterDemand(int id, [FromQuery] short? entryPoint)
         {
             var result = await _mediator.Send(new GetStartCourseDemandQuery
             {
-                TrainingCourseId = id
+                TrainingCourseId = id,
+                EntryPoint = entryPoint
             });
 
             var model = (StartRegisterCourseDemandViewModel) result;
-
+            
             if (CourseExpired(model.TrainingCourse.LastStartDate))
             {
                 return RedirectToFat(model.TrainingCourse.Id);
@@ -64,9 +65,9 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
         [HttpGet]
         [Route("course/{id}/enter-apprenticeship-details/", Name = RouteNames.RegisterDemand)]
-        public async Task<IActionResult> RegisterDemand(int id, [FromQuery] Guid? createDemandId)
+        public async Task<IActionResult> RegisterDemand(int id, [FromQuery] Guid? createDemandId, [FromQuery] short? entryPoint)
         {
-            var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = id, CreateDemandId = createDemandId});
+            var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = id, CreateDemandId = createDemandId, EntryPoint = entryPoint});
 
             var model = (RegisterCourseDemandViewModel) result.CourseDemand;
 
@@ -99,7 +100,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                     NumberOfApprentices = request.NumberOfApprentices,
                     TrainingCourseId = request.TrainingCourseId,
                     NumberOfApprenticesKnown = request.NumberOfApprenticesKnown,
-                    ExpiredCourseDemandId = request.ExpiredCourseDemandId
+                    ExpiredCourseDemandId = request.ExpiredCourseDemandId,
+                    EntryPoint = request.EntryPoint
                 });
 
                 return RedirectToRoute(RouteNames.ConfirmRegisterDemand, new
