@@ -208,7 +208,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/verify-email", Name= RouteNames.ConfirmEmployerDemandEmail)]
         public async Task<IActionResult> VerifyEmployerDemandEmail(int id, [FromQuery] Guid createDemandId)
         {
-            var result = await _mediator.Send(new GetUnverifiedEmployerCourseDemandQuery
+            var result = await _mediator.Send(new GetUnverifiedEmployerCourseDemandQuery//todo: check if email null before verify
             {
                 Id = createDemandId
             });
@@ -275,6 +275,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 return RedirectToFat(result.TrainingCourseId);
             }
+            
+            if (result.RestartDemandExists && result.ContactEmail == string.Empty)
+            {
+                return new RedirectToRouteResult(RouteNames.RegisterDemand, new {createDemandId = result.Id, id = result.TrainingCourseId});
+            }
 
             if (result.EmailVerified && result.RestartDemandExists)
             {
@@ -283,7 +288,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 return new RedirectToRouteResult(RouteNames.RegisterDemandCompleted, new {id = result.TrainingCourseId, demandId = encodedId});
             }
 
-            if (result.RestartDemandExists)
+            if (result.RestartDemandExists)//note: this scenario should be covered by previous if statement - you can't get a restart link unless you have already verified
             {
                 return new RedirectToRouteResult(RouteNames.ConfirmEmployerDemandEmail, new {createDemandId = result.Id, id = result.TrainingCourseId});
             }

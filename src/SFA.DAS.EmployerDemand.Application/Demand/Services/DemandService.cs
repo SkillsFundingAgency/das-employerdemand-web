@@ -37,7 +37,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             var demandId = result.Id;
 
-            if (!result.RestartDemandExists)
+            if (!result.RestartDemandExists)//or anonymised
             {
                 demandId = Guid.NewGuid();
                 var item = new CourseDemand
@@ -64,7 +64,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
                 TrainingCourseId = result.Course.Id,
                 EmailVerified = result.EmailVerified,
                 RestartDemandExists = result.RestartDemandExists,
-                LastStartDate = result.Course.LastStartDate
+                LastStartDate = result.Course.LastStartDate,
+                ContactEmail = result.ContactEmail
             };
         }
 

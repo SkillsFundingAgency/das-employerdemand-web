@@ -41,6 +41,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
             actual.RestartDemandExists.Should().Be(apiResponse.RestartDemandExists);
             actual.TrainingCourseId.Should().Be(apiResponse.Course.Id);
             actual.LastStartDate.Should().Be(apiResponse.Course.LastStartDate);
+            actual.ContactEmail.Should().Be(apiResponse.ContactEmail);
             cacheStorageService.Verify(
                 x => x.SaveToCache(apiResponse.Id.ToString(), It.IsAny<CourseDemand>(),
                     TimeSpan.FromMinutes(30)), Times.Never);
