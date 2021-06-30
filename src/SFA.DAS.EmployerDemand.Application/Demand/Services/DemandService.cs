@@ -36,8 +36,9 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
             var result = await _apiClient.Get<GetRestartCourseDemandResponse>(new GetRestartCourseDemandRequest(id));
 
             var demandId = result.Id;
+            var demandIsAnonymised = result.ContactEmail == string.Empty;
 
-            if (!result.RestartDemandExists)//or anonymised
+            if (!result.RestartDemandExists || demandIsAnonymised)
             {
                 demandId = Guid.NewGuid();
                 var item = new CourseDemand
@@ -49,9 +50,9 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
                     LocationItem = result.Location,
                     OrganisationName = result.OrganisationName,
                     ContactEmailAddress = result.ContactEmail,
-                    NumberOfApprentices = result.NumberOfApprentices.ToString(),
+                    NumberOfApprentices = demandIsAnonymised ? string.Empty : result.NumberOfApprentices.ToString(),
                     TrainingCourseId = result.Course.Id,
-                    NumberOfApprenticesKnown = result.NumberOfApprentices > 0,
+                    NumberOfApprenticesKnown = !demandIsAnonymised && result.NumberOfApprentices > 0,
                     ExpiredCourseDemandId = result.Id
                 };
                 
