@@ -37,7 +37,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
 
             var demandId = result.Id;
             var demandIsAnonymised = result.ContactEmail == string.Empty;
-
+            
             if (!result.RestartDemandExists || demandIsAnonymised)
             {
                 demandId = Guid.NewGuid();
@@ -52,7 +52,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Services
                     ContactEmailAddress = result.ContactEmail,
                     NumberOfApprentices = demandIsAnonymised ? string.Empty : result.NumberOfApprentices.ToString(),
                     TrainingCourseId = result.Course.Id,
-                    NumberOfApprenticesKnown = !demandIsAnonymised && result.NumberOfApprentices > 0,
+                    NumberOfApprenticesKnown = demandIsAnonymised ? (bool?)null : result.NumberOfApprentices > 0,
                     ExpiredCourseDemandId = result.Id
                 };
                 

@@ -117,7 +117,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Services
                         && c.OrganisationName.Equals(apiResponse.OrganisationName)
                         && c.ContactEmailAddress.Equals(apiResponse.ContactEmail)
                         && c.NumberOfApprentices.Equals(string.Empty)
-                        && c.NumberOfApprenticesKnown.Equals(false)
+                        && c.NumberOfApprenticesKnown.Equals(null)
                         && c.TrainingCourseId.Equals(apiResponse.Course.Id)
                     ),
                     TimeSpan.FromMinutes(30)), Times.Once);

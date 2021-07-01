@@ -275,12 +275,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             {
                 return RedirectToFat(result.TrainingCourseId);
             }
-            
-            if (result.RestartDemandExists && result.ContactEmail == string.Empty)
+
+            if (result.ContactEmail == string.Empty)
             {
                 return new RedirectToRouteResult(RouteNames.RegisterDemand, new {createDemandId = result.Id, id = result.TrainingCourseId});
             }
-
+            
             if (result.EmailVerified && result.RestartDemandExists)
             {
                 var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
@@ -288,7 +288,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 return new RedirectToRouteResult(RouteNames.RegisterDemandCompleted, new {id = result.TrainingCourseId, demandId = encodedId});
             }
 
-            if (result.RestartDemandExists)//note: this scenario should be covered by previous if statement - you can't get a restart link unless you have already verified
+            if (result.RestartDemandExists)
             {
                 return new RedirectToRouteResult(RouteNames.ConfirmEmployerDemandEmail, new {createDemandId = result.Id, id = result.TrainingCourseId});
             }
