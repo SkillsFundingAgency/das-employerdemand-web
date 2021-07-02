@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure;
 
-namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
+namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure
 {
     public class CustomWebApplicationFactory<TStartup>
         : WebApplicationFactory<TStartup> where TStartup: class

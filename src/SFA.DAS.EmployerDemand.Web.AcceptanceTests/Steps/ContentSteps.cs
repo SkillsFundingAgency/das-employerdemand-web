@@ -4,7 +4,7 @@ using FluentAssertions;
 using SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
 
-namespace SFA.DAS.FAT.Web.AcceptanceTests.Steps
+namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
 {
     [Binding]
     public sealed class ContentSteps

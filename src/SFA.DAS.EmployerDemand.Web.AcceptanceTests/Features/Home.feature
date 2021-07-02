@@ -6,6 +6,6 @@ Feature: Home
 
 @WireMockServer
 	Scenario: Navigate to start page
-	When I navigate to the following url:/registerdemand/course/34/share-interest
+	When I navigate to the following url: /registerdemand/course/34/share-interest
 	Then an http status code of 200 is returned
 	And the page content includes the following: Share your interest with training providers

@@ -12,7 +12,7 @@ using SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure;
 using TechTalk.SpecFlow;
 using WireMock.Server;
 
-namespace SFA.DAS.FAT.Web.AcceptanceTests.Infrastructure
+namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure
 {
     [Binding]
     public sealed class TestEnvironmentManagement
