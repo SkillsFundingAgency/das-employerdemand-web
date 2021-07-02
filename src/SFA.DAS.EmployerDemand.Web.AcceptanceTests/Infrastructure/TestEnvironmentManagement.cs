@@ -22,6 +22,7 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure
         private static IWireMockServer _staticApiServer;
         private Mock<IApiClient> _mockApiClient;
         private static TestServer _server;
+        private CustomWebApplicationFactory<Startup> _webApp;
 
         public TestEnvironmentManagement(ScenarioContext context)
         {
@@ -32,9 +33,11 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure
         public void StartWebApp()
         {
             _staticApiServer = MockApiServer.Start();
-            var webApp = new CustomWebApplicationFactory<Startup>();
-            _server = webApp.Server;
-            _staticClient = new CustomWebApplicationFactory<Startup>().CreateClient(new WebApplicationFactoryClientOptions{HandleCookies = false});
+            _webApp = new CustomWebApplicationFactory<Startup>();
+            
+            _server = _webApp.Server;
+
+            _staticClient = _server.CreateClient();
             _context.Set(_server, ContextKeys.TestServer);
             _context.Set(_staticClient,ContextKeys.HttpClient);
         }
@@ -42,8 +45,14 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure
         [AfterScenario("WireMockServer")]
         public void StopEnvironment()
         {
+            
+            _webApp.Dispose();
+            _server.Dispose();
+            
             _staticApiServer?.Stop();
+            _staticApiServer?.Dispose();
             _staticClient?.Dispose();
+            
         }
 
     }

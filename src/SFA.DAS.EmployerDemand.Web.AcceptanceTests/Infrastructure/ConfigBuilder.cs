@@ -16,6 +16,7 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure
                     new KeyValuePair<string, string>("ConfigNames", "SFA.DAS.EmployerDemand.Web"),
                     new KeyValuePair<string, string>("EnvironmentName", "DEV"),
                     new KeyValuePair<string, string>("Version", "1.0"),
+                    new KeyValuePair<string, string>("StubProviderAuth", "true"),
 
                     new KeyValuePair<string, string>("EmployerDemandApi:Key", "test"),
                     new KeyValuePair<string, string>("EmployerDemandApi:BaseUrl", "http://localhost:5021/"),

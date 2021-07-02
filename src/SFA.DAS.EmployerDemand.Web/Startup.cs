@@ -78,9 +78,7 @@ namespace SFA.DAS.EmployerDemand.Web
 
             services.AddAuthorizationServicePolicies();
             
-            var providerConfig = _configuration
-                .GetSection(nameof(ProviderIdams))
-                .Get<ProviderIdams>();
+            
 
             if (_configuration["StubProviderAuth"] != null && _configuration["StubProviderAuth"].Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -88,6 +86,9 @@ namespace SFA.DAS.EmployerDemand.Web
             }
             else
             {
+                var providerConfig = _configuration
+                    .GetSection(nameof(ProviderIdams))
+                    .Get<ProviderIdams>();
                 services.AddAndConfigureProviderAuthentication(providerConfig);    
             }
             
