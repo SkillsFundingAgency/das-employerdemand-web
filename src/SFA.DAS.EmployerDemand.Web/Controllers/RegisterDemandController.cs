@@ -208,7 +208,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/verify-email", Name= RouteNames.ConfirmEmployerDemandEmail)]
         public async Task<IActionResult> VerifyEmployerDemandEmail(int id, [FromQuery] Guid createDemandId)
         {
-            var result = await _mediator.Send(new GetUnverifiedEmployerCourseDemandQuery//todo: check if email null before verify
+            var result = await _mediator.Send(new GetUnverifiedEmployerCourseDemandQuery
             {
                 Id = createDemandId
             });
@@ -218,6 +218,14 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             if (model == null)
             {
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
+            }
+
+            if (model.EmailAddress == string.Empty)
+            {
+                var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
+                    System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
+
+                return RedirectToRoute(RouteNames.RestartInterest, new {demandId = encodedId});
             }
 
             if (model.Verified)
