@@ -4,9 +4,12 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.CodeAnalysis.CSharp;
+using Newtonsoft.Json;
 using NUnit.Framework;
 using SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure;
+using SFA.DAS.EmployerDemand.Web.Models;
 using TechTalk.SpecFlow;
+using TechTalk.SpecFlow.Assist;
 
 namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
 {
@@ -20,26 +23,21 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
             _context = context;
         }
 
-        [Given("I navigate to the following url: (.*)")]
         [When("I navigate to the following url: (.*)")]
         public async Task WhenINavigateToTheFollowingUrl(string url)
         {
             var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
-            HttpResponseMessage response;
-            if (_context.TryGetValue<string>(ContextKeys.ProviderFiltersCookie, out var filtersCookie))
-            {
-                response = await client.SendAsync(new HttpRequestMessage
-                {
-                    Method = HttpMethod.Get,
-                    RequestUri = new Uri(url, UriKind.Relative),
-                    Headers = { { "Cookie", filtersCookie } }
-                });
-            }
-            else
-            {
-                response = await client.GetAsync(url);
-            }
+            var response = await client.GetAsync(url);
+            _context.Set(response, ContextKeys.HttpResponse);
+        }
 
+        [When("I post to the following url: (.*)")]
+        public async Task WhenIPostToTheFollowingUrl(string url, Table formBody)
+        {
+            var test = formBody.CreateInstance<RegisterDemandRequest>();
+            var content = new StringContent(JsonConvert.SerializeObject(test),System.Text.Encoding.UTF8,"application/json");
+            var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
+            var response = await client.PostAsync(url, new StringContent(""));
             _context.Set(response, ContextKeys.HttpResponse);
         }
 
@@ -55,3 +53,4 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
         }
     }
 }
+
