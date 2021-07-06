@@ -102,6 +102,7 @@ namespace SFA.DAS.EmployerDemand.Web
                     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
                 })
                 .SetDefaultNavigationSection(NavigationSection.Home)
+                .EnableGoogleAnalytics()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .SetZenDeskConfiguration(_configuration.GetSection("ProviderZenDeskSettings").Get<ZenDeskConfiguration>());
 
