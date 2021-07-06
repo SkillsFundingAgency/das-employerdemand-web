@@ -27,6 +27,10 @@
 			<Generator>SpecFlowSingleFileGenerator</Generator>
 			<LastGenOutput>Home.feature.cs</LastGenOutput>
 		</SpecFlowFeatureFiles>
+		<SpecFlowFeatureFiles Update="Features\EmployerDemandForm.feature">
+			<Generator>SpecFlowSingleFileGenerator</Generator>
+			<LastGenOutput>EmployerDemandForm.feature.cs</LastGenOutput>
+		</SpecFlowFeatureFiles>
 	</ItemGroup>
 
   <ItemGroup>
@@ -35,8 +39,5 @@
     <ProjectReference Include="..\SFA.DAS.EmployerDemand.Web\SFA.DAS.EmployerDemand.Web.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Infrastructure\" />
-  </ItemGroup>
 
 </Project>
