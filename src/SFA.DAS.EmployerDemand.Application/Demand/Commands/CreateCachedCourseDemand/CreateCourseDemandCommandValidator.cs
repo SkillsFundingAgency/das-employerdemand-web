@@ -92,10 +92,5 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
 
             return validationResult;
         }
-
-        private ValidationResult CheckAThing(ValidationResult validationResult)
-        {
-            return validationResult;
-        }
     }
 }
