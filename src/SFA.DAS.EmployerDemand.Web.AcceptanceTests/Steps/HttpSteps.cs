@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using FluentAssertions;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.CodeAnalysis.CSharp;
 using Newtonsoft.Json;
 using NUnit.Framework;
@@ -34,10 +37,13 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
         [When("I post to the following url: (.*)")]
         public async Task WhenIPostToTheFollowingUrl(string url, Table formBody)
         {
-            var test = formBody.CreateInstance<RegisterDemandRequest>();
-            var content = new StringContent(JsonConvert.SerializeObject(test),System.Text.Encoding.UTF8,"application/json");
             var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
-            var response = await client.PostAsync(url, new StringContent(""));
+            
+            var contentDictionary = formBody.Rows.ToDictionary(r => r[0], r => r[1]);
+            
+            var content = new FormUrlEncodedContent(contentDictionary);
+            
+            var response = await client.PostAsync(url, content);
             _context.Set(response, ContextKeys.HttpResponse);
         }
 
@@ -51,6 +57,7 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
 
             result.StatusCode.Should().Be(httpStatusCode);
         }
+        
     }
 }
 
