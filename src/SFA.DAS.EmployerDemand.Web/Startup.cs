@@ -26,12 +26,10 @@ namespace SFA.DAS.EmployerDemand.Web
     
     public class Startup
     {
-        private readonly IWebHostEnvironment _environment;
         private readonly IConfigurationRoot _configuration;
 
-        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
+        public Startup(IConfiguration configuration)
         {
-            _environment = environment;
             var config = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
                 .SetBasePath(Directory.GetCurrentDirectory())
