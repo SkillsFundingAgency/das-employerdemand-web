@@ -7,7 +7,7 @@ namespace SFA.DAS.EmployerDemand.Domain.Validation
     public class ValidationResult
     {
         public Dictionary<string, string> ValidationDictionary { get; }
-        private IEnumerable<string> ErrorList => ValidationDictionary.Select(c => c.Key + "|" + c.Value).ToList();
+        private IEnumerable<string> ErrorList => BuildErrorList();
         public System.ComponentModel.DataAnnotations.ValidationResult DataAnnotationResult 
         {
             get
@@ -43,6 +43,11 @@ namespace SFA.DAS.EmployerDemand.Domain.Validation
             }
 
             return !ValidationDictionary.Any();
+        }
+
+        private List<string> BuildErrorList()
+        {
+            return ValidationDictionary.Select(c => c.Key + "|" + c.Value).ToList();
         }
     }
 }
