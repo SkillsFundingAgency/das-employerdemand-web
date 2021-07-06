@@ -2,7 +2,7 @@
 
 namespace SFA.DAS.EmployerDemand.MockServer
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
