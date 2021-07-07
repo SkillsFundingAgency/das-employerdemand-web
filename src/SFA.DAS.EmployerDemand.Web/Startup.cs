@@ -32,12 +32,15 @@ namespace SFA.DAS.EmployerDemand.Web
         {
             var config = new ConfigurationBuilder()
                 .AddConfiguration(configuration)
-                .SetBasePath(Directory.GetCurrentDirectory())
+                .SetBasePath(Directory.GetCurrentDirectory());
 #if DEBUG
-                .AddJsonFile("appsettings.json", true)
-                .AddJsonFile("appsettings.Development.json", true)
+            if (!configuration["EnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
+            {
+                config.AddJsonFile("appsettings.json", true)
+                    .AddJsonFile("appsettings.Development.json", true);
+            }
 #endif
-                .AddEnvironmentVariables();
+            config.AddEnvironmentVariables();
 
             if (!configuration["EnvironmentName"].Equals("DEV", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -76,9 +79,7 @@ namespace SFA.DAS.EmployerDemand.Web
 
             services.AddAuthorizationServicePolicies();
             
-            var providerConfig = _configuration
-                .GetSection(nameof(ProviderIdams))
-                .Get<ProviderIdams>();
+            
 
             if (_configuration["StubProviderAuth"] != null && _configuration["StubProviderAuth"].Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -86,6 +87,9 @@ namespace SFA.DAS.EmployerDemand.Web
             }
             else
             {
+                var providerConfig = _configuration
+                    .GetSection(nameof(ProviderIdams))
+                    .Get<ProviderIdams>();
                 services.AddAndConfigureProviderAuthentication(providerConfig);    
             }
             
@@ -97,7 +101,11 @@ namespace SFA.DAS.EmployerDemand.Web
                     options.LowercaseUrls = true;
                 }).AddMvc(options =>
                 {
-                    options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+                    if (!_configuration.IsDev())
+                    {
+                        options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());    
+                    }
+                    
                 })
                 .SetDefaultNavigationSection(NavigationSection.Home)
                 .EnableGoogleAnalytics()
