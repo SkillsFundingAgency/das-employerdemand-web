@@ -31,6 +31,10 @@
 			<Generator>SpecFlowSingleFileGenerator</Generator>
 			<LastGenOutput>EmployerDemandForm.feature.cs</LastGenOutput>
 		</SpecFlowFeatureFiles>
+		<SpecFlowFeatureFiles Update="Features\ProviderInterest.feature">
+		  <Generator>SpecFlowSingleFileGenerator</Generator>
+		  <LastGenOutput>ProviderInterest.feature.cs</LastGenOutput>
+		</SpecFlowFeatureFiles>
 	</ItemGroup>
 
   <ItemGroup>
