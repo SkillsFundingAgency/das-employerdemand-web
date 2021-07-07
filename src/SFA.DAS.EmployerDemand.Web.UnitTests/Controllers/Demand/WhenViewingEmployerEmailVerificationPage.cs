@@ -73,39 +73,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         }
 
         [Test, MoqAutoData]
-        public async Task And_Demand_Has_Been_Anonymised_Then_Redirect_To_Restart_Demand(
-            int courseId,
-            Guid demandId,
-            GetUnverifiedEmployerCourseDemandQueryResult mediatorResult,
-            [Frozen] Mock<IDataProtector> protector,
-            [Frozen] Mock<IDataProtectionProvider> provider,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] RegisterDemandController controller)
-        {
-            //Arrange
-            mediatorResult.CourseDemand.ContactEmailAddress = string.Empty;
-            var toEncode = WebEncoders.Base64UrlDecode(demandId.ToString());
-            provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
-            protector.Setup(c => c.Protect(It.Is<byte[]>(
-                x => x[0].Equals(Encoding.UTF8.GetBytes($"{demandId}")[0])))).Returns(toEncode);
-            mediatorResult.CourseDemand.EmailVerified = true;
-            mediator.Setup(x =>
-                    x.Send(It.Is<GetUnverifiedEmployerCourseDemandQuery>(c => 
-                            c.Id.Equals(demandId))
-                        , It.IsAny<CancellationToken>()))
-                .ReturnsAsync(mediatorResult);
-            
-            //Act
-            var actual = await controller.VerifyEmployerDemandEmail(courseId, demandId) as RedirectToRouteResult;
-            
-            //Assert
-            actual.Should().NotBeNull();
-            actual.RouteName.Should().Be(RouteNames.RestartInterest);
-            actual.RouteValues.ContainsKey("demandId").Should().BeTrue();
-            actual.RouteValues["demandId"].Should().Be(WebEncoders.Base64UrlEncode(toEncode));
-        }
-
-        [Test, MoqAutoData]
         public async Task Then_If_The_Interest_Is_Already_Verified_Then_Redirected_To_Complete(
             int courseId,
             Guid demandId,

@@ -184,19 +184,22 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] string demandId)
         {
             var decodedDemandId = DecodeDemandId(demandId);
-
             if (!decodedDemandId.HasValue)
             {
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
             }
             
             var result = await _mediator.Send(new VerifyEmployerCourseDemandCommand {Id = decodedDemandId.Value});
-            
             var model = (CompletedCourseDemandViewModel) result.EmployerDemand;
-
+            
             if (model == null)
             {
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
+            }
+            
+            if (model.ContactEmailAddress == string.Empty)
+            {
+                return RedirectToRoute(RouteNames.RestartInterest, new {demandId});
             }
 
             model.FindApprenticeshipTrainingCourseUrl = _config.FindApprenticeshipTrainingUrl + "/courses";
@@ -218,14 +221,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             if (model == null)
             {
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
-            }
-
-            if (model.EmailAddress == string.Empty)
-            {
-                var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
-                    System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
-
-                return RedirectToRoute(RouteNames.RestartInterest, new {demandId = encodedId});
             }
 
             if (model.Verified)
