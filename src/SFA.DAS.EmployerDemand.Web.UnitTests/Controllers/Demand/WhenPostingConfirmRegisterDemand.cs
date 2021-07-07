@@ -30,7 +30,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             string stopSharingUrl,
             string startSharingUrl,
             string encodedDemandId,
-            [Frozen] Mock<IDataEncryptDecryptService> protector,
+            [Frozen] Mock<IDataProtectorService> protector,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<IUrlHelper> urlHelper,
             [Greedy] RegisterDemandController controller)

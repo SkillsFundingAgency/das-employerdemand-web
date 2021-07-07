@@ -11,7 +11,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure
         [Test, MoqAutoData]
         public void Then_Encrypted_Data_Is_Returned_As_Is(
             Guid id,
-            DevDataEncryptDecryptService service)
+            DevDataProtectorService service)
         {
             var actual = service.EncodedData(id);
 
@@ -21,7 +21,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure
         [Test, MoqAutoData]
         public void Then_Decrypted_Data_Is_Returned_As_Is(
             Guid? id,
-            DevDataEncryptDecryptService service)
+            DevDataProtectorService service)
         {
             var actual = service.DecodeData(id.ToString());
 

@@ -55,7 +55,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             Guid demandId,
             string encodedId,
             GetUnverifiedEmployerCourseDemandQueryResult mediatorResult,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)

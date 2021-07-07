@@ -20,7 +20,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.AppStart
         [TestCase(typeof(ILocationService))]
         [TestCase(typeof(ICacheStorageService))]
         [TestCase(typeof(IFatUrlBuilder))]
-        [TestCase(typeof(IDataEncryptDecryptService))]
+        [TestCase(typeof(IDataProtectorService))]
         public void Then_The_Dependencies_Are_Correctly_Resolved(Type toResolve)
         {
             var hostEnvironment = new Mock<IWebHostEnvironment>();
@@ -55,8 +55,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.AppStart
             
             var provider = serviceCollection.BuildServiceProvider();
 
-            var type = provider.GetService(typeof(IDataEncryptDecryptService));
-            type.GetType().Should().Be(typeof(DevDataEncryptDecryptService));
+            var type = provider.GetService(typeof(IDataProtectorService));
+            type.GetType().Should().Be(typeof(DevDataProtectorService));
         }
         
         private static IConfigurationRoot GenerateConfiguration()

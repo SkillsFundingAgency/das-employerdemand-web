@@ -29,7 +29,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             Guid employerDemandId,
             string encodedEmployerDemandId,
             StopEmployerCourseDemandResult mediatorResult,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)
@@ -54,7 +54,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         [Test, MoqAutoData]
         public async Task And_Id_Not_Parseable_Then_Redirect_To_FAT(
             string encodedEmployerDemandId,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Greedy] RegisterDemandController controller)
         {

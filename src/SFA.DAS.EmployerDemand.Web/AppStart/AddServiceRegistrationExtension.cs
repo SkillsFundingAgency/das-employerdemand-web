@@ -22,11 +22,11 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
 
             if (devDecrypt)
             {
-                services.AddTransient<IDataEncryptDecryptService, DevDataEncryptDecryptService>();
+                services.AddTransient<IDataProtectorService, DevDataProtectorService>();
             }
             else
             {
-                services.AddTransient<IDataEncryptDecryptService, DataEncryptDecryptService>();
+                services.AddTransient<IDataProtectorService, DataProtectorService>();
             }
         }
     }

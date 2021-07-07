@@ -29,7 +29,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             string id,
             Guid demandId,
             VerifyEmployerCourseDemandCommandResult mediatorResult,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
@@ -59,7 +59,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             int courseId,
             string id,
             Guid demandId,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             VerifyEmployerCourseDemandCommandResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
@@ -88,7 +88,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task Then_If_The_Id_Is_Not_A_Guid_Then_Redirect_To_StartRegisterDemand(
             int courseId,
             string demandId,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange

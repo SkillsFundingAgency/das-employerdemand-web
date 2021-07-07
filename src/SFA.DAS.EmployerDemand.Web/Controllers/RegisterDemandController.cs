@@ -25,12 +25,12 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         private readonly IMediator _mediator;
         private readonly ILogger<RegisterDemandController> _logger;
         private readonly Domain.Configuration.EmployerDemand _config;
-        private readonly IDataEncryptDecryptService _employerDemandDataProtector;
+        private readonly IDataProtectorService _employerDemandDataProtector;
 
         public RegisterDemandController (
             IMediator mediator, 
             IOptions<Domain.Configuration.EmployerDemand> config,
-            IDataEncryptDecryptService employerDemandDataProtector,
+            IDataProtectorService employerDemandDataProtector,
             ILogger<RegisterDemandController> logger)
         {
             _mediator = mediator;

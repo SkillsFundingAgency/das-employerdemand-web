@@ -7,18 +7,18 @@ using SFA.DAS.EmployerDemand.Domain.Configuration;
 
 namespace SFA.DAS.EmployerDemand.Web.Infrastructure
 {
-    public interface IDataEncryptDecryptService
+    public interface IDataProtectorService
     {
         string EncodedData(Guid data);
         Guid? DecodeData(string data);
     }
     
-    public class DataEncryptDecryptService : IDataEncryptDecryptService
+    public class DataProtectorService : IDataProtectorService
     {
-        private readonly ILogger<DataEncryptDecryptService> _logger;
+        private readonly ILogger<DataProtectorService> _logger;
         private readonly IDataProtector _employerDemandDataProtector;
 
-        public DataEncryptDecryptService (IDataProtectionProvider provider, ILogger<DataEncryptDecryptService> logger)
+        public DataProtectorService (IDataProtectionProvider provider, ILogger<DataProtectorService> logger)
         {
             _logger = logger;
             _employerDemandDataProtector = provider.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName);
@@ -52,7 +52,7 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         }
     }
 
-    public class DevDataEncryptDecryptService : IDataEncryptDecryptService
+    public class DevDataProtectorService : IDataProtectorService
     {
         public string EncodedData(Guid data)
         {

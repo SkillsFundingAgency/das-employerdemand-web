@@ -27,7 +27,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             Guid employerDemandId,
             string encodedEmployerDemandId,
             RestartEmployerDemandCommandResult mediatorResult,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)
@@ -59,7 +59,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             Guid employerDemandId,
             string encodedEmployerDemandId,
             RestartEmployerDemandCommandResult mediatorResult,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)
@@ -92,7 +92,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             Guid employerDemandId,
             string encodedEmployerDemandId,
             RestartEmployerDemandCommandResult mediatorResult,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)
@@ -125,7 +125,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task And_Id_Not_Parseable_Then_Redirect_To_FAT(
             string employerDemandId,
             string encodedEmployerDemandId,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Greedy] RegisterDemandController controller)
         {
@@ -146,7 +146,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             string encodedEmployerDemandId,
             string baseUrl,
             RestartEmployerDemandCommandResult mediatorResult,
-            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)

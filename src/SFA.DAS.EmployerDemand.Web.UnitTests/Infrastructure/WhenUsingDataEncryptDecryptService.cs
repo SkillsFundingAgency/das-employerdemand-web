@@ -20,7 +20,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure
             string data,
             [Frozen] Mock<IDataProtector> mockProtector,
             [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            DataEncryptDecryptService service)
+            DataProtectorService service)
         {
             //Arrange
             mockProtector
@@ -42,7 +42,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure
             string id,
             [Frozen] Mock<IDataProtector> mockProtector,
             [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            DataEncryptDecryptService service)
+            DataProtectorService service)
         {
             //Act
             var actual = service.DecodeData("&^%$");
@@ -56,7 +56,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure
             string id,
             [Frozen] Mock<IDataProtector> mockProtector,
             [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            DataEncryptDecryptService service)
+            DataProtectorService service)
         {
             //Arrange
             var encodedData = Encoding.UTF8.GetBytes(id);
@@ -79,7 +79,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure
             Guid id,
             [Frozen] Mock<IDataProtector> mockProtector,
             [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            DataEncryptDecryptService service)
+            DataProtectorService service)
         {
             var encodedData = Encoding.UTF8.GetBytes(id.ToString());
             var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
@@ -105,7 +105,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Infrastructure
             Guid id,
             [Frozen] Mock<IDataProtector> mockProtector,
             [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            DataEncryptDecryptService service)
+            DataProtectorService service)
         {
             //Arrange
             var toEncode = WebEncoders.Base64UrlDecode(id.ToString());
