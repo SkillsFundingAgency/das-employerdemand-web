@@ -53,24 +53,22 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task Then_If_The_Interest_Is_Already_Verified_Then_Redirected_To_Complete(
             int courseId,
             Guid demandId,
+            string encodedId,
             GetUnverifiedEmployerCourseDemandQueryResult mediatorResult,
-            [Frozen] Mock<IDataProtector> protector,
-            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IDataEncryptDecryptService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            var toEncode = WebEncoders.Base64UrlDecode(demandId.ToString());
-            provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
-            protector.Setup(c => c.Protect(It.Is<byte[]>(
-                x => x[0].Equals(Encoding.UTF8.GetBytes($"{demandId}")[0])))).Returns(toEncode);
+            
             mediatorResult.CourseDemand.EmailVerified = true;
             mediator.Setup(x =>
                     x.Send(It.Is<GetUnverifiedEmployerCourseDemandQuery>(c => 
                             c.Id.Equals(demandId))
                         , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
+            dataEncryptDecryptService.Setup(x => x.EncodedData(demandId)).Returns(encodedId);
             
             //Act
             var actual = await controller.VerifyEmployerDemandEmail(courseId, demandId) as RedirectToRouteResult;
@@ -82,7 +80,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(courseId);
             actual.RouteValues.ContainsKey("demandId").Should().BeTrue();
-            actual.RouteValues["demandId"].Should().Be(WebEncoders.Base64UrlEncode(toEncode));
+            actual.RouteValues["demandId"].Should().Be(encodedId);
         }
 
         [Test, MoqAutoData]
