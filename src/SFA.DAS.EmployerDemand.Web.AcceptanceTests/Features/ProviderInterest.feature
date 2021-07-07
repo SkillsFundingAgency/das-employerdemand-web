@@ -10,3 +10,8 @@ When I navigate to the following url: /10000001/find-apprenticeship-opportunitie
 Then an http status code of 200 is returned
 And the page content includes the following: Find employers that need a training provider
 
+@MockApiClient
+Scenario: Filter Demands
+When I navigate to the following url: /10000001/find-apprenticeship-opportunities?SelectedCourseId=50  
+Then the Api is called with the course id 50
+
