@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
 using SFA.DAS.EmployerDemand.Domain.Demand;
-using SFA.DAS.EmployerDemand.Web.Controllers;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
 {

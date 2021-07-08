@@ -1,5 +1,4 @@
 using System;
-using System.Text.RegularExpressions;
 using SFA.DAS.EmployerDemand.Domain.Demand;
 
 namespace SFA.DAS.EmployerDemand.Web.Models
