@@ -6,7 +6,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
     public class RegisterCourseDemandViewModel : CourseDemandViewModelBase
     {
         public Guid? CreateDemandId { get ; set ; }
-        public bool? NumberOfApprenticesKnown;
+        public bool? NumberOfApprenticesKnown { get; set; }
         public TrainingCourseViewModel TrainingCourse { get; set; }
 
         public string OrganisationName { get; set; }

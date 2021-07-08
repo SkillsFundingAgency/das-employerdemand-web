@@ -28,29 +28,7 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
             }
             if (item.NumberOfApprenticesKnown != null && item.NumberOfApprenticesKnown.Value)
             {
-
-                var tryConvert = int.TryParse(item.NumberOfApprentices, out var numberOfApprentices);
-                
-                if (!tryConvert && numberOfApprentices == 0 && string.IsNullOrEmpty(item.NumberOfApprentices))
-                {
-                    validationResult.AddError(nameof(item.NumberOfApprentices),"Enter the number of apprentices");    
-                }
-                if (!tryConvert && numberOfApprentices == 0 && !string.IsNullOrEmpty(item.NumberOfApprentices))
-                {
-                    validationResult.AddError(nameof(item.NumberOfApprentices),"Number of apprentices must be 9999 or less");    
-                }
-                if (tryConvert && numberOfApprentices == 0)
-                {
-                    validationResult.AddError(nameof(item.NumberOfApprentices),"Enter the number of apprentices");
-                }
-                if (tryConvert && numberOfApprentices < 0)
-                {
-                    validationResult.AddError(nameof(item.NumberOfApprentices),"Number of apprentices must be 1 or more");    
-                }
-                if (tryConvert && numberOfApprentices > 9999)
-                {
-                    validationResult.AddError(nameof(item.NumberOfApprentices),"Number of apprentices must be 9999 or less");    
-                }
+                validationResult = CheckNumberOfApprentices(item, validationResult);
             }
 
             if (string.IsNullOrEmpty(item.OrganisationName))
@@ -58,6 +36,40 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
                 validationResult.AddError(nameof(item.OrganisationName), "Enter the name of the organisation");
             }
 
+            validationResult = CheckEmail(item, validationResult);
+
+            return Task.FromResult(validationResult);
+        }
+
+        private ValidationResult CheckNumberOfApprentices(CreateCachedCourseDemandCommand item, ValidationResult validationResult)
+        {
+            var tryConvert = int.TryParse(item.NumberOfApprentices, out var numberOfApprentices);
+
+            if (!tryConvert && numberOfApprentices == 0 && string.IsNullOrEmpty(item.NumberOfApprentices))
+            {
+                validationResult.AddError(nameof(item.NumberOfApprentices), "Enter the number of apprentices");
+            }
+            if (!tryConvert && numberOfApprentices == 0 && !string.IsNullOrEmpty(item.NumberOfApprentices))
+            {
+                validationResult.AddError(nameof(item.NumberOfApprentices), "Number of apprentices must be 9999 or less");
+            }
+            if (tryConvert && numberOfApprentices == 0)
+            {
+                validationResult.AddError(nameof(item.NumberOfApprentices), "Enter the number of apprentices");
+            }
+            if (tryConvert && numberOfApprentices < 0)
+            {
+                validationResult.AddError(nameof(item.NumberOfApprentices), "Number of apprentices must be 1 or more");
+            }
+            if (tryConvert && numberOfApprentices > 9999)
+            {
+                validationResult.AddError(nameof(item.NumberOfApprentices), "Number of apprentices must be 9999 or less");
+            }
+            return validationResult;
+        }
+
+        private ValidationResult CheckEmail(CreateCachedCourseDemandCommand item, ValidationResult validationResult)
+        {
             if (string.IsNullOrEmpty(item.ContactEmailAddress))
             {
                 validationResult.AddError(nameof(item.ContactEmailAddress), "Enter an email address");
@@ -74,11 +86,11 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
                 }
                 catch (FormatException)
                 {
-                    validationResult.AddError(nameof(item.ContactEmailAddress),"Enter an email address in the correct format, like name@example.com");
+                    validationResult.AddError(nameof(item.ContactEmailAddress), "Enter an email address in the correct format, like name@example.com");
                 }
             }
 
-            return Task.FromResult(validationResult);
+            return validationResult;
         }
     }
 }
