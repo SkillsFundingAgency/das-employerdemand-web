@@ -35,7 +35,7 @@ namespace SFA.DAS.EmployerDemand.Web.Models
                 ProviderWebsite = source.ProviderContactDetails?.Website ?? string.Empty,
                 ProviderTelephoneNumber = source.ProviderContactDetails?.PhoneNumber ?? string.Empty,
                 SelectedEmployerDemandIds = source.EmployerDemandIds != null ? source.EmployerDemandIds.ToList() : new List<Guid>(),
-                Id = source.Id
+                Id = source.Id == Guid.Empty ? null : source.Id
             };
         }
         
