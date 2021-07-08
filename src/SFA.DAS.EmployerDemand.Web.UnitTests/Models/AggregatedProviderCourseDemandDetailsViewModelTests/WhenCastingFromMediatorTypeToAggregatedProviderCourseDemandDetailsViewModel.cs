@@ -125,5 +125,19 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Models.AggregatedProviderCourseDe
             //Assert
             actual.Id.Should().BeNull();
         }
+        
+        [Test, AutoData]
+        public void Then_If_Id_Is_Empty_Guid_Then_Null_Set(
+            GetProviderEmployerDemandDetailsQueryResult source)
+        {
+            //Arrange
+            source.Id = Guid.Empty;
+
+            //Act
+            var actual = (AggregatedProviderCourseDemandDetailsViewModel) source;
+
+            //Assert
+            actual.Id.Should().BeNull();
+        }
     }
 }
