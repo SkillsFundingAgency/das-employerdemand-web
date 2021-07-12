@@ -83,6 +83,35 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(courseId);
         }
+        
+        [Test, MoqAutoData]
+        public async Task And_The_Command_Result_Is_Anonymised_Then_Redirect_To_RestartInterest(
+            int courseId,
+            string id,
+            Guid demandId,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
+            VerifyEmployerCourseDemandCommandResult mediatorResult,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] RegisterDemandController controller)
+        {
+            //Arrange
+            dataEncryptDecryptService.Setup(x => x.DecodeData(id)).Returns(demandId);
+            mediatorResult.EmployerDemand.ContactEmail = string.Empty;
+            mediator.Setup(x =>
+                    x.Send(It.Is<VerifyEmployerCourseDemandCommand>(c => 
+                            c.Id.Equals(demandId))
+                        , It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
+            
+            //Act
+            var actual = await controller.RegisterDemandCompleted(courseId, id) as RedirectToRouteResult;
+            
+            //Assert
+            actual.Should().NotBeNull();
+            actual!.RouteName.Should().Be(RouteNames.RestartInterest);
+            actual!.RouteValues.ContainsKey("demandId").Should().BeTrue();
+            actual!.RouteValues["demandId"].Should().Be(id);
+        }
 
         [Test, MoqAutoData]
         public async Task Then_If_The_Id_Is_Not_A_Guid_Then_Redirect_To_StartRegisterDemand(

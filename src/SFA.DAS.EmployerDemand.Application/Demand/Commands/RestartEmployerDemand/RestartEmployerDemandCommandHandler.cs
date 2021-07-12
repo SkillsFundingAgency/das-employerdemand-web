@@ -23,7 +23,8 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.RestartEmployerDema
                 EmailVerified = result.EmailVerified,
                 RestartDemandExists = result.RestartDemandExists,
                 TrainingCourseId = result.TrainingCourseId,
-                LastStartDate = result.LastStartDate
+                LastStartDate = result.LastStartDate,
+                ContactEmail = result.ContactEmail
             };
         }
     }
