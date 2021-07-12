@@ -4,12 +4,13 @@ using SFA.DAS.EmployerDemand.Application.Locations.Services;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 using SFA.DAS.EmployerDemand.Infrastructure.Api;
 using SFA.DAS.EmployerDemand.Infrastructure.Services;
+using SFA.DAS.EmployerDemand.Web.Infrastructure;
 
 namespace SFA.DAS.EmployerDemand.Web.AppStart
 {
     public static class AddServiceRegistrationExtension
     {
-        public static void AddServiceRegistration(this IServiceCollection services)
+        public static void AddServiceRegistration(this IServiceCollection services, bool devDecrypt)
         {
             services.AddHttpContextAccessor();
             
@@ -18,6 +19,15 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
             services.AddTransient<IFatUrlBuilder, FatUrlBuilderService>();
             services.AddTransient<ILocationService, LocationService>();
             services.AddTransient<ICacheStorageService, CacheStorageService>();
+
+            if (devDecrypt)
+            {
+                services.AddTransient<IDataProtectorService, DevDataProtectorService>();
+            }
+            else
+            {
+                services.AddTransient<IDataProtectorService, DataProtectorService>();
+            }
         }
     }
 }

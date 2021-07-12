@@ -16,6 +16,7 @@ using SFA.DAS.EmployerDemand.Application.Demand.Commands.StopEmployerCourseDeman
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.Controllers;
+using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
 
@@ -26,22 +27,15 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         [Test, MoqAutoData]
         public async Task Then_Mediator_Is_Called_And_The_ViewModel_Returned(
             Guid employerDemandId,
+            string encodedEmployerDemandId,
             StopEmployerCourseDemandResult mediatorResult,
-            [Frozen] Mock<IDataProtector> mockProtector,
-            [Frozen] Mock<IDataProtectionProvider> mockProvider,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            var encodedData = Encoding.UTF8.GetBytes(employerDemandId.ToString());
-            var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
-            mockProtector
-                .Setup(sut => sut.Unprotect(It.IsAny<byte[]>()))
-                .Returns(encodedData);
-            mockProvider
-                .Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName))
-                .Returns(mockProtector.Object);
+            dataEncryptDecryptService.Setup(x => x.DecodeData(encodedEmployerDemandId)).Returns(employerDemandId);
             mockMediator
                 .Setup(x => x.Send(
                     It.Is<StopEmployerCourseDemandCommand>(c => c.EmployerDemandId == employerDemandId)
@@ -59,46 +53,13 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
 
         [Test, MoqAutoData]
         public async Task And_Id_Not_Parseable_Then_Redirect_To_FAT(
-            string employerDemandId,
-            [Frozen] Mock<IDataProtector> mockProtector,
-            [Frozen] Mock<IDataProtectionProvider> mockProvider,
+            string encodedEmployerDemandId,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            var encodedData = Encoding.UTF8.GetBytes(employerDemandId.ToString());
-            var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
-            mockProtector
-                .Setup(sut => sut.Unprotect(It.IsAny<byte[]>()))
-                .Returns(encodedData);
-            mockProvider
-                .Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName))
-                .Returns(mockProtector.Object);
-            
-            //Act
-            var actual = await controller.StoppedInterest(encodedEmployerDemandId) as RedirectResult;
-            
-            //Assert
-            actual.Url.Should().Be(mockOptions.Object.Value.FindApprenticeshipTrainingUrl);
-        }
-
-        [Test, MoqAutoData]
-        public async Task And_CryptoException_Then_Redirect_To_FAT(
-            string employerDemandId,
-            [Frozen] Mock<IDataProtector> mockProtector,
-            [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
-            [Greedy] RegisterDemandController controller)
-        {
-            //Arrange
-            var encodedData = Encoding.UTF8.GetBytes(employerDemandId.ToString());
-            var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
-            mockProtector
-                .Setup(sut => sut.Unprotect(It.IsAny<byte[]>()))
-                .Throws<CryptographicException>();
-            mockProvider
-                .Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName))
-                .Returns(mockProtector.Object);
+            dataEncryptDecryptService.Setup(x => x.DecodeData(encodedEmployerDemandId)).Returns((Guid?)null);
             
             //Act
             var actual = await controller.StoppedInterest(encodedEmployerDemandId) as RedirectResult;

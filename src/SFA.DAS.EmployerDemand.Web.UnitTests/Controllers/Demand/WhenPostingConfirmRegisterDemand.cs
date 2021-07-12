@@ -29,8 +29,8 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             string verifyUrl,
             string stopSharingUrl,
             string startSharingUrl,
-            [Frozen] Mock<IDataProtector> protector,
-            [Frozen] Mock<IDataProtectionProvider> provider,
+            string encodedDemandId,
+            [Frozen] Mock<IDataProtectorService> protector,
             [Frozen] Mock<IMediator> mediator,
             [Frozen] Mock<IUrlHelper> urlHelper,
             [Greedy] RegisterDemandController controller)
@@ -40,7 +40,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             UrlRouteContext stopSharingRouteValues = null;
             UrlRouteContext startSharingRouteValues = null;
             var httpContext = new DefaultHttpContext();
-            var toEncode = WebEncoders.Base64UrlDecode(demandId.ToString());
             urlHelper
                 .Setup(m => m.RouteUrl(It.Is<UrlRouteContext>(c=>
                     c.RouteName.Equals(RouteNames.RegisterDemandCompleted)
@@ -68,9 +67,7 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
                 {
                     startSharingRouteValues = c;
                 });
-            provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
-            protector.Setup(c => c.Protect(It.Is<byte[]>(
-                x => x[0].Equals(Encoding.UTF8.GetBytes($"{demandId}")[0])))).Returns(toEncode);
+            protector.Setup(x => x.EncodedData(demandId)).Returns(encodedDemandId);
             controller.Url = urlHelper.Object;
             controller.ControllerContext = new ControllerContext
             {
@@ -95,15 +92,15 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             verifyRouteValues.Values.Should().BeEquivalentTo(new
             {
                 id = trainingCourseId,
-                demandId = WebEncoders.Base64UrlEncode(toEncode)
+                demandId = encodedDemandId
             });
             stopSharingRouteValues.Values.Should().BeEquivalentTo(new
             {
-                demandId = WebEncoders.Base64UrlEncode(toEncode)
+                demandId = encodedDemandId
             });
             startSharingRouteValues.Values.Should().BeEquivalentTo(new
             {
-                demandId = WebEncoders.Base64UrlEncode(toEncode)
+                demandId = encodedDemandId
             });
         }
     }

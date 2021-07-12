@@ -70,7 +70,7 @@ namespace SFA.DAS.EmployerDemand.Web
             
             services.AddSingleton<IAuthorizationHandler, ProviderAuthorizationHandler>();
             
-            services.AddServiceRegistration();
+            services.AddServiceRegistration(_configuration["DevDataProtector"] != null && _configuration["DevDataProtector"].Equals("true", StringComparison.CurrentCultureIgnoreCase));
 
             services.AddProviderUiServiceRegistration(_configuration);
 

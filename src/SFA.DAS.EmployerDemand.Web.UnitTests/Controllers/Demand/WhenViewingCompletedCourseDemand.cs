@@ -26,19 +26,16 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         [Test, MoqAutoData]
         public async Task Then_Mediator_Is_Called_With_Decoded_Id_And_The_ViewModel_Returned_And_FAT_Url_Taken_From_Config(
             int courseId,
+            string id,
             Guid demandId,
             VerifyEmployerCourseDemandCommandResult mediatorResult,
-            [Frozen] Mock<IDataProtector> protector,
-            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            var encodedData = Encoding.UTF8.GetBytes($"{demandId}");
-            var id = WebEncoders.Base64UrlEncode(encodedData);
-            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
-            provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
+            dataEncryptDecryptService.Setup(x => x.DecodeData(id)).Returns(demandId);
             mediator.Setup(x =>
                     x.Send(It.Is<VerifyEmployerCourseDemandCommand>(c => 
                             c.Id.Equals(demandId))
@@ -60,24 +57,21 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         [Test, MoqAutoData]
         public async Task Then_If_The_Command_Result_Is_Null_Then_Redirect_To_Start_Demand(
             int courseId,
+            string id,
             Guid demandId,
-            [Frozen] Mock<IDataProtector> protector,
-            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             VerifyEmployerCourseDemandCommandResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            var encodedData = Encoding.UTF8.GetBytes($"{demandId}");
-            var id = WebEncoders.Base64UrlEncode(encodedData);
-            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
-            provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
             mediatorResult.EmployerDemand = null;
             mediator.Setup(x =>
                     x.Send(It.Is<VerifyEmployerCourseDemandCommand>(c => 
                             c.Id.Equals(demandId))
                         , It.IsAny<CancellationToken>()))
                 .ReturnsAsync(mediatorResult);
+            dataEncryptDecryptService.Setup(x => x.DecodeData(id)).Returns(demandId);
             
             //Act
             var actual = await controller.RegisterDemandCompleted(courseId, id) as RedirectToRouteResult;
@@ -93,18 +87,15 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         [Test, MoqAutoData]
         public async Task And_The_Command_Result_Is_Anonymised_Then_Redirect_To_RestartInterest(
             int courseId,
+            string id,
             Guid demandId,
-            [Frozen] Mock<IDataProtector> protector,
-            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             VerifyEmployerCourseDemandCommandResult mediatorResult,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
             //Arrange
-            var encodedData = Encoding.UTF8.GetBytes($"{demandId}");
-            var id = WebEncoders.Base64UrlEncode(encodedData);
-            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
-            provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
+            dataEncryptDecryptService.Setup(x => x.DecodeData(id)).Returns(demandId);
             mediatorResult.EmployerDemand.ContactEmail = string.Empty;
             mediator.Setup(x =>
                     x.Send(It.Is<VerifyEmployerCourseDemandCommand>(c => 
@@ -126,17 +117,14 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         public async Task Then_If_The_Id_Is_Not_A_Guid_Then_Redirect_To_StartRegisterDemand(
             int courseId,
             string demandId,
-            [Frozen] Mock<IDataProtector> protector,
-            [Frozen] Mock<IDataProtectionProvider> provider,
+            [Frozen] Mock<IDataProtectorService> dataEncryptDecryptService,
             [Greedy] RegisterDemandController controller)
         {
-            var encodedData = Encoding.UTF8.GetBytes($"{demandId}");
-            var id = WebEncoders.Base64UrlEncode(encodedData);
-            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Returns(encodedData);
-            provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
+            //Arrange
+            dataEncryptDecryptService.Setup(x => x.DecodeData(It.IsAny<string>())).Returns((Guid?) null);
             
             //Act
-            var actual = await controller.RegisterDemandCompleted(courseId, id) as RedirectToRouteResult;
+            var actual = await controller.RegisterDemandCompleted(courseId, demandId) as RedirectToRouteResult;
             
             //Assert
             Assert.IsNotNull(actual);
@@ -146,28 +134,5 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             actual.RouteValues["Id"].Should().Be(courseId);
         }
         
-        [Test, MoqAutoData]
-        public async Task Then_If_The_Id_Can_Not_Be_Decoded_Then_Redirect_To_StartRegisterDemand(
-            int courseId,
-            string demandId,
-            [Frozen] Mock<IDataProtector> protector,
-            [Frozen] Mock<IDataProtectionProvider> provider,
-            [Greedy] RegisterDemandController controller)
-        {
-            var encodedData = Encoding.UTF8.GetBytes($"{demandId}");
-            var id = WebEncoders.Base64UrlEncode(encodedData);
-            protector.Setup(sut => sut.Unprotect(It.IsAny<byte[]>())).Throws<CryptographicException>();
-            provider.Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName)).Returns(protector.Object);
-            
-            //Act
-            var actual = await controller.RegisterDemandCompleted(courseId, id) as RedirectToRouteResult;
-            
-            //Assert
-            Assert.IsNotNull(actual);
-            
-            actual.RouteName.Should().Be(RouteNames.StartRegisterDemand);
-            actual.RouteValues.ContainsKey("Id").Should().BeTrue();
-            actual.RouteValues["Id"].Should().Be(courseId);
-        }
     }
 }

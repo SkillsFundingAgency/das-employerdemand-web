@@ -103,6 +103,14 @@ It is possible to use the Provider stub Authentication handler if you are using 
 ```
 This will then automatically authenticate and add the correct claims for your session.
 
+### Dev DataProtector
+
+It is possible to use the DevDataProtectorService for encoding and decoding data in the url. To use the dev service which simply passes the data through you can enable the following in your `appsettings.developement.json` file:
+
+```
+"DevDataProtector": "true",
+```
+
 ## 🔗 External Dependencies
 
 Provider Authentication is managed via Provider IDAMS

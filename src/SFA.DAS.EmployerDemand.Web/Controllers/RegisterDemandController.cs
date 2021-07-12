@@ -1,11 +1,8 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using MediatR;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseDemand;
@@ -17,7 +14,6 @@ using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCachedCreateCourseDem
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetStartCourseDemand;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetUnverifiedEmployerCourseDemand;
-using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
 
@@ -29,18 +25,18 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         private readonly IMediator _mediator;
         private readonly ILogger<RegisterDemandController> _logger;
         private readonly Domain.Configuration.EmployerDemand _config;
-        private readonly IDataProtector _employerDemandDataProtector;
+        private readonly IDataProtectorService _employerDemandDataProtector;
 
         public RegisterDemandController (
             IMediator mediator, 
             IOptions<Domain.Configuration.EmployerDemand> config,
-            IDataProtectionProvider provider,
+            IDataProtectorService employerDemandDataProtector,
             ILogger<RegisterDemandController> logger)
         {
             _mediator = mediator;
             _logger = logger;
             _config = config.Value;
-            _employerDemandDataProtector = provider.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName);
+            _employerDemandDataProtector = employerDemandDataProtector;
         }
 
         [HttpGet]
@@ -143,8 +139,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/check-answers", Name = RouteNames.PostConfirmRegisterDemand)]
         public async Task<IActionResult> PostConfirmRegisterDemand(int id, Guid createDemandId)
         {
-            var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
-                System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
+            var encodedId = _employerDemandDataProtector.EncodedData(createDemandId);
 
             var verifyUrl = Url.RouteUrl(RouteNames.RegisterDemandCompleted, new
             {
@@ -183,7 +178,8 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("course/{id}/complete", Name = RouteNames.RegisterDemandCompleted)]
         public async Task<IActionResult> RegisterDemandCompleted(int id, [FromQuery] string demandId)
         {
-            var decodedDemandId = DecodeDemandId(demandId);
+            var decodedDemandId = _employerDemandDataProtector.DecodeData(demandId);
+
             if (!decodedDemandId.HasValue)
             {
                 return RedirectToRoute(RouteNames.StartRegisterDemand, new {Id = id});
@@ -225,8 +221,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
 
             if (model.Verified)
             {
-                var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
-                    System.Text.Encoding.UTF8.GetBytes($"{createDemandId}")));
+                var encodedId = _employerDemandDataProtector.EncodedData(createDemandId);
                 
                 return RedirectToRoute(RouteNames.RegisterDemandCompleted, new {Id = id, demandId = encodedId});
             }
@@ -238,7 +233,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("stopped-interest/", Name = RouteNames.StoppedInterest)]
         public async Task<IActionResult> StoppedInterest([FromQuery] string demandId)
         {
-            var decodedDemandId = DecodeDemandId(demandId);
+            var decodedDemandId = _employerDemandDataProtector.DecodeData(demandId);
 
             if (!decodedDemandId.HasValue)
             {
@@ -262,7 +257,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         [Route("restart-interest/", Name = RouteNames.RestartInterest)]
         public async Task<IActionResult> RestartInterest([FromQuery] string demandId)
         {
-            var decodedDemandId = DecodeDemandId(demandId);
+            var decodedDemandId = _employerDemandDataProtector.DecodeData(demandId);
 
             if (!decodedDemandId.HasValue)
             {
@@ -286,8 +281,7 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             
             if (result.EmailVerified && result.RestartDemandExists)
             {
-                var encodedId = WebEncoders.Base64UrlEncode(_employerDemandDataProtector.Protect(
-                    System.Text.Encoding.UTF8.GetBytes($"{result.Id}")));
+                var encodedId = _employerDemandDataProtector.EncodedData(result.Id);
                 return new RedirectToRouteResult(RouteNames.RegisterDemandCompleted, new {id = result.TrainingCourseId, demandId = encodedId});
             }
 
@@ -307,28 +301,6 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             var result = await _mediator.Send(new GetCreateCourseDemandQuery {TrainingCourseId = request.TrainingCourseId});
             model.TrainingCourse = result.CourseDemand.Course;
             return model;
-        }
-
-
-        private Guid? DecodeDemandId(string encodedId)
-        {
-            try
-            {
-                var base64EncodedBytes = WebEncoders.Base64UrlDecode(encodedId);
-                var encodedDemandId = System.Text.Encoding.UTF8.GetString(_employerDemandDataProtector.Unprotect(base64EncodedBytes));
-                var result = Guid.TryParse(encodedDemandId, out var demandId);
-                return result ? demandId : (Guid?) null;
-            }
-            catch (FormatException e)
-            {
-                _logger.LogInformation(e,"Unable to decode employer demand id from request");
-            }
-            catch (CryptographicException e)
-            {
-                _logger.LogInformation(e, "Unable to decode employer demand id from request");
-            }
-
-            return null;
         }
 
         private bool CourseExpired(DateTime? lastStartDate)
