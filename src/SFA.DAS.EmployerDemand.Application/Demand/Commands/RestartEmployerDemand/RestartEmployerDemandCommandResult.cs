@@ -9,5 +9,6 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.RestartEmployerDema
         public bool EmailVerified { get; set; }
         public int TrainingCourseId { get ; set ; }
         public DateTime? LastStartDate { get; set; }
+        public string ContactEmail { get; set; }
     }
 }

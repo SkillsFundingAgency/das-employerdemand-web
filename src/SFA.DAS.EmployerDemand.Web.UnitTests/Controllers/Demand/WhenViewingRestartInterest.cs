@@ -28,7 +28,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             RestartEmployerDemandCommandResult mediatorResult,
             [Frozen] Mock<IDataProtector> mockProtector,
             [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)
         {
@@ -62,12 +61,11 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
         }
 
         [Test, MoqAutoData]
-        public async Task Then_If_Demand_Already_Created_And_Not_Verified_Then_Redirect_To_VerifyEmail(
+        public async Task Then_If_Demand_Already_Created_And_Not_Verified_Then_Redirect_To_ConfirmEmployerDemandEmail(
             Guid employerDemandId,
             RestartEmployerDemandCommandResult mediatorResult,
             [Frozen] Mock<IDataProtector> mockProtector,
             [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)
         {
@@ -106,7 +104,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             RestartEmployerDemandCommandResult mediatorResult,
             [Frozen] Mock<IDataProtector> mockProtector,
             [Frozen] Mock<IDataProtectionProvider> mockProvider,
-            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> mockOptions,
             [Frozen] Mock<IMediator> mockMediator,
             [Greedy] RegisterDemandController controller)
         {
@@ -228,6 +225,45 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             actual.Url.Should().Be($"{baseUrl}/courses/{mediatorResult.TrainingCourseId}");
             actual.Permanent.Should().BeFalse();
             actual.PreserveMethod.Should().BeTrue();
+        }
+
+        [Test, MoqAutoData]
+        public async Task And_Email_Anonymised_Then_Redirect_To_RegisterDemand(
+            Guid employerDemandId,
+            RestartEmployerDemandCommandResult mediatorResult,
+            [Frozen] Mock<IDataProtector> mockProtector,
+            [Frozen] Mock<IDataProtectionProvider> mockProvider,
+            [Frozen] Mock<IMediator> mockMediator,
+            [Greedy] RegisterDemandController controller)
+        {
+            //Arrange
+            mediatorResult.EmailVerified = true;
+            mediatorResult.RestartDemandExists = false;
+            mediatorResult.LastStartDate = DateTime.Today.AddDays(1);
+            mediatorResult.ContactEmail = string.Empty;
+            var encodedData = Encoding.UTF8.GetBytes(employerDemandId.ToString());
+            var encodedEmployerDemandId = WebEncoders.Base64UrlEncode(encodedData);
+            mockProtector
+                .Setup(sut => sut.Unprotect(It.IsAny<byte[]>()))
+                .Returns(encodedData);
+            mockProvider
+                .Setup(x => x.CreateProtector(EmployerDemandConstants.EmployerDemandProtectorName))
+                .Returns(mockProtector.Object);
+            mockMediator
+                .Setup(x => x.Send(
+                    It.Is<RestartEmployerDemandCommand>(c => c.EmployerDemandId == employerDemandId)
+                    , It.IsAny<CancellationToken>()))
+                .ReturnsAsync(mediatorResult);
+            
+            //Act
+            var actual = await controller.RestartInterest(encodedEmployerDemandId) as RedirectToRouteResult;
+            
+            //Assert
+            actual.RouteName.Should().Be(RouteNames.RegisterDemand);
+            actual.RouteValues.ContainsKey("Id").Should().BeTrue();
+            actual.RouteValues["Id"].Should().Be(mediatorResult.TrainingCourseId);
+            actual.RouteValues.ContainsKey("CreateDemandId").Should().BeTrue();
+            actual.RouteValues["CreateDemandId"].Should().Be(mediatorResult.Id);
         }
     }
 }

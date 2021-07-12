@@ -27,7 +27,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             int courseId,
             Guid demandId,
             GetUnverifiedEmployerCourseDemandQueryResult mediatorResult,
-            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
@@ -43,10 +42,34 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             var actual = await controller.VerifyEmployerDemandEmail(courseId, demandId) as ViewResult;
             
             //Assert
-            Assert.IsNotNull(actual);
+            actual.Should().NotBeNull();
             var actualModel = actual.Model as VerifyEmployerCourseDemandViewModel;
-            Assert.IsNotNull(actualModel);
+            actualModel.Should().NotBeNull();
             actualModel.Verified.Should().BeFalse();
+        }
+
+        [Test, MoqAutoData]
+        public async Task Then_If_The_Interest_Does_Not_Exist_Then_Redirected_To_Start_Create_Interest(
+            int courseId,
+            Guid demandId,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] RegisterDemandController controller)
+        {
+            //Arrange
+            mediator.Setup(x =>
+                    x.Send(It.Is<GetUnverifiedEmployerCourseDemandQuery>(c => 
+                            c.Id.Equals(demandId))
+                        , It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new GetUnverifiedEmployerCourseDemandQueryResult{CourseDemand = null});
+            
+            //Act
+            var actual = await controller.VerifyEmployerDemandEmail(courseId, demandId) as RedirectToRouteResult;
+            
+            //Assert
+            actual.Should().NotBeNull();
+            actual.RouteName.Should().Be(RouteNames.StartRegisterDemand);
+            actual.RouteValues.ContainsKey("Id").Should().BeTrue();
+            actual.RouteValues["Id"].Should().Be(courseId);
         }
 
         [Test, MoqAutoData]
@@ -56,7 +79,6 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             GetUnverifiedEmployerCourseDemandQueryResult mediatorResult,
             [Frozen] Mock<IDataProtector> protector,
             [Frozen] Mock<IDataProtectionProvider> provider,
-            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
             [Frozen] Mock<IMediator> mediator,
             [Greedy] RegisterDemandController controller)
         {
@@ -76,39 +98,12 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             var actual = await controller.VerifyEmployerDemandEmail(courseId, demandId) as RedirectToRouteResult;
             
             //Assert
-            Assert.IsNotNull(actual);
-            
+            actual.Should().NotBeNull();
             actual.RouteName.Should().Be(RouteNames.RegisterDemandCompleted);
             actual.RouteValues.ContainsKey("Id").Should().BeTrue();
             actual.RouteValues["Id"].Should().Be(courseId);
             actual.RouteValues.ContainsKey("demandId").Should().BeTrue();
             actual.RouteValues["demandId"].Should().Be(WebEncoders.Base64UrlEncode(toEncode));
-        }
-
-        [Test, MoqAutoData]
-        public async Task Then_If_The_Interest_Does_Not_Exist_Then_Redirected_To_Start_Create_Interest(
-            int courseId,
-            Guid demandId,
-            [Frozen] Mock<IOptions<Domain.Configuration.EmployerDemand>> config,
-            [Frozen] Mock<IMediator> mediator,
-            [Greedy] RegisterDemandController controller)
-        {
-            //Arrange
-            mediator.Setup(x =>
-                    x.Send(It.Is<GetUnverifiedEmployerCourseDemandQuery>(c => 
-                            c.Id.Equals(demandId))
-                        , It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new GetUnverifiedEmployerCourseDemandQueryResult{CourseDemand = null});
-            
-            //Act
-            var actual = await controller.VerifyEmployerDemandEmail(courseId, demandId) as RedirectToRouteResult;
-            
-            //Assert
-            Assert.IsNotNull(actual);
-            
-            actual.RouteName.Should().Be(RouteNames.StartRegisterDemand);
-            actual.RouteValues.ContainsKey("Id").Should().BeTrue();
-            actual.RouteValues["Id"].Should().Be(courseId);
         }
     }
 }

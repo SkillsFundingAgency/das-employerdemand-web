@@ -14,10 +14,10 @@
         -0.773876
       ]}
   },
-  "restartDemandExists" : false,
-  "emailVerified" : false,
+  "restartDemandExists" : true,
+  "emailVerified" : true,
   "organisationName" : "test org",
-  "contactEmail" : "test@test.com",
+  "contactEmail" : "",
   "numberOfApprentices" : 2,
   "id" : "3F88445E-30D2-46A7-A133-347E43AA6E8D"
 }
