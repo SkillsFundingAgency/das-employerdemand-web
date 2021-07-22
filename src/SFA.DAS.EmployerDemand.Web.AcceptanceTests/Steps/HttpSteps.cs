@@ -34,6 +34,7 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
             _context.Set(response, ContextKeys.HttpResponse);
         }
 
+        [Given("I post to the following url: (.*)")]
         [When("I post to the following url: (.*)")]
         public async Task WhenIPostToTheFollowingUrl(string url, Table formBody)
         {
@@ -57,7 +58,34 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
 
             result.StatusCode.Should().Be(httpStatusCode);
         }
-        
-    }
-}
 
+        [When("I navigate to location header url")]
+        public async Task WhenINavigateToTheLocationHeaderUrl()
+        {
+            if (!_context.TryGetValue<HttpResponseMessage>(ContextKeys.HttpResponse, out var result))
+            {
+                Assert.Fail($"scenario context does not contain value for key [{ContextKeys.HttpResponse}]");
+            }
+
+            var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
+            var continuedResponse = await client.GetAsync(result.Headers.Location);
+            _context.Set(continuedResponse, ContextKeys.HttpResponse);
+        }
+
+        [When(@"I post the viewed page")]
+        public async Task WhenIPostTheViewedPageAsync()
+        {
+            if (!_context.TryGetValue<HttpResponseMessage>(ContextKeys.HttpResponse, out var result))
+            {
+                Assert.Fail($"scenario context does not contain value for key [{ContextKeys.HttpResponse}]");
+            }
+
+            var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
+            var continuedResponse = await client.PostAsync(result.RequestMessage.RequestUri.PathAndQuery, null);
+
+            _context.Set(continuedResponse, ContextKeys.HttpResponse);
+        }
+
+
+}
+}
