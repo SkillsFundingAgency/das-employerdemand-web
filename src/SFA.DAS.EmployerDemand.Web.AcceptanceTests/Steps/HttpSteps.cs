@@ -82,11 +82,11 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
 
             var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
             HttpContent content = null;
-            var continuedResponse = await client.PostAsync(result.RequestMessage.RequestUri.PathAndQuery, content);
+            var continuedResponse = await client.PostAsync(result.RequestMessage.RequestUri.PathAndQuery, null);
+
             _context.Set(continuedResponse, ContextKeys.HttpResponse);
         }
 
 
 }
 }
-
