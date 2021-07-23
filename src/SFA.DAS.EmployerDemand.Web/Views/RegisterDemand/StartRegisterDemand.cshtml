@@ -11,10 +11,11 @@
         <div class="govuk-grid-column-two-thirds">
             <h1 class="govuk-heading-xl">
                 Share your interest with training providers
-		    </h1>
+            </h1>
 
-		    <p class="govuk-body">We will share your interest in @Model.TrainingCourse.TitleAndLevel with all training providers.</p>
+            <p class="govuk-body">We will share your interest in @Model.TrainingCourse.TitleAndLevel with all training providers.</p>
             <p class="govuk-body">If a training provider can offer you training, we will send you their contact details.</p>
+            <p class="govuk-body">Only use this service if you are an employer looking for a training provider.</p>
             <p class="govuk-body">
                 <a asp-route="@RouteNames.RegisterDemand" asp-route-id="@Model.TrainingCourse.Id" asp-route-entrypoint="@Model.EntryPoint" class="govuk-button">Start now</a>
             </p>
