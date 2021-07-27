@@ -43,3 +43,6 @@ And the page content includes the following: Enter a real town, city or postcode
 		When I navigate to location header url
 		Then an http status code of 200 is returned
 		And the page content includes the following: Click on the link in the email to confirm the address
+		When I validate the demand 
+		Then an http status code of 200 is returned
+		And the page content includes the following:  We’ve shared this interest with training providers

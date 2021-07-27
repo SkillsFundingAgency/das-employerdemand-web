@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.CodeAnalysis.CSharp;
@@ -79,13 +80,32 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
             {
                 Assert.Fail($"scenario context does not contain value for key [{ContextKeys.HttpResponse}]");
             }
-
             var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
             var continuedResponse = await client.PostAsync(result.RequestMessage.RequestUri.PathAndQuery, null);
-
+            var demandId = HttpUtility.ParseQueryString(result.RequestMessage.RequestUri.Query)["createDemandId"];
+            if (!string.IsNullOrEmpty(demandId))
+            {
+                _context.Set(demandId, ContextKeys.DemandId);
+            }
             _context.Set(continuedResponse, ContextKeys.HttpResponse);
         }
 
 
-}
+        [When(@"I validate the demand")]
+        public async Task WhenIValidateTheDemand()
+        {
+            if (!_context.TryGetValue<string>(ContextKeys.DemandId, out var result))
+            {
+                Assert.Fail($"scenario context does not contain value for key [{ContextKeys.DemandId}]");
+            }
+
+            var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
+            var response = await client.GetAsync($"/registerdemand/course/14/complete?demandId={result}");
+
+            _context.Set(response, ContextKeys.HttpResponse);
+
+        }
+
+
+    }
 }

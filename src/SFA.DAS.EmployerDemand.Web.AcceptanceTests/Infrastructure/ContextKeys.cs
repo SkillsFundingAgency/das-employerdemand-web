@@ -7,5 +7,6 @@
         public const string HttpResponse = nameof(HttpResponse);
         public const string MockApiClient = nameof(MockApiClient);
         public const string ProviderFiltersCookie = nameof(ProviderFiltersCookie);
+        public const string DemandId = nameof(DemandId);
     }
 }
