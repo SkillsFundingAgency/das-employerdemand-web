@@ -106,6 +106,20 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
 
         }
 
+        [When(@"I stop sharing the demand")]
+        public async Task WhenIStopSharingTheDemand()
+        {
+            if (!_context.TryGetValue<string>(ContextKeys.DemandId, out var result))
+            {
+                Assert.Fail($"scenario context does not contain value for key [{ContextKeys.DemandId}]");
+            }
+
+            var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
+            var response = await client.GetAsync($"/registerdemand/stopped-interest?demandId={result}");
+
+            _context.Set(response, ContextKeys.HttpResponse);
+        }
+
 
     }
 }
