@@ -121,5 +121,19 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
         }
 
 
+        [When(@"I restart sharing demand")]
+        public async Task WhenIRestartSharingDemand()
+        {
+            if (!_context.TryGetValue<string>(ContextKeys.DemandId, out var result))
+            {
+                Assert.Fail($"scenario context does not contain value for key [{ContextKeys.DemandId}]");
+            }
+
+            var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
+            var response = await client.GetAsync($"/registerdemand/restart-interest?demandId={result}");
+
+            _context.Set(response, ContextKeys.HttpResponse);
+        }
+
     }
 }

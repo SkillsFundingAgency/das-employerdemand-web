@@ -14,10 +14,10 @@
         -0.773876
       ]}
   },
-  "restartDemandExists" : true,
-  "emailVerified" : true,
+  "restartDemandExists" : false,
+  "emailVerified" : false,
   "organisationName" : "test org",
-  "contactEmail" : "",
+  "contactEmail" : "Bob@bobthebuilder.com",
   "numberOfApprentices" : 2,
   "id" : "3F88445E-30D2-46A7-A133-347E43AA6E8D"
 }
