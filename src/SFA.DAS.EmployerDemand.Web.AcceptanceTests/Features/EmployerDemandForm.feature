@@ -66,7 +66,7 @@ Then an http status code of 302 is returned
 When I navigate to location header url
 Then an http status code of 200 is returned
 And the page content includes the following: Click on the link in the email to confirm the address
-When I stop sharing the demand 
+When I stop the demand 
 Then an http status code of 200 is returned
 And the page content includes the following:  stopped sharing your interest in apprenticeship training with training providers
 
@@ -89,10 +89,10 @@ Then an http status code of 302 is returned
 When I navigate to location header url
 Then an http status code of 200 is returned
 And the page content includes the following: Click on the link in the email to confirm the address
-When I stop sharing the demand 
+When I stop the demand 
 Then an http status code of 200 is returned
 And the page content includes the following:  stopped sharing your interest in apprenticeship training with training providers
-When I restart sharing demand
+When I restart the demand
 Then an http status code of 302 is returned
 When I navigate to location header url
 Then an http status code of 200 is returned
