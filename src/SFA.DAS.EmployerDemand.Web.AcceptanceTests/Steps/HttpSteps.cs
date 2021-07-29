@@ -91,8 +91,8 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
         }
 
 
-        [When(@"I validate the demand")]
-        public async Task WhenIValidateTheDemand()
+        [When(@"I (.*) the demand")]
+        public async Task WhenIValidateTheDemand(string action)
         {
             if (!_context.TryGetValue<string>(ContextKeys.DemandId, out var result))
             {
@@ -100,26 +100,32 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Steps
             }
 
             var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
-            var response = await client.GetAsync($"/registerdemand/course/14/complete?demandId={result}");
+            var url = string.Empty;
 
-            _context.Set(response, ContextKeys.HttpResponse);
-
-        }
-
-        [When(@"I stop sharing the demand")]
-        public async Task WhenIStopSharingTheDemand()
-        {
-            if (!_context.TryGetValue<string>(ContextKeys.DemandId, out var result))
+            switch (action.ToLower())            
             {
-                Assert.Fail($"scenario context does not contain value for key [{ContextKeys.DemandId}]");
+                case "validate":
+                    url = $"/registerdemand/course/14/complete?demandId={result}";
+                    break;
+
+                case "stop":
+                    url = $"/registerdemand/stopped-interest?demandId={result}";
+                    break;
+
+                case "restart":
+                    url = $"/registerdemand/restart-interest?demandId={result}";
+                    break;
+
+                default:
+                    Assert.Fail();
+                    break;
+
             }
 
-            var client = _context.Get<HttpClient>(ContextKeys.HttpClient);
-            var response = await client.GetAsync($"/registerdemand/stopped-interest?demandId={result}");
-
+            var response = await client.GetAsync(url);
             _context.Set(response, ContextKeys.HttpResponse);
-        }
 
+        }
 
     }
 }
