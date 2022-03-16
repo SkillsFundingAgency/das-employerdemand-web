@@ -59,7 +59,6 @@ namespace SFA.DAS.EmployerDemand.Web
         
         public void ConfigureServices(IServiceCollection services)
         {
-            IdentityModelEventSource.ShowPII = true;
             services.Configure<CookiePolicyOptions>(options =>
             {
                 options.CheckConsentNeeded = context => true;
