@@ -32,7 +32,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             var act = new Func<Task>(async () => await handler.Handle(command, CancellationToken.None));
 
             //Assert
-            act.Should().Throw<ValidationException>()
+            act.Should().ThrowAsync<ValidationException>()
                 .WithMessage($"*{propertyName}*");
         }
 
