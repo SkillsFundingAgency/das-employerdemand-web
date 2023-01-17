@@ -68,7 +68,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
 
             //Assert
             service.Verify(x=>x.CreateCacheCourseDemand(It.IsAny<CreateCachedCourseDemandCommand>()), Times.Never);
-            act.Should().Throw<ValidationException>()
+            act.Should().ThrowAsync<ValidationException>()
                 .WithMessage($"*{nameof(command.Location)}|Enter a real town, city or postcode*");
         }
 
@@ -93,7 +93,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
 
             //Assert
             service.Verify(x=>x.CreateCacheCourseDemand(It.IsAny<CreateCachedCourseDemandCommand>()), Times.Never);
-            act.Should().Throw<ValidationException>()
+            act.Should().ThrowAsync<ValidationException>()
                 .WithMessage($"*{nameof(command.Location)}|Enter a real town, city or postcode*");
         }
 
@@ -112,7 +112,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             var act = new Func<Task>(async () => await handler.Handle(command, CancellationToken.None));
 
             //Assert
-            act.Should().Throw<ValidationException>()
+            act.Should().ThrowAsync<ValidationException>()
                 .WithMessage($"*{propertyName}*");
         }
         
@@ -131,7 +131,7 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             var act = new Func<Task>(async () => await handler.Handle(command, CancellationToken.None));
 
             //Assert
-            act.Should().Throw<ValidationException>()
+            act.Should().ThrowAsync<ValidationException>()
                 .WithMessage($"*{nameof(command.Location)}*");
             service.Verify(x => x.GetCreateCourseDemand(It.IsAny<int>(), It.IsAny<string>()), Times.Never);
         }
