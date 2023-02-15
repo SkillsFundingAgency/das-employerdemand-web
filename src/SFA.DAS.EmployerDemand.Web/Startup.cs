@@ -95,6 +95,10 @@ namespace SFA.DAS.EmployerDemand.Web
             
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
 
+            var configuration = _configuration
+                .GetSection(nameof(Domain.Configuration.EmployerDemand))
+                .Get<Domain.Configuration.EmployerDemand>();
+
             services.Configure<RouteOptions>(options =>
                 {
                     options.LowercaseUrls = true;
@@ -108,6 +112,7 @@ namespace SFA.DAS.EmployerDemand.Web
                 })
                 .SetDefaultNavigationSection(NavigationSection.Home)
                 .EnableGoogleAnalytics()
+                .SetDfESignInConfiguration(configuration.UseDfESignIn)
                 .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .SetZenDeskConfiguration(_configuration.GetSection("ProviderZenDeskSettings").Get<ZenDeskConfiguration>());
 
@@ -118,10 +123,6 @@ namespace SFA.DAS.EmployerDemand.Web
             }
             else
             {
-                var configuration = _configuration
-                    .GetSection(nameof(Domain.Configuration.EmployerDemand))
-                    .Get<Domain.Configuration.EmployerDemand>();
-
                 services.AddStackExchangeRedisCache(options =>
                 {
                     options.Configuration = configuration.RedisConnectionString;
