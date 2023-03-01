@@ -8,5 +8,6 @@ namespace SFA.DAS.EmployerDemand.Domain.Configuration
         public string ZendeskSectionId { get; set; }
         public string ZendeskSnippetKey { get; set; }
         public string ZendeskCoBrowsingSnippetKey { get; set; }
+        public bool UseDfESignIn {get; set; }
     }
 }
