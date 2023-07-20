@@ -18,6 +18,10 @@
             "type": "string",
             "defaultValue": "SFA.DAS.EmployerDemand.Web"
         },
+        "configNamesProvider": {
+            "type": "string",
+            "defaultValue": "SFA.DAS.EmployerDemand.Web,SFA.DAS.Provider.DfeSignIn"
+        },
         "version": {
             "type": "string",
             "defaultValue": "1.0"
@@ -348,7 +352,7 @@
                                 },
                                 {
                                     "name": "ConfigNames",
-                                    "value": "[parameters('configNames')]"
+                                    "value": "[parameters('configNamesProvider')]"
                                 },
                                 {
                                     "name": "Cdn:Url",
