@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Configuration.AzureTableStorage;
+using SFA.DAS.DfESignIn.Auth.AppStart;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.AppStart;
@@ -77,8 +78,11 @@ namespace SFA.DAS.EmployerDemand.Web
             services.AddMediatRValidation();
 
             services.AddAuthorizationServicePolicies();
-            
-            
+
+            var configuration = _configuration
+                .GetSection(nameof(Domain.Configuration.EmployerDemand))
+                .Get<Domain.Configuration.EmployerDemand>();
+
 
             if (_configuration["StubProviderAuth"] != null && _configuration["StubProviderAuth"].Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -86,18 +90,27 @@ namespace SFA.DAS.EmployerDemand.Web
             }
             else
             {
-                var providerConfig = _configuration
-                    .GetSection(nameof(ProviderIdams))
-                    .Get<ProviderIdams>();
-                services.AddAndConfigureProviderAuthentication(providerConfig);    
+                if (configuration.UseDfESignIn)
+                {
+                    services.AddAndConfigureDfESignInAuthentication(
+                        _configuration,
+                        "SFA.DAS.ProviderApprenticeshipService",
+                        typeof(CustomServiceRole),
+                        "ProviderRoATP",
+                        "/signout");    
+                }
+                else
+                {
+                    var providerConfig = _configuration
+                        .GetSection(nameof(ProviderIdams))
+                        .Get<ProviderIdams>();
+                    services.AddAndConfigureProviderAuthentication(providerConfig);    
+                }
+                    
             }
             
             
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
-
-            var configuration = _configuration
-                .GetSection(nameof(Domain.Configuration.EmployerDemand))
-                .Get<Domain.Configuration.EmployerDemand>();
 
             services.Configure<RouteOptions>(options =>
                 {
