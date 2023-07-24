@@ -78,8 +78,11 @@ namespace SFA.DAS.EmployerDemand.Web
             services.AddMediatRValidation();
 
             services.AddAuthorizationServicePolicies();
-            
-            
+
+            var configuration = _configuration
+                .GetSection(nameof(Domain.Configuration.EmployerDemand))
+                .Get<Domain.Configuration.EmployerDemand>();
+
 
             if (_configuration["StubProviderAuth"] != null && _configuration["StubProviderAuth"].Equals("true", StringComparison.CurrentCultureIgnoreCase))
             {
@@ -87,7 +90,7 @@ namespace SFA.DAS.EmployerDemand.Web
             }
             else
             {
-                if (_configuration["EmployerDemand:UseDfESignIn"] != null && _configuration["EmployerDemand:UseDfESignIn"].Equals("true", StringComparison.CurrentCultureIgnoreCase))
+                if (configuration.UseDfESignIn)
                 {
                     services.AddAndConfigureDfESignInAuthentication(
                         _configuration,
@@ -108,10 +111,6 @@ namespace SFA.DAS.EmployerDemand.Web
             
             
             services.Configure<IISServerOptions>(options => { options.AutomaticAuthentication = false; });
-
-            var configuration = _configuration
-                .GetSection(nameof(Domain.Configuration.EmployerDemand))
-                .Get<Domain.Configuration.EmployerDemand>();
 
             services.Configure<RouteOptions>(options =>
                 {
