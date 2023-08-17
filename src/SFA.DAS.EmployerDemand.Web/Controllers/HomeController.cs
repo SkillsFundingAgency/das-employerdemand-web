@@ -281,6 +281,11 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
             return View(model);
         }
 
+        [Route("dashboard", Name = RouteNames.Dashboard)]
+        public IActionResult Dashboard()
+        {
+            return RedirectPermanent(_config.DashboardUrl);
+        }
 
         private async  Task<AggregatedProviderCourseDemandDetailsViewModel> BuildAggregatedProviderCourseDemandDetailsViewModel(
             int ukprn,
