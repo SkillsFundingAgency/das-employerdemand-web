@@ -26,6 +26,6 @@ namespace SFA.DAS.EmployerDemand.Web.Infrastructure
         public const string ReviewProviderDetails = "review-provider-details";
         public const string PostCreateProviderInterest = "post-create-provider-interest";
         public const string CreateProviderInterestCompleted = "create-provider-interest-completed";
-        public const string Dashboard = "dasboard";
+        public const string Dashboard = "dashboard";
     }
 }
