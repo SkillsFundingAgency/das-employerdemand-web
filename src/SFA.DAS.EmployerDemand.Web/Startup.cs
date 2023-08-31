@@ -98,7 +98,7 @@ namespace SFA.DAS.EmployerDemand.Web
                         typeof(CustomServiceRole),
                         "ProviderRoATP",
                         "/signout",
-                        "/dashboard");    
+                        "");    
                 }
                 else
                 {
