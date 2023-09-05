@@ -97,7 +97,8 @@ namespace SFA.DAS.EmployerDemand.Web
                         "SFA.DAS.ProviderApprenticeshipService",
                         typeof(CustomServiceRole),
                         "ProviderRoATP",
-                        "/signout");    
+                        "/signout",
+                        "");    
                 }
                 else
                 {
