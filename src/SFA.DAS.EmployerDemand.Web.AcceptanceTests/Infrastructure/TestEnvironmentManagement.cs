@@ -9,6 +9,8 @@ using Moq;
 using SFA.DAS.EmployerDemand.Domain.Demand.Api.Requests;
 using SFA.DAS.EmployerDemand.Domain.Demand.Api.Responses;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
+using SFA.DAS.EmployerDemand.Domain.ProviderAccounts.Api.Requests;
+using SFA.DAS.EmployerDemand.Domain.ProviderAccounts.Api.Responses;
 using SFA.DAS.EmployerDemand.MockServer;
 using SFA.DAS.EmployerDemand.Web;
 using SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure;
@@ -53,6 +55,9 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure
 
             _mockApiClient.Setup(x => x.Get<GetProviderEmployerDemandResponse>(It.IsAny<GetProviderEmployerDemandRequest>()))
                 .ReturnsAsync(new GetProviderEmployerDemandResponse());
+            
+            _mockApiClient.Setup(x => x.Get<GetProviderAccountResponse>(It.IsAny<GetProviderAccountRequest>()))
+                .ReturnsAsync(new GetProviderAccountResponse{CanAccessService = true});
 
             _server = new TestServer(new WebHostBuilder()
                 .ConfigureTestServices(services => ConfigureTestServices(services, _mockApiClient))
@@ -65,7 +70,7 @@ namespace SFA.DAS.EmployerDemand.Web.AcceptanceTests.Infrastructure
             _context.Set(_mockApiClient, ContextKeys.MockApiClient);
             _context.Set(_staticClient,ContextKeys.HttpClient);
         }
-
+        
         [AfterScenario("WireMockServer")]
         public void StopEnvironment()
         {

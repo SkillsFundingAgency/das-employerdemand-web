@@ -24,6 +24,7 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
                         policy.RequireClaim(ProviderClaims.ProviderUkprn);
                         policy.RequireClaim(ProviderClaims.Service, ProviderDaa, ProviderDab, ProviderDac, ProviderDav);
                         policy.Requirements.Add(new ProviderUkPrnRequirement());
+                        policy.Requirements.Add(new TrainingProviderAllRolesRequirement());
                     });
             });
         }
