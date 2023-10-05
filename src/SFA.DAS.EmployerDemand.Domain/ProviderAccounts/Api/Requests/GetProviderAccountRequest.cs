@@ -11,6 +11,6 @@ namespace SFA.DAS.EmployerDemand.Domain.ProviderAccounts.Api.Requests
             _ukprn = ukprn;
         }
 
-        public string GetUrl => $"ProviderAccounts/{_ukprn}";
+        public string GetUrl => $"provideraccounts/{_ukprn}";
     }
 }

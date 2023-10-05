@@ -12,6 +12,6 @@ public class WhenBuildingGetProviderAccountRequest
     {
         var actual = new GetProviderAccountRequest(ukprn);
 
-        actual.GetUrl.Should().Be($"ProviderAccounts/{ukprn}");
+        actual.GetUrl.Should().Be($"provideraccounts/{ukprn}");
     }
 }
