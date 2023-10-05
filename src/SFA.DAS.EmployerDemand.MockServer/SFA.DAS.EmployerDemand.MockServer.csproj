@@ -64,8 +64,5 @@
         <Content Include="provider-accounts-access.json">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="provider-accounts-no-access.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
     </ItemGroup>
 </Project>
