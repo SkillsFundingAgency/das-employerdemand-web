@@ -53,7 +53,7 @@ public class TrainingProviderAllRolesAuthorizationHandler : AuthorizationHandler
         var result = await _apiClient.Get<GetProviderAccountResponse>(new GetProviderAccountRequest(ukprn));
         if (!result.CanAccessService)
         {
-            currentContext?.Response.Redirect($"{_providerSharedUiConfiguration.DashboardUrl}/error/401");    
+            currentContext?.Response.Redirect($"{_providerSharedUiConfiguration.DashboardUrl}/error/403/invalid-status");    
         }
         context.Succeed(requirement);
     }

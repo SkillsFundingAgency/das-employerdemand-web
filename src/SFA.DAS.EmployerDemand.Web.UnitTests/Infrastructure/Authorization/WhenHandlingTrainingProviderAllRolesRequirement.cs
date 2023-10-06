@@ -84,7 +84,7 @@ public class WhenHandlingTrainingProviderAllRolesRequirement
 
         //Assert
         context.HasSucceeded.Should().BeTrue();
-        httpResponse.Verify(x=>x.Redirect(It.Is<string>(c=>c.Contains("/error/401"))));
+        httpResponse.Verify(x=>x.Redirect(It.Is<string>(c=>c.Contains("/error/403/invalid-status"))));
     }
     [Test, MoqAutoData]
     public async Task Then_Succeeds_If_Provider_Ukprn_Claim_Response_Is_True(
