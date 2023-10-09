@@ -137,6 +137,11 @@ namespace SFA.DAS.EmployerDemand.MockServer
                     .WithBody($"'{Guid.NewGuid()}'")
                 );
 
+            server.Given(Request.Create().WithPath(arg => Regex.IsMatch(arg, "/provideraccounts/\\d+"))
+                .UsingGet()).RespondWith(Response.Create()
+                .WithHeader("Content-Type", "application/json")
+                .WithBodyFromFile("provider-accounts-access.json"));
+            
             return server;
         }
         
