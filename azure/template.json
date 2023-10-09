@@ -222,6 +222,10 @@
                                 {
                                     "name": "Cdn:Url",
                                     "value": "[parameters('cdnUrl')]"
+                                },
+                                {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
                                 }
                             ]
                         }
