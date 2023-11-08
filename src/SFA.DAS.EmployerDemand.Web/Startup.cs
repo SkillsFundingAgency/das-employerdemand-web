@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Logging;
 using SFA.DAS.Configuration.AzureTableStorage;
 using SFA.DAS.DfESignIn.Auth.AppStart;
+using SFA.DAS.DfESignIn.Auth.Enums;
 using SFA.DAS.EmployerDemand.Application.Demand.Queries.GetCreateCourseDemand;
 using SFA.DAS.EmployerDemand.Domain.Configuration;
 using SFA.DAS.EmployerDemand.Web.AppStart;
@@ -69,6 +70,7 @@ namespace SFA.DAS.EmployerDemand.Web
             services.AddConfigurationOptions(_configuration);
             
             services.AddSingleton<IAuthorizationHandler, ProviderAuthorizationHandler>();
+            services.AddSingleton<IAuthorizationHandler, TrainingProviderAllRolesAuthorizationHandler>();
             
             services.AddServiceRegistration(_configuration["DevDataProtector"] != null && _configuration["DevDataProtector"].Equals("true", StringComparison.CurrentCultureIgnoreCase));
 
@@ -96,8 +98,9 @@ namespace SFA.DAS.EmployerDemand.Web
                         _configuration,
                         "SFA.DAS.ProviderApprenticeshipService",
                         typeof(CustomServiceRole),
-                        "ProviderRoATP",
-                        "/signout");    
+                        ClientName.ProviderRoatp,
+                        "/signout",
+                        "");    
                 }
                 else
                 {

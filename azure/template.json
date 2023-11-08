@@ -16,7 +16,7 @@
         },
         "configNames": {
             "type": "string",
-            "defaultValue": "SFA.DAS.EmployerDemand.Web"
+            "defaultValue": "SFA.DAS.EmployerDemand.Web,SFA.DAS.Provider.DfeSignIn"
         },
         "configNamesProvider": {
             "type": "string",
@@ -222,6 +222,10 @@
                                 {
                                     "name": "Cdn:Url",
                                     "value": "[parameters('cdnUrl')]"
+                                },
+                                {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
                                 }
                             ]
                         }
@@ -337,6 +341,10 @@
                                 {
                                     "name": "EnvironmentName",
                                     "value": "[parameters('environmentName')]"
+                                },
+                                {
+                                    "name": "ResourceEnvironmentName",
+                                    "value": "[parameters('resourceEnvironmentName')]"
                                 },
                                 {
                                     "name": "ConfigurationStorageConnectionString",
