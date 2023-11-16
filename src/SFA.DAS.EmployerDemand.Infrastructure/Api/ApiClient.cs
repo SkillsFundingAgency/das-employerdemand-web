@@ -24,9 +24,11 @@ namespace SFA.DAS.EmployerDemand.Infrastructure.Api
         
         public async Task<TResponse> Get<TResponse>(IGetApiRequest request)
         {
-            AddHeaders();
 
-            var response = await _httpClient.GetAsync(request.GetUrl).ConfigureAwait(false);
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Get, request.GetUrl);
+            AddHeaders(httpRequestMessage);
+
+            var response = await _httpClient.SendAsync(httpRequestMessage).ConfigureAwait(false);
 
             if (response.StatusCode.Equals(HttpStatusCode.NotFound))
             {
@@ -46,11 +48,16 @@ namespace SFA.DAS.EmployerDemand.Infrastructure.Api
 
         public async Task<TResponse> Post<TResponse,TPostData>(IPostApiRequest<TPostData> request)
         {
-            AddHeaders();
             
             var stringContent = request.Data != null ? new StringContent(JsonConvert.SerializeObject(request.Data), Encoding.UTF8, "application/json") : null;
 
-            var response = await _httpClient.PostAsync(request.PostUrl, stringContent)
+            var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, request.PostUrl)
+            {
+                Content = stringContent
+            };
+            AddHeaders(httpRequestMessage);
+            
+            var response = await _httpClient.SendAsync(httpRequestMessage)
                 .ConfigureAwait(false);
 
             response.EnsureSuccessStatusCode();
@@ -59,10 +66,10 @@ namespace SFA.DAS.EmployerDemand.Infrastructure.Api
             return JsonConvert.DeserializeObject<TResponse>(json);    
         }
         
-        private void AddHeaders()
+        private void AddHeaders(HttpRequestMessage request)
         {
-            _httpClient.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", _config.Key);
-            _httpClient.DefaultRequestHeaders.Add("X-Version", "1");
+            request.Headers.Add("Ocp-Apim-Subscription-Key", _config.Key);
+            request.Headers.Add("X-Version", "1");
         }
         
     }
