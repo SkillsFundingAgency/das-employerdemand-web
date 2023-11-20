@@ -50,7 +50,8 @@ namespace SFA.DAS.EmployerDemand.Infrastructure.UnitTests.Api
                     "SendAsync", Times.Once(),
                     ItExpr.Is<HttpRequestMessage>(c =>
                         c.Method.Equals(HttpMethod.Post)
-                        && c.RequestUri.AbsoluteUri.Contains(postTestRequest.PostUrl)),
+                        && c.RequestUri.AbsoluteUri.Contains(postTestRequest.PostUrl)
+                        && c.Content.ReadAsStringAsync().Result.Contains(postContent.Id)),
                     ItExpr.IsAny<CancellationToken>()
                 );
             Guid.Parse(actual).Should().Be(responseId);
