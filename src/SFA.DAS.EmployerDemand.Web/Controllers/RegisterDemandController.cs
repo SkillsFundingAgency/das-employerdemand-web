@@ -140,22 +140,27 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
         public async Task<IActionResult> PostConfirmRegisterDemand(int id, Guid createDemandId)
         {
             var encodedId = _employerDemandDataProtector.EncodedData(createDemandId);
+            var hostname = Request.Host.Host;
 
+#if DEBUG
+            // add port number for local testing
+            hostname = hostname + ":" + Request.Host.Port;
+#endif
             var verifyUrl = Url.RouteUrl(RouteNames.RegisterDemandCompleted, new
             {
                 id = id,
                 demandId = encodedId
-            }, Request.Scheme, Request.Host.Host);
+            }, Request.Scheme, hostname );
 
             var stopSharingUrl = Url.RouteUrl(RouteNames.StoppedInterest, new
             {
                 demandId = encodedId
-            }, Request.Scheme, Request.Host.Host);
+            }, Request.Scheme, hostname);
 
             var startSharingUrl = Url.RouteUrl(RouteNames.RestartInterest, new
             {
                 demandId = encodedId
-            }, Request.Scheme, Request.Host.Host);
+            }, Request.Scheme, hostname);
                 
             await _mediator.Send(new CreateCourseDemandCommand
             {
