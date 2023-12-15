@@ -23,7 +23,7 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
                 var redis = ConnectionMultiplexer
                     .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
 
-                services.AddDataProtection()
+                services.AddDataProtection(options => { options.ApplicationDiscriminator = "das-provider";})
                     .SetApplicationName("das-provider")
                     .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
             }
