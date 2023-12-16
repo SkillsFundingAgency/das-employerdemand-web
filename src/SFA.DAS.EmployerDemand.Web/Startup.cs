@@ -92,24 +92,13 @@ namespace SFA.DAS.EmployerDemand.Web
             }
             else
             {
-                if (configuration.UseDfESignIn)
-                {
-                    services.AddAndConfigureDfESignInAuthentication(
+                services.AddAndConfigureDfESignInAuthentication(
                         _configuration,
                         "SFA.DAS.ProviderApprenticeshipService",
                         typeof(CustomServiceRole),
                         ClientName.ProviderRoatp,
                         "/signout",
                         "");    
-                }
-                else
-                {
-                    var providerConfig = _configuration
-                        .GetSection(nameof(ProviderIdams))
-                        .Get<ProviderIdams>();
-                    services.AddAndConfigureProviderAuthentication(providerConfig);    
-                }
-                    
             }
             
             
@@ -129,7 +118,6 @@ namespace SFA.DAS.EmployerDemand.Web
                 .SetDefaultNavigationSection(NavigationSection.Home)
                 .EnableGoogleAnalytics()
                 .SetDfESignInConfiguration(configuration.UseDfESignIn)
-                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .SetZenDeskConfiguration(_configuration.GetSection("ProviderZenDeskSettings").Get<ZenDeskConfiguration>());
 
 

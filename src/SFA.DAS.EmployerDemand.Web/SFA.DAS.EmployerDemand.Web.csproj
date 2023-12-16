@@ -25,7 +25,8 @@
         <PackageReference Include="StackExchange.Redis" Version="2.6.86" />
         <PackageReference Include="StructureMap.Microsoft.DependencyInjection" Version="1.4.0" />
         <PackageReference Include="SFA.DAS.NLog.Targets.Redis" Version="1.1.5" />
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
+        <PackageReference Include="Microsoft.identityModel.Protocols.OpenIdConnect" Version="7.0.3" />
         <PackageReference Include="WebEssentials.AspNetCore.CdnTagHelpers" Version="1.0.21" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.12" />
     </ItemGroup>
