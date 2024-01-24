@@ -216,5 +216,59 @@ namespace SFA.DAS.EmployerDemand.Application.UnitTests.Demand.Commands
             actual.ValidationDictionary[nameof(command.Location)].Should()
                 .Be("Enter a town, city or postcode");
         }
+        
+        [Test, AutoData]
+        public async Task Then_If_An_Invalid_Format_Address_Entered_Marked_As_Invalid(CreateCachedCourseDemandCommand command)
+        {
+            //Arrange
+            command.Location = "<h1>test</h1>";
+            command.NumberOfApprentices = "1";
+            command.ContactEmailAddress = $"{command.ContactEmailAddress}@test.com";
+            var validator = new CreateCourseDemandCommandValidator();
+            
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().BeFalse();
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.Location));
+            actual.ValidationDictionary[nameof(command.Location)].Should()
+                .Be("Enter a real town, city or postcode");
+        }
+        [Test, AutoData]
+        public async Task Then_If_An_Invalid_Format_OrgName_Entered_Marked_As_Invalid(CreateCachedCourseDemandCommand command)
+        {
+            //Arrange
+            command.OrganisationName = "<h1>test</h1>";
+            command.NumberOfApprentices = "1";
+            command.ContactEmailAddress = $"{command.ContactEmailAddress}@test.com";
+            var validator = new CreateCourseDemandCommandValidator();
+            
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().BeFalse();
+            actual.ValidationDictionary.Should().ContainKey(nameof(command.OrganisationName));
+            actual.ValidationDictionary[nameof(command.OrganisationName)].Should()
+                .Be("Enter a valid organisation name");
+        }
+        [Test, AutoData]
+        public async Task Then_If_An_Invalid_Format_OrgName_Entered_With_Allowed_Characters_Is_Valid(CreateCachedCourseDemandCommand command)
+        {
+            //Arrange
+            command.OrganisationName = "AZaz09&@£$€¥#.,:;-'";
+            command.Location = "AZaz09&@£$€¥#.,:;-'";
+            command.NumberOfApprentices = "1";
+            command.ContactEmailAddress = $"{command.ContactEmailAddress}@test.com";
+            var validator = new CreateCourseDemandCommandValidator();
+            
+            //Act
+            var actual = await validator.ValidateAsync(command);
+
+            //Assert
+            actual.IsValid().Should().BeTrue();
+            
+        }
     }
 }
