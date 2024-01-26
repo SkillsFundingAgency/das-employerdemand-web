@@ -14,6 +14,7 @@ using SFA.DAS.EmployerDemand.Web.Controllers;
 using SFA.DAS.EmployerDemand.Web.Infrastructure;
 using SFA.DAS.EmployerDemand.Web.Models;
 using SFA.DAS.Testing.AutoFixture;
+using ValidationResult = SFA.DAS.EmployerDemand.Domain.Validation.ValidationResult;
 
 namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
 {
@@ -137,6 +138,41 @@ namespace SFA.DAS.EmployerDemand.Web.UnitTests.Controllers.Demand
             //Assert
             Assert.IsNotNull(actual);
             actual.ViewName.Should().Be("RegisterDemand");
+        }
+        
+        [Test, MoqAutoData]
+        public async Task Then_If_There_Is_A_Validation_Exception_For_Location_Or_Organisation_The_Register_View_Is_Returned_And_Values_Set_To_Empty(
+            RegisterDemandRequest request,
+            CreateCachedCourseDemandCommandResult mediatorResult,
+            GetCreateCourseDemandQueryResult result,
+            [Frozen] Mock<IMediator> mediator,
+            [Greedy] RegisterDemandController controller)
+        {
+            //Arrange
+            
+            var validationResult = new ValidationResult();
+            validationResult.AddError(nameof(request.OrganisationName));
+            validationResult.AddError(nameof(request.Location));
+            var validationException = new ValidationException(validationResult.DataAnnotationResult, null, null);
+            mediator.Setup(x =>
+                    x.Send(It.IsAny<CreateCachedCourseDemandCommand>()
+                        , It.IsAny<CancellationToken>()))
+                .ThrowsAsync(validationException);
+            mediator.Setup(x =>
+                    x.Send(It.Is<GetCreateCourseDemandQuery>(c => c.TrainingCourseId.Equals(request.TrainingCourseId))
+                        , It.IsAny<CancellationToken>()))
+                .ReturnsAsync(result);
+            
+            //Act
+            var actual = await controller.PostRegisterDemand(request) as ViewResult;
+            
+            //Assert
+            Assert.IsNotNull(actual);
+            actual.ViewName.Should().Be("RegisterDemand");
+            var actualModel = actual.Model as RegisterCourseDemandViewModel;
+            Assert.IsNotNull(actualModel);
+            actualModel.OrganisationName.Should().BeEmpty();
+            actualModel.Location.Should().BeEmpty();
         }
     }
 }

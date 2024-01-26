@@ -1,5 +1,6 @@
 using System;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using SFA.DAS.EmployerDemand.Domain.Interfaces;
 using SFA.DAS.EmployerDemand.Domain.Validation;
@@ -21,6 +22,13 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
             {
                 validationResult.AddError(nameof(item.Location), "Enter a town, city or postcode");
             }
+            else
+            {
+                if (ContainsSpecialCharacters(item.Location))
+                {
+                    validationResult.AddError(nameof(item.Location), "Enter a real town, city or postcode");
+                }
+            }
 
             if (!item.NumberOfApprenticesKnown.HasValue)
             {
@@ -34,6 +42,13 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
             if (string.IsNullOrEmpty(item.OrganisationName))
             {
                 validationResult.AddError(nameof(item.OrganisationName), "Enter the name of the organisation");
+            }
+            else
+            {
+                if (ContainsSpecialCharacters(item.OrganisationName))
+                {
+                    validationResult.AddError(nameof(item.OrganisationName), "Enter a valid organisation name");
+                }
             }
 
             validationResult = CheckEmail(item, validationResult);
@@ -91,6 +106,11 @@ namespace SFA.DAS.EmployerDemand.Application.Demand.Commands.CreateCachedCourseD
             }
 
             return validationResult;
+        }
+
+        private bool ContainsSpecialCharacters(string input)
+        {
+            return !Regex.IsMatch(input, @"^[a-zA-Z0-9 ,\-\'\&@£¥$€#.:;]*$", RegexOptions.IgnoreCase, TimeSpan.FromMilliseconds(200));
         }
     }
 }
