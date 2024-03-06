@@ -111,6 +111,14 @@ namespace SFA.DAS.EmployerDemand.Web.Controllers
                 foreach (var member in e.ValidationResult.MemberNames)
                 {
                     ModelState.AddModelError(member.Split('|')[0], member.Split('|')[1]);
+                    if (member.Split('|')[0] == nameof(request.OrganisationName))
+                    {
+                        request.OrganisationName = string.Empty;
+                    }
+                    if (member.Split('|')[0] == nameof(request.Location))
+                    {
+                        request.Location = string.Empty;
+                    }
                 }
                 var model = await BuildRegisterCourseDemandViewModelFromPostRequest(request);
                 
