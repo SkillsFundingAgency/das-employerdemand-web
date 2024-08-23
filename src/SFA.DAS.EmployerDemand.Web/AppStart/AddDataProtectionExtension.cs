@@ -24,7 +24,7 @@ namespace SFA.DAS.EmployerDemand.Web.AppStart
                     .Connect($"{redisConnectionString},{dataProtectionKeysDatabase}");
 
                 services.AddDataProtection()
-                    .SetApplicationName("das-provider")
+                    .SetApplicationName("das-provider-web")
                     .PersistKeysToStackExchangeRedis(redis, "DataProtection-Keys");
             }
         }
